@@ -48,10 +48,10 @@ export default function ConnexionPage() {
       
       toast({
         title: 'Connexion réussie !',
-        description: 'Vérification de votre rôle en cours...',
+        description: 'Vérification de votre compte en cours...',
       });
 
-      // Redirect to the role verification page
+      // Redirect to the role verification page which will handle routing
       router.push('/auth/verify-role');
 
     } catch (error: any) {

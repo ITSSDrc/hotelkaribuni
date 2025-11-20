@@ -27,8 +27,8 @@ export default function VerifyRolePage() {
           router.replace('/dashboard');
         }
       } else {
-        // If there's a user but no profile document in Firestore,
-        // it's likely a regular user. Send them to the user dashboard.
+        // If there's a user but no profile document in Firestore (e.g. guest role)
+        // send them to the user dashboard.
         router.replace('/dashboard');
       }
     }

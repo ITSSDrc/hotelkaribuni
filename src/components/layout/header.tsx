@@ -51,13 +51,14 @@ export default function Header() {
     if (userProfile.role === 'superadmin') {
       return { href: '/admin', label: 'Admin' };
     }
+    // For any other role
     return { href: '/dashboard', label: 'Tableau de bord' };
   };
 
   const dashboardLink = getDashboardLink();
   
   const currentNavLinks = dashboardLink && userProfile?.role !== 'superadmin'
-    ? [...navLinks.slice(0, 1), { href: dashboardLink.href, label: dashboardLink.label }, ...navLinks.slice(1)]
+    ? navLinks.map(link => link.href === '/#chambres' ? {href: '/dashboard', label: 'Tableau de bord'} : link )
     : navLinks;
 
 
@@ -69,7 +70,7 @@ export default function Header() {
     if (user) {
       return (
         <div className="flex items-center gap-2">
-          {userProfile?.role === 'superadmin' && dashboardLink && (
+           {dashboardLink && (
             <Button variant="outline" asChild>
               <Link href={dashboardLink.href}>{dashboardLink.label}</Link>
             </Button>
@@ -118,7 +119,7 @@ export default function Header() {
         </Link>
 
         <nav className="hidden items-center gap-6 md:flex">
-          {currentNavLinks.map((link) => (
+          {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -141,7 +142,7 @@ export default function Header() {
                 <span className="sr-only">Ouvrir le menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] bg-background">
+            <SheetContent side="right" className="w-[300px] bg-background p-0">
               <div className="flex h-full flex-col">
                 <div className="flex items-center justify-between border-b p-4">
                   <Link href="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
@@ -154,7 +155,7 @@ export default function Header() {
                   </Button>
                 </div>
                 <nav className="flex flex-1 flex-col gap-4 p-4">
-                  {currentNavLinks.map((link) => (
+                  {navLinks.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
@@ -164,8 +165,7 @@ export default function Header() {
                       {link.label}
                     </Link>
                   ))}
-                  {/* For mobile, admins also get their dashboard link here */}
-                  {userProfile?.role === 'superadmin' && dashboardLink && (
+                  {dashboardLink && (
                      <Link
                       href={dashboardLink.href}
                       className="rounded-md px-3 py-2 text-lg font-medium transition-colors hover:bg-accent/50"
