@@ -1,6 +1,7 @@
+
 'use client';
 
-import { useUser } from '@/firebase/auth/use-user';
+import { useUserProfile } from '@/firebase/auth/use-user-profile';
 import { useDoc } from '@/firebase/firestore/use-doc';
 import { useCollection } from '@/firebase/firestore/use-collection';
 import { collection, doc } from 'firebase/firestore';
@@ -13,16 +14,14 @@ import { ShieldCheck, Users } from 'lucide-react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 
 export default function AdminDashboardPage() {
-  const { user, isLoading: isUserLoading } = useUser();
+  const { userProfile, isLoading: isProfileLoading } = useUserProfile();
   const { firestore } = useFirebase();
 
-  const userProfileRef = user ? doc(firestore, 'users', user.uid) : null;
-  const { data: userProfile, isLoading: isProfileLoading } = useDoc(userProfileRef);
-
-  const usersCollectionRef = collection(firestore, 'users');
+  // Only attempt to fetch the users collection if the current user is a superadmin
+  const usersCollectionRef = userProfile?.role === 'superadmin' ? collection(firestore, 'users') : null;
   const { data: users, isLoading: areUsersLoading } = useCollection(usersCollectionRef);
 
-  const isLoading = isUserLoading || isProfileLoading || areUsersLoading;
+  const isLoading = isProfileLoading || (userProfile?.role === 'superadmin' && areUsersLoading);
 
   if (isLoading) {
     return (
