@@ -17,7 +17,7 @@ export default function Footer() {
             </p>
           </div>
           <div>
-            <h3 className="mb-4 font-headline text-lg font-semibold">Navigation</h3>
+            <h3 className="mb-4 font-headline text-lg font-semibold">Découvrir</h3>
             <ul className="space-y-2">
               <li><Link href="#chambres" className="text-sm hover:text-primary">Chambres</Link></li>
               <li><Link href="#galerie" className="text-sm hover:text-primary">Galerie</Link></li>
