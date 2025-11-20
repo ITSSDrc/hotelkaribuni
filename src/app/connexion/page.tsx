@@ -6,6 +6,7 @@ import { z } from 'zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -32,7 +33,7 @@ type LoginFormValues = z.infer<typeof loginFormSchema>;
 
 export default function ConnexionPage() {
   const { toast } = useToast();
-  const { auth } = useFirebase();
+  const { auth, firestore } = useFirebase();
   const router = useRouter();
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
@@ -44,12 +45,23 @@ export default function ConnexionPage() {
 
   async function onSubmit(data: LoginFormValues) {
     try {
-      await signInWithEmailAndPassword(auth, data.email, data.password);
+      const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
+      const user = userCredential.user;
+
+      // Récupérer le profil utilisateur depuis Firestore
+      const userDocRef = doc(firestore, 'users', user.uid);
+      const userDocSnap = await getDoc(userDocRef);
+
       toast({
         title: 'Connexion réussie !',
         description: 'Vous êtes maintenant connecté.',
       });
-      router.push('/');
+
+      if (userDocSnap.exists() && userDocSnap.data().role === 'superadmin') {
+        router.push('/admin');
+      } else {
+        router.push('/');
+      }
     } catch (error: any) {
       let description = "Une erreur est survenue lors de la connexion.";
       if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
