@@ -36,6 +36,10 @@ export default function ConnexionPage() {
   const router = useRouter();
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
   });
 
   async function onSubmit(data: LoginFormValues) {
