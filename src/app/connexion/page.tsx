@@ -48,10 +48,10 @@ export default function ConnexionPage() {
       
       toast({
         title: 'Connexion réussie !',
-        description: 'Vous êtes maintenant connecté.',
+        description: 'Vérification de votre rôle en cours...',
       });
 
-      router.push('/');
+      router.push('/auth/verify-role');
 
     } catch (error: any) {
       let description = "Une erreur est survenue lors de la connexion.";
