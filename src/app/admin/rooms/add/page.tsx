@@ -283,7 +283,7 @@ export default function AddRoomPage() {
                 )}
                 />
 
-               <FormField
+                <FormField
                     control={form.control}
                     name="status"
                     render={({ field }) => (
@@ -293,7 +293,7 @@ export default function AddRoomPage() {
                         <FormControl>
                             <SelectTrigger>
                             <SelectValue placeholder="Sélectionnez un statut" />
-                            </Trigger>
+                            </SelectTrigger>
                         </FormControl>
                         <SelectContent>
                             <SelectItem value="Disponible">Disponible</SelectItem>
