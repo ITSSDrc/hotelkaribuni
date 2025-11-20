@@ -1,3 +1,64 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-background",
+      "description": "A beautiful, sunny hotel exterior with a pool.",
+      "imageUrl": "https://images.unsplash.com/photo-1562778612-e1e0cda9915c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxob3RlbCUyMHBvb2x8ZW58MHx8fHwxNzYzNTc1OTg0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "hotel pool"
+    },
+    {
+      "id": "room-standard",
+      "description": "A clean and modern standard hotel room.",
+      "imageUrl": "https://images.unsplash.com/photo-1711059985570-4c32ed12a12c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxob3RlbCUyMHJvb218ZW58MHx8fHwxNzYzNjM1MzU5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "hotel room"
+    },
+    {
+      "id": "room-deluxe",
+      "description": "A spacious deluxe hotel room with a nice view.",
+      "imageUrl": "https://images.unsplash.com/photo-1587985064135-0366536eab42?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxsdXh1cnklMjBiZWRyb29tfGVufDB8fHx8MTc2MzUzNjcwM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "luxury bedroom"
+    },
+    {
+      "id": "room-suite",
+      "description": "A luxurious hotel suite with a separate living area.",
+      "imageUrl": "https://images.unsplash.com/photo-1746730920916-9537eae97ab6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bHV4dXJ5JTIwc3VpdGV8ZW58MHx8fHwxNzYzNjExNzA4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "luxury suite"
+    },
+    {
+      "id": "gallery-1",
+      "description": "Guests enjoying breakfast by the pool.",
+      "imageUrl": "https://images.unsplash.com/photo-1676951593715-b1e225f747d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxicmVha2Zhc3QlMjBwb29sc2lkZXxlbnwwfHx8fDE3NjM2MzUzNTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "breakfast poolside"
+    },
+    {
+      "id": "gallery-2",
+      "description": "A scenic view of the beach near the hotel.",
+      "imageUrl": "https://images.unsplash.com/photo-1561571994-3c61c554181a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxiZWFjaCUyMHN1bnNldHxlbnwwfHx8fDE3NjM2MjQ2NTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "beach sunset"
+    },
+    {
+      "id": "gallery-3",
+      "description": "A couple relaxing in a hotel hammock.",
+      "imageUrl": "https://images.unsplash.com/photo-1550031675-030918aff0e4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxjb3VwbGUlMjByZWxheGluZ3xlbnwwfHx8fDE3NjM2MzUzNjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "couple relaxing"
+    },
+    {
+      "id": "gallery-4",
+      "description": "A chef preparing a gourmet meal in the hotel kitchen.",
+      "imageUrl": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxnb3VybWV0JTIwZm9vZHxlbnwwfHx8fDE3NjM2MTY3Njl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "gourmet food"
+    },
+    {
+      "id": "guest-avatar-1",
+      "description": "Avatar for a guest testimonial.",
+      "imageUrl": "https://images.unsplash.com/photo-1690444963408-9573a17a8058?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxwb3J0cmFpdCUyMHdvbWFufGVufDB8fHx8MTc2MzU3MjcxNnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "portrait woman"
+    },
+    {
+      "id": "guest-avatar-2",
+      "description": "Avatar for another guest testimonial.",
+      "imageUrl": "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwb3J0cmFpdCUyMG1hbnxlbnwwfHx8fDE3NjM2MjE1MjV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "portrait man"
+    }
+  ]
 }
