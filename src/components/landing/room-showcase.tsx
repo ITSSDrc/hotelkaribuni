@@ -32,7 +32,7 @@ export default function RoomShowcase() {
     <section id="chambres" className="py-16 md:py-24">
       <div className="container mx-auto px-4 md:px-6">
         <div className="mb-12 text-center">
-          <h2 className="font-headline text-4xl font-bold md:text-5xl">Nos Chambres & Suites</h2>
+          <h2 className="font-headline text-4xl font-bold md:text-5xl">Un Cocon de Confort et d'Élégance</h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
             Chaque chambre est conçue pour votre confort, alliant design moderne et touches locales.
           </p>

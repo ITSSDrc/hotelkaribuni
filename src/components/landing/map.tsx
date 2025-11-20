@@ -32,9 +32,9 @@ export default function MapSection() {
     <section id="map" className="py-16 md:py-24">
       <div className="container mx-auto px-4 md:px-6">
         <div className="mb-12 text-center">
-          <h2 className="font-headline text-4xl font-bold md:text-5xl">Explorez les Environs</h2>
+          <h2 className="font-headline text-4xl font-bold md:text-5xl">Un Emplacement d'Exception</h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-            Notre emplacement privilégié vous met au cœur de l'action, à quelques pas des meilleures attractions.
+            Idéalement situé, notre hôtel est le point de départ parfait pour explorer les merveilles de la ville.
           </p>
         </div>
         

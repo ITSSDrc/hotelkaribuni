@@ -35,9 +35,9 @@ export default function Gallery() {
     <section id="galerie" className="bg-card py-16 md:py-24">
       <div className="container mx-auto px-4 md:px-6">
         <div className="mb-12 text-center">
-          <h2 className="font-headline text-4xl font-bold md:text-5xl">Galerie & Expériences</h2>
+          <h2 className="font-headline text-4xl font-bold md:text-5xl">Instants Précieux à l'Hôtel Karibuni</h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-            Plongez dans l'univers de Karibuni et découvrez ce que nos hôtes disent de nous.
+            Explorez la beauté de notre établissement et découvrez pourquoi nos clients nous adorent.
           </p>
         </div>
 

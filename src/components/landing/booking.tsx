@@ -37,12 +37,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 const bookingFormSchema = z.object({
   dateRange: z.object(
     {
-      from: z.date({ required_error: 'Date d\'arrivée requise.' }),
+      from: z.date({ required_error: "Date d'arrivée requise." }),
       to: z.date({ required_error: 'Date de départ requise.' }),
     },
     { required_error: 'Veuillez sélectionner une période.' }
   ),
-  guests: z.string().min(1, 'Veuillez sélectionner le nombre d\'hôtes.'),
+  guests: z.string().min(1, "Veuillez sélectionner le nombre d'hôtes."),
 });
 
 type BookingFormValues = z.infer<typeof bookingFormSchema>;
@@ -68,7 +68,7 @@ export default function Booking() {
       <div className="container mx-auto px-4 md:px-6">
         <Card className="mx-auto max-w-4xl shadow-lg">
           <CardHeader className="text-center">
-            <CardTitle className="font-headline text-4xl font-bold md:text-5xl">Réservez Votre Séjour</CardTitle>
+            <CardTitle className="font-headline text-4xl font-bold md:text-5xl">Planifiez Votre Escapade de Rêve</CardTitle>
           </CardHeader>
           <CardContent>
             <Form {...form}>
