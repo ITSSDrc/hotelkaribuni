@@ -4,6 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -19,6 +21,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
+import { useFirebase } from '@/firebase';
 
 const loginFormSchema = z.object({
   email: z.string().email('Veuillez entrer une adresse e-mail valide.'),
@@ -29,16 +32,31 @@ type LoginFormValues = z.infer<typeof loginFormSchema>;
 
 export default function ConnexionPage() {
   const { toast } = useToast();
+  const { auth } = useFirebase();
+  const router = useRouter();
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
   });
 
-  function onSubmit(data: LoginFormValues) {
-    console.log(data);
-    toast({
-      title: 'Connexion réussie !',
-      description: 'Vous êtes maintenant connecté.',
-    });
+  async function onSubmit(data: LoginFormValues) {
+    try {
+      await signInWithEmailAndPassword(auth, data.email, data.password);
+      toast({
+        title: 'Connexion réussie !',
+        description: 'Vous êtes maintenant connecté.',
+      });
+      router.push('/');
+    } catch (error: any) {
+      let description = "Une erreur est survenue lors de la connexion.";
+      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
+        description = "L'adresse e-mail ou le mot de passe est incorrect.";
+      }
+      toast({
+        variant: 'destructive',
+        title: 'Erreur de connexion',
+        description: description,
+      });
+    }
   }
 
   return (
@@ -81,7 +99,9 @@ export default function ConnexionPage() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full">Se connecter</Button>
+                <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                  {form.formState.isSubmitting ? 'Connexion en cours...' : 'Se connecter'}
+                </Button>
                 <div className="text-center text-sm text-muted-foreground">
                   <Link href="#" className="underline hover:text-primary">
                     Mot de passe oublié ?

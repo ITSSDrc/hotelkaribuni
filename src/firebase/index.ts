@@ -2,6 +2,7 @@ import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
 import { firebaseConfig } from './config';
 import { FirebaseProvider, useFirebase } from './provider';
 import { FirebaseClientProvider } from './client-provider';
+import { useUser } from './auth/use-user';
 
 function initializeFirebase() {
   const isInitialized = getApps().length > 0;
@@ -13,4 +14,4 @@ function initializeFirebase() {
 export { initializeFirebase };
 
 // Export the provider and hook
-export { FirebaseProvider, useFirebase, FirebaseClientProvider };
+export { FirebaseProvider, useFirebase, FirebaseClientProvider, useUser };

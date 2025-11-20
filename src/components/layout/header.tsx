@@ -3,11 +3,16 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { Menu, X } from 'lucide-react';
+import { signOut } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Logo from '../icons/logo';
 import { cn } from '@/lib/utils';
+import { useUser } from '@/firebase/auth/use-user';
+import { useFirebase } from '@/firebase';
+import { useToast } from '@/hooks/use-toast';
 
 const navLinks = [
   { href: '/#chambres', label: 'Chambres' },
@@ -17,6 +22,10 @@ const navLinks = [
 ];
 
 export default function Header() {
+  const { user, isLoading } = useUser();
+  const { auth } = useFirebase();
+  const router = useRouter();
+  const { toast } = useToast();
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [open, setOpen] = React.useState(false);
 
@@ -27,6 +36,48 @@ export default function Header() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    toast({
+      title: 'Déconnexion réussie',
+    });
+    router.push('/');
+  };
+
+  const renderAuthButton = () => {
+    if (isLoading) {
+      return <Button disabled>Chargement...</Button>;
+    }
+
+    if (user) {
+      return <Button onClick={handleLogout}>Déconnexion</Button>;
+    }
+
+    return (
+      <Button asChild>
+        <Link href="/connexion">Connexion</Link>
+      </Button>
+    );
+  };
+  
+  const renderMobileAuthButton = () => {
+    if (isLoading) {
+      return <Button disabled className="w-full">Chargement...</Button>;
+    }
+
+    if (user) {
+      return <Button onClick={() => { handleLogout(); setOpen(false); }} className="w-full">Déconnexion</Button>;
+    }
+
+    return (
+       <Button asChild className="w-full">
+        <Link href="/connexion" onClick={() => setOpen(false)}>
+          Connexion
+        </Link>
+      </Button>
+    );
+  }
 
   return (
     <header
@@ -54,9 +105,7 @@ export default function Header() {
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
-          <Button asChild>
-            <Link href="/connexion">Connexion</Link>
-          </Button>
+          {renderAuthButton()}
         </div>
 
         <div className="md:hidden">
@@ -92,11 +141,7 @@ export default function Header() {
                   ))}
                 </nav>
                 <div className="border-t p-4">
-                  <Button asChild className="w-full">
-                    <Link href="/connexion" onClick={() => setOpen(false)}>
-                      Connexion
-                    </Link>
-                  </Button>
+                  {renderMobileAuthButton()}
                 </div>
               </div>
             </SheetContent>
