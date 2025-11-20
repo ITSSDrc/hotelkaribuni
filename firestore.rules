@@ -14,12 +14,15 @@ service cloud.firestore {
 
     // Rules for the 'users' collection
     match /users/{userId} {
+      // A user can GET their own document. This is necessary for role checking after login.
+      allow get: if request.auth != null && request.auth.uid == userId;
+
+      // A user can UPDATE their own document.
+      allow update: if request.auth != null && request.auth.uid == userId;
+
       // ANY authenticated user can create their own user document upon sign-up.
       // The document ID must match their authentication UID.
       allow create: if request.auth != null && request.auth.uid == userId;
-
-      // A user can GET or UPDATE their own document.
-      allow get, update: if request.auth != null && request.auth.uid == userId;
 
       // A user with the 'superadmin' role can perform any read (get, list) or write (create, update, delete)
       // operation on any document in the 'users' collection.
