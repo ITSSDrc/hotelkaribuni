@@ -6,6 +6,9 @@ import Booking from '@/components/landing/booking';
 import Gallery from '@/components/landing/gallery';
 import MapSection from '@/components/landing/map';
 import Contact from '@/components/landing/contact';
+import Salle from '@/components/landing/salle';
+import Piscines from '@/components/landing/piscines';
+import RestauBar from '@/components/landing/restau-bar';
 
 export default function Home() {
   return (
@@ -14,6 +17,9 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
         <RoomShowcase />
+        <Salle />
+        <Piscines />
+        <RestauBar />
         <Booking />
         <Gallery />
         <MapSection />

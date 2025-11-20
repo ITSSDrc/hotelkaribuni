@@ -20,9 +20,10 @@ export default function Footer() {
             <h3 className="mb-4 font-headline text-lg font-semibold">Découvrir</h3>
             <ul className="space-y-2">
               <li><Link href="#chambres" className="text-sm hover:text-primary">Chambres</Link></li>
+              <li><Link href="#salle" className="text-sm hover:text-primary">Salle</Link></li>
+              <li><Link href="#piscines" className="text-sm hover:text-primary">Piscines</Link></li>
+              <li><Link href="#restau-bar" className="text-sm hover:text-primary">Restau-bar</Link></li>
               <li><Link href="#galerie" className="text-sm hover:text-primary">Galerie</Link></li>
-              <li><Link href="#reservation" className="text-sm hover:text-primary">Réservation</Link></li>
-              <li><Link href="#contact" className="text-sm hover:text-primary">Contact</Link></li>
             </ul>
           </div>
           <div>

@@ -59,6 +59,24 @@
       "description": "Avatar for another guest testimonial.",
       "imageUrl": "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwb3J0cmFpdCUyMG1hbnxlbnwwfHx8fDE3NjM2MjE1MjV8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "portrait man"
+    },
+    {
+      "id": "salle-1",
+      "description": "A large, modern hotel conference room.",
+      "imageUrl": "https://images.unsplash.com/photo-1526948531399-320e7e40f05d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb25mZXJlbmNlJTIwcm9vbXxlbnwwfHx8fDE3NjM2NTg0NTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "conference room"
+    },
+    {
+      "id": "piscines-1",
+      "description": "An inviting hotel swimming pool at dusk.",
+      "imageUrl": "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxob3RlbCUyMHBvb2x8ZW58MHx8fHwxNzYzNTc1OTg0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "hotel pool"
+    },
+    {
+      "id": "restau-bar-1",
+      "description": "A chic and modern hotel restaurant bar.",
+      "imageUrl": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxyZXN0YXVyYW50fGVufDB8fHx8MTc2MzY1ODU0Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "restaurant interior"
     }
   ]
 }
