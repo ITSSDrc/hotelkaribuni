@@ -6,6 +6,7 @@ import { z } from 'zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -32,7 +33,7 @@ type LoginFormValues = z.infer<typeof loginFormSchema>;
 
 export default function ConnexionPage() {
   const { toast } = useToast();
-  const { auth } = useFirebase();
+  const { auth, firestore } = useFirebase();
   const router = useRouter();
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
@@ -44,12 +45,27 @@ export default function ConnexionPage() {
 
   async function onSubmit(data: LoginFormValues) {
     try {
-      await signInWithEmailAndPassword(auth, data.email, data.password);
+      const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
       
       toast({
         title: 'Connexion réussie !',
         description: 'Vous êtes maintenant connecté.',
       });
+
+      // Check user role for redirection
+      const user = userCredential.user;
+      if (user) {
+        const userDocRef = doc(firestore, 'users', user.uid);
+        const userDocSnap = await getDoc(userDocRef);
+
+        if (userDocSnap.exists()) {
+          const userData = userDocSnap.data();
+          if (userData.role === 'superadmin') {
+            router.push('/admin');
+            return;
+          }
+        }
+      }
 
       router.push('/');
 
@@ -58,6 +74,7 @@ export default function ConnexionPage() {
       if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
         description = "L'adresse e-mail ou le mot de passe est incorrect.";
       } else {
+        console.error("Firebase Auth Error:", error);
         description = error.message || description;
       }
       toast({
