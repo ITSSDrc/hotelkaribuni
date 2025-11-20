@@ -51,6 +51,7 @@ export default function ConnexionPage() {
         description: 'Vérification de votre rôle en cours...',
       });
 
+      // Redirect to the role verification page
       router.push('/auth/verify-role');
 
     } catch (error: any) {
