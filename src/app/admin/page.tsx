@@ -2,16 +2,11 @@
 'use client';
 
 import { useUserProfile } from '@/firebase/auth/use-user-profile';
-import { useDoc } from '@/firebase/firestore/use-doc';
 import { useCollection } from '@/firebase/firestore/use-collection';
-import { collection, doc } from 'firebase/firestore';
+import { collection } from 'firebase/firestore';
 import { useFirebase } from '@/firebase';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ShieldCheck, Users, ConciergeBell, Package } from 'lucide-react';
-import { SidebarTrigger } from '@/components/ui/sidebar';
 
 export default function AdminDashboardPage() {
   const { userProfile, isLoading: isProfileLoading } = useUserProfile();
@@ -56,17 +51,12 @@ export default function AdminDashboardPage() {
 
   return (
     <>
-      <header className="mb-8 flex items-center justify-between">
-        <div>
-            <h1 className="font-headline text-4xl font-bold tracking-tight">Tableau de Bord Administrateur</h1>
-            <p className="mt-2 text-lg text-muted-foreground">Aperçu général de la gestion de l'hôtel.</p>
-        </div>
-        <div className="md:hidden">
-            <SidebarTrigger />
-        </div>
+      <header className="mb-8">
+        <h1 className="font-headline text-4xl font-bold tracking-tight">Tableau de Bord</h1>
+        <p className="mt-2 text-lg text-muted-foreground">Aperçu général de la gestion de l'hôtel.</p>
       </header>
       
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Utilisateurs Totaux</CardTitle>
@@ -108,51 +98,6 @@ export default function AdminDashboardPage() {
             </CardContent>
         </Card>
       </div>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Gestion des Utilisateurs</CardTitle>
-          <CardDescription>Liste de tous les utilisateurs enregistrés dans le système.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Utilisateur</TableHead>
-                <TableHead>Rôle</TableHead>
-                <TableHead>Date d'inscription</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {users && (users as any[]).map((user: any) => (
-                <TableRow key={user.id}>
-                  <TableCell>
-                    <div className="flex items-center gap-3">
-                      <Avatar>
-                        <AvatarImage src={user.photoURL} />
-                        <AvatarFallback>{user.displayName?.charAt(0) || 'U'}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="font-medium">{user.displayName}</p>
-                        <p className="text-sm text-muted-foreground">{user.email}</p>
-                      </div>
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant={user.role === 'superadmin' ? 'default' : 'secondary'}>
-                      {user.role}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    {/* Placeholder for creation date */}
-                    24 Mai, 2024
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
     </>
   );
 }

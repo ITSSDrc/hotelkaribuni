@@ -14,14 +14,14 @@ import {
   SidebarInset,
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
-import { Home, Settings, Users, LineChart, LogOut } from 'lucide-react';
+import { Home, Settings, Users, LineChart, LogOut, PanelLeft } from 'lucide-react';
 import Logo from '@/components/icons/logo';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useUserProfile } from '@/firebase/auth/use-user-profile';
 import { Button } from '@/components/ui/button';
 import { signOut } from 'firebase/auth';
 import { useFirebase } from '@/firebase';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -42,6 +42,7 @@ export default function AdminLayout({
   const { userProfile } = useUserProfile();
   const { auth } = useFirebase();
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleLogout = async () => {
     try {
@@ -66,10 +67,18 @@ export default function AdminLayout({
         <SidebarContent>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={true}>
+              <SidebarMenuButton asChild isActive={pathname === '/admin'}>
                 <Link href="/admin">
                   <Home />
                   Tableau de bord
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+             <SidebarMenuItem>
+              <SidebarMenuButton asChild isActive={pathname === '/admin/users'}>
+                <Link href="/admin/users">
+                  <Users />
+                  Utilisateurs
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -133,7 +142,7 @@ export default function AdminLayout({
             <span>Karibuni</span>
           </Link>
           <SidebarTrigger>
-            <Users />
+            <PanelLeft />
           </SidebarTrigger>
         </header>
         <main className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8">
