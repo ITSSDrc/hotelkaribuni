@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 
@@ -13,10 +13,25 @@ import { cn } from '@/lib/utils';
 import { useUserProfile } from '@/firebase/auth/use-user-profile';
 import { useFirebase } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 const navLinks = [
   { href: '/', label: 'Accueil' },
-  { href: '/#recommandations', label: 'Découvrir' },
+  {
+    label: 'Découvrir',
+    subLinks: [
+      { href: '/#chambres', label: 'Chambres' },
+      { href: '/#', label: 'Salle' },
+      { href: '/#', label: 'Piscines' },
+      { href: '/#', label: 'Restau-bar' },
+    ],
+  },
   { href: '/#galerie', label: 'Galerie' },
   { href: '/#contact', label: 'Contact' },
 ];
@@ -56,11 +71,6 @@ export default function Header() {
   };
 
   const dashboardLink = getDashboardLink();
-  
-  const currentNavLinks = dashboardLink && userProfile?.role !== 'superadmin'
-    ? navLinks.map(link => link.href === '/#chambres' ? {href: '/dashboard', label: 'Tableau de bord'} : link )
-    : navLinks;
-
 
   const renderAuthButtons = () => {
     if (isLoading) {
@@ -105,6 +115,70 @@ export default function Header() {
     );
   }
 
+  const renderNavLinks = (isMobile = false) => {
+    return navLinks.map((link, index) => {
+      if (link.subLinks) {
+        if (isMobile) {
+          return (
+            <Collapsible key={index}>
+              <CollapsibleTrigger className="flex w-full items-center justify-between rounded-md px-3 py-2 text-lg font-medium transition-colors hover:bg-accent/50 [&[data-state=open]>svg]:rotate-180">
+                {link.label}
+                <ChevronDown className="h-5 w-5 transition-transform" />
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <div className="flex flex-col gap-2 pl-6 pt-2 pb-2">
+                  {link.subLinks.map((subLink, subIndex) => (
+                    <Link
+                      key={subIndex}
+                      href={subLink.href}
+                      className="rounded-md px-3 py-2 text-base font-medium transition-colors hover:bg-accent/50"
+                      onClick={() => setOpen(false)}
+                    >
+                      {subLink.label}
+                    </Link>
+                  ))}
+                </div>
+              </CollapsibleContent>
+            </Collapsible>
+          );
+        }
+        return (
+          <DropdownMenu key={index}>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="ghost"
+                className="flex items-center gap-1 text-sm font-medium text-foreground/80 transition-colors hover:bg-transparent hover:text-primary focus-visible:ring-0"
+              >
+                {link.label}
+                <ChevronDown className="h-4 w-4" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {link.subLinks.map((subLink, subIndex) => (
+                <DropdownMenuItem key={subIndex} asChild>
+                  <Link href={subLink.href}>{subLink.label}</Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        );
+      }
+      return (
+        <Link
+          key={index}
+          href={link.href}
+          className={cn(
+            'text-sm font-medium text-foreground/80 transition-colors hover:text-primary',
+            isMobile && 'rounded-md px-3 py-2 text-lg'
+          )}
+          onClick={() => isMobile && setOpen(false)}
+        >
+          {link.label}
+        </Link>
+      );
+    });
+  };
+
   return (
     <header
       className={cn(
@@ -118,16 +192,8 @@ export default function Header() {
           <span className="font-headline text-2xl font-bold text-foreground">Karibuni</span>
         </Link>
 
-        <nav className="hidden items-center gap-6 md:flex">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="text-sm font-medium text-foreground/80 transition-colors hover:text-primary"
-            >
-              {link.label}
-            </Link>
-          ))}
+        <nav className="hidden items-center gap-2 md:flex">
+          {renderNavLinks()}
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
@@ -154,17 +220,8 @@ export default function Header() {
                     <span className="sr-only">Fermer le menu</span>
                   </Button>
                 </div>
-                <nav className="flex flex-1 flex-col gap-4 p-4">
-                  {navLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className="rounded-md px-3 py-2 text-lg font-medium transition-colors hover:bg-accent/50"
-                      onClick={() => setOpen(false)}
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
+                <nav className="flex flex-1 flex-col gap-2 p-4">
+                  {renderNavLinks(true)}
                   {dashboardLink && (
                      <Link
                       href={dashboardLink.href}
