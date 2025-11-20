@@ -15,7 +15,7 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
-import { Home, Settings, Users, LineChart, LogOut, PanelLeft, UserCircle2 } from 'lucide-react';
+import { Home, Settings, Users, LineChart, LogOut, PanelLeft, UserCircle2, BedDouble } from 'lucide-react';
 import Logo from '@/components/icons/logo';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useUserProfile } from '@/firebase/auth/use-user-profile';
@@ -81,6 +81,14 @@ export default function AdminLayout({
                 <Link href="/admin/users">
                   <Users />
                   <span>Utilisateurs</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild isActive={pathname === '/admin/rooms'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
+                <Link href="/admin/rooms">
+                  <BedDouble />
+                  <span>Chambres</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
