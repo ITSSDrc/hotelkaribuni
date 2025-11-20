@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -13,7 +14,7 @@ import {
   SidebarInset,
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
-import { Home, Settings, Users, LineChart } from 'lucide-react';
+import { Home, Settings, Users, LineChart, LogOut } from 'lucide-react';
 import Logo from '@/components/icons/logo';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useUserProfile } from '@/firebase/auth/use-user-profile';
@@ -21,6 +22,17 @@ import { Button } from '@/components/ui/button';
 import { signOut } from 'firebase/auth';
 import { useFirebase } from '@/firebase';
 import { useRouter } from 'next/navigation';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 
 export default function AdminLayout({
   children,
@@ -83,7 +95,28 @@ export default function AdminLayout({
                     <p className="truncate text-sm font-semibold">{userProfile?.displayName || 'Admin'}</p>
                     <p className="truncate text-xs text-muted-foreground">{userProfile?.email}</p>
                 </div>
-                <Button variant="outline" size="sm" onClick={handleLogout}>Déconnexion</Button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="outline" size="icon" className="h-9 w-9 flex-shrink-0">
+                      <LogOut className="h-4 w-4" />
+                      <span className="sr-only">Déconnexion</span>
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Êtes-vous sûr de vouloir vous déconnecter ?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Votre session actuelle sera terminée et vous devrez vous reconnecter pour accéder au tableau de bord.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Annuler</AlertDialogCancel>
+                      <AlertDialogAction onClick={handleLogout}>
+                        Confirmer la déconnexion
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
             </div>
         </SidebarFooter>
       </Sidebar>
@@ -104,3 +137,4 @@ export default function AdminLayout({
     </SidebarProvider>
   );
 }
+
