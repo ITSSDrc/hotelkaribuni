@@ -9,14 +9,26 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { Loader2 } from 'lucide-react';
+import { Loader2, PlusCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
+import { useState } from 'react';
+import AddUserForm from './add-user-form';
 
 export default function AdminUsersPage() {
   const { userProfile, isLoading: isProfileLoading } = useUserProfile();
   const { firestore } = useFirebase();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const usersCollectionRef = userProfile?.role === 'superadmin' ? collection(firestore, 'users') : null;
-  const { data: users, isLoading: areUsersLoading } = useCollection(usersCollectionRef);
+  const { data: users, isLoading: areUsersLoading, forceRefetch } = useCollection(usersCollectionRef);
 
   const isLoading = isProfileLoading || (userProfile?.role === 'superadmin' && areUsersLoading);
 
@@ -56,11 +68,35 @@ export default function AdminUsersPage() {
     }
   }
 
+  const handleUserAdded = () => {
+    forceRefetch(); // Trigger a refetch of the user list
+    setIsModalOpen(false); // Close the modal
+  }
+
   return (
     <>
-       <header className="mb-8">
-        <h1 className="font-headline text-4xl font-bold tracking-tight">Gestion des Utilisateurs</h1>
-        <p className="mt-2 text-lg text-muted-foreground">Gérez les comptes et les rôles des utilisateurs du système.</p>
+       <header className="mb-8 flex items-center justify-between">
+        <div>
+            <h1 className="font-headline text-4xl font-bold tracking-tight">Gestion des Utilisateurs</h1>
+            <p className="mt-2 text-lg text-muted-foreground">Gérez les comptes et les rôles des utilisateurs du système.</p>
+        </div>
+         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DialogTrigger asChild>
+            <Button>
+              <PlusCircle className="mr-2 h-4 w-4" />
+              Ajouter un utilisateur
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Ajouter un nouvel utilisateur</DialogTitle>
+              <DialogDescription>
+                Créez un compte et assignez un rôle.
+              </DialogDescription>
+            </DialogHeader>
+            <AddUserForm onFinished={handleUserAdded} />
+          </DialogContent>
+        </Dialog>
       </header>
       <Card>
         <CardHeader>
