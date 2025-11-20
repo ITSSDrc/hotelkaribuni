@@ -3,11 +3,12 @@ import './globals.css';
 import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
 import { Analytics } from '@vercel/analytics/react';
+import { FirebaseClientProvider } from '@/firebase';
 
 export const metadata: Metadata = {
   title: 'Karibuni',
   description:
-    'Bienvenue à l\'Hôtel Karibuni. Profitez de nos chambres luxueuses, de nos services personnalisés et de nos expériences inoubliables.',
+    "Bienvenue à l'Hôtel Karibuni. Profitez de nos chambres luxueuses, de nos services personnalisés et de nos expériences inoubliables.",
 };
 
 export default function RootLayout({
@@ -26,7 +27,9 @@ export default function RootLayout({
         />
       </head>
       <body className={cn('min-h-screen bg-background font-body antialiased')}>
-        {children}
+        <FirebaseClientProvider>
+          {children}
+        </FirebaseClientProvider>
         <Toaster />
         <Analytics />
       </body>
