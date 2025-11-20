@@ -12,6 +12,7 @@ import {
   SidebarFooter,
   SidebarTrigger,
   SidebarInset,
+  SidebarRail,
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
 import { Home, Settings, Users, LineChart, LogOut, PanelLeft, UserCircle2 } from 'lucide-react';
@@ -58,12 +59,12 @@ export default function AdminLayout({
   return (
     <SidebarProvider>
       <Sidebar collapsible="icon">
-        <SidebarHeader className="flex items-center justify-between">
+        <SidebarRail />
+        <SidebarHeader className="flex items-center justify-center">
           <div className="flex items-center gap-2">
             <Logo className="h-7 w-7 text-primary" />
             <span className="text-lg font-semibold">Karibuni</span>
           </div>
-          <SidebarTrigger />
         </SidebarHeader>
         <SidebarContent>
           <SidebarMenu>
