@@ -6,7 +6,6 @@ import { z } from 'zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -33,7 +32,7 @@ type LoginFormValues = z.infer<typeof loginFormSchema>;
 
 export default function ConnexionPage() {
   const { toast } = useToast();
-  const { auth, firestore } = useFirebase();
+  const { auth } = useFirebase();
   const router = useRouter();
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
@@ -45,27 +44,12 @@ export default function ConnexionPage() {
 
   async function onSubmit(data: LoginFormValues) {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
+      await signInWithEmailAndPassword(auth, data.email, data.password);
       
       toast({
         title: 'Connexion réussie !',
         description: 'Vous êtes maintenant connecté.',
       });
-
-      // Check user role for redirection
-      const user = userCredential.user;
-      if (user) {
-        const userDocRef = doc(firestore, 'users', user.uid);
-        const userDocSnap = await getDoc(userDocRef);
-
-        if (userDocSnap.exists()) {
-          const userData = userDocSnap.data();
-          if (userData.role === 'superadmin') {
-            router.push('/admin');
-            return;
-          }
-        }
-      }
 
       router.push('/');
 
