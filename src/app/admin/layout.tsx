@@ -44,8 +44,14 @@ export default function AdminLayout({
   const router = useRouter();
 
   const handleLogout = async () => {
-    await signOut(auth);
-    router.push('/connexion');
+    try {
+      await signOut(auth);
+      router.push('/connexion');
+      router.refresh(); // Force a hard refresh to clear all client-side state
+    } catch (error) {
+      console.error('Logout failed', error);
+      // Optionally, show a toast message for the error
+    }
   };
   
   return (
@@ -137,4 +143,3 @@ export default function AdminLayout({
     </SidebarProvider>
   );
 }
-
