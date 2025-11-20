@@ -1,9 +1,6 @@
 
 'use server';
 
-import { config } from 'dotenv';
-config();
-
 import { getApps, initializeApp, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
@@ -16,17 +13,16 @@ interface UserData {
   role: 'superadmin' | 'receptionist' | 'stock_manager';
 }
 
-const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
+const serviceAccountJson = process.env.FIREBASE_ADMIN_SDK_CONFIG;
 
 // Initialize Firebase Admin SDK if not already initialized
 if (!getApps().length) {
-    if (!serviceAccount) {
+    if (!serviceAccountJson) {
         throw new Error('La clé de compte de service Firebase est manquante dans les variables d`environnement.');
     }
-    const serviceAccountKey = JSON.parse(serviceAccount);
+    const serviceAccount = JSON.parse(serviceAccountJson);
     initializeApp({
-        credential: cert(serviceAccountKey),
-        databaseURL: `https://${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}.firebaseio.com`
+        credential: cert(serviceAccount),
     });
 }
 
