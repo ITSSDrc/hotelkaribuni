@@ -59,7 +59,7 @@ export default function AdminDashboardPage() {
       
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Link href="/admin/users">
-            <Card className="transition-all hover:border-primary hover:shadow-md">
+            <Card className="transition-all hover:border-primary hover:shadow-lg">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">Utilisateurs Totaux</CardTitle>
                 <Users className="h-4 w-4 text-muted-foreground" />
