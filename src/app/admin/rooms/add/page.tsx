@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -52,6 +53,11 @@ export default function AddRoomPage() {
   const form = useForm<RoomFormValues>({
     resolver: zodResolver(roomFormSchema),
     defaultValues: {
+      name: '',
+      type: 'Standard',
+      price: 0,
+      description: '',
+      imageUrl: '',
       status: 'Disponible',
     },
   });
