@@ -29,6 +29,10 @@ service cloud.firestore {
       allow read, write: if hasRole('superadmin');
     }
 
-    // By default, no other collections are accessible. This is a secure default.
+    // Fallback rule: By default, deny all reads and writes to any other collection
+    // to ensure a secure-by-default posture.
+    match /{document=**} {
+      allow read, write: if false;
+    }
   }
 }
