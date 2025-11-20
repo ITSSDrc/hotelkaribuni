@@ -20,8 +20,6 @@ export async function addRoom(roomData: RoomData) {
     const firestore = getFirestore(app);
     const roomsCollection = collection(firestore, 'rooms');
     
-    // The imageUrl is now handled before calling this function
-    // and is either a data URL or a picsum URL.
     await addDoc(roomsCollection, roomData);
     
     return { success: true };
@@ -32,5 +30,3 @@ export async function addRoom(roomData: RoomData) {
     throw new Error('Could not add room to the database.');
   }
 }
-
-    

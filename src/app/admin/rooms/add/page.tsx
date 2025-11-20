@@ -107,9 +107,7 @@ export default function AddRoomPage() {
     try {
       let imageUrl = '';
       if (data.image instanceof File) {
-         // This is a workaround. In a real app, you'd upload to a storage service
-         // and get a URL. Here we convert the image to a base64 data URL.
-         const toBase64 = (file: File) => new Promise<string>((resolve, reject) => {
+         const toBase64 = (file: File): Promise<string> => new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = () => resolve(reader.result as string);
@@ -244,40 +242,46 @@ export default function AddRoomPage() {
                 )}
               />
 
-              <FormItem>
-                <FormLabel>Image de la chambre</FormLabel>
-                <div className="flex items-center gap-4">
-                    <div className="relative flex h-32 w-48 flex-shrink-0 items-center justify-center rounded-md border border-dashed">
-                        {preview ? (
-                        <Image src={preview} alt="Aperçu de l'image" fill className="object-cover rounded-md" />
-                        ) : (
-                        <ImageIcon className="h-10 w-10 text-muted-foreground" />
-                        )}
-                    </div>
-                    <div className='flex flex-col gap-2'>
-                        <Button type="button" asChild variant="outline">
-                            <label htmlFor="image-upload" className="cursor-pointer">
-                                Téléverser une image
-                                <input
-                                    id="image-upload"
-                                    type="file"
-                                    className="sr-only"
-                                    accept={ACCEPTED_IMAGE_TYPES.join(',')}
-                                    onChange={handleImageChange}
-                                />
-                            </label>
-                        </Button>
-                        <Button type="button" variant="secondary" onClick={generateRandomImage}>
-                            <RefreshCw className="mr-2 h-4 w-4" />
-                            Générer une image
-                        </Button>
-                    </div>
-                </div>
-                <FormDescription>
-                  Téléversez une image ou générez-en une aléatoirement. Taille max : 5Mo.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
+               <FormField
+                control={form.control}
+                name="image"
+                render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Image de la chambre</FormLabel>
+                        <div className="flex items-center gap-4">
+                            <div className="relative flex h-32 w-48 flex-shrink-0 items-center justify-center rounded-md border border-dashed">
+                                {preview ? (
+                                <Image src={preview} alt="Aperçu de l'image" fill className="object-cover rounded-md" />
+                                ) : (
+                                <ImageIcon className="h-10 w-10 text-muted-foreground" />
+                                )}
+                            </div>
+                            <div className='flex flex-col gap-2'>
+                                <Button type="button" asChild variant="outline">
+                                    <label htmlFor="image-upload" className="cursor-pointer">
+                                        Téléverser une image
+                                        <input
+                                            id="image-upload"
+                                            type="file"
+                                            className="sr-only"
+                                            accept={ACCEPTED_IMAGE_TYPES.join(',')}
+                                            onChange={handleImageChange}
+                                        />
+                                    </label>
+                                </Button>
+                                <Button type="button" variant="secondary" onClick={generateRandomImage}>
+                                    <RefreshCw className="mr-2 h-4 w-4" />
+                                    Générer une image
+                                </Button>
+                            </div>
+                        </div>
+                        <FormDescription>
+                        Téléversez une image ou générez-en une aléatoirement. Taille max : 5Mo.
+                        </FormDescription>
+                        <FormMessage />
+                    </FormItem>
+                )}
+                />
 
                <FormField
                     control={form.control}
@@ -289,7 +293,7 @@ export default function AddRoomPage() {
                         <FormControl>
                             <SelectTrigger>
                             <SelectValue placeholder="Sélectionnez un statut" />
-                            </SelectTrigger>
+                            </Trigger>
                         </FormControl>
                         <SelectContent>
                             <SelectItem value="Disponible">Disponible</SelectItem>
@@ -313,5 +317,3 @@ export default function AddRoomPage() {
     </>
   );
 }
-
-    
