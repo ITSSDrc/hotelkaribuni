@@ -6,7 +6,7 @@ import { Hotel, Utensils, VenetianMask, ShoppingBag } from 'lucide-react';
 import { Card, CardContent } from '../ui/card';
 
 const pointsOfInterest = [
-  { id: 'hotel', lat: 48.8584, lng: 2.2945, label: 'Hôtel Karibuni Oasis', icon: Hotel },
+  { id: 'hotel', lat: 48.8584, lng: 2.2945, label: 'Hôtel Karibuni', icon: Hotel },
   { id: 'restaurant', lat: 48.8600, lng: 2.2960, label: 'Restaurant Gastronomique', icon: Utensils },
   { id: 'theatre', lat: 48.8570, lng: 2.2920, label: 'Théâtre de la Rive', icon: VenetianMask },
   { id: 'shopping', lat: 48.8595, lng: 2.2915, label: 'Boutiques de Luxe', icon: ShoppingBag },

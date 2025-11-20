@@ -5,9 +5,9 @@ import { cn } from '@/lib/utils';
 import { Analytics } from '@vercel/analytics/react';
 
 export const metadata: Metadata = {
-  title: 'Karibuni Oasis',
+  title: 'Karibuni',
   description:
-    'Bienvenue à l\'Hôtel Karibuni Oasis. Profitez de nos chambres luxueuses, de nos services personnalisés et de nos expériences inoubliables.',
+    'Bienvenue à l\'Hôtel Karibuni. Profitez de nos chambres luxueuses, de nos services personnalisés et de nos expériences inoubliables.',
 };
 
 export default function RootLayout({

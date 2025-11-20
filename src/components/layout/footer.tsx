@@ -10,7 +10,7 @@ export default function Footer() {
           <div className="flex flex-col gap-4">
             <Link href="/" className="flex items-center gap-2">
               <Logo className="h-8 w-8 text-primary" />
-              <span className="font-headline text-2xl font-bold">Karibuni Oasis</span>
+              <span className="font-headline text-2xl font-bold">Karibuni</span>
             </Link>
             <p className="text-sm text-muted-foreground">
               Votre havre de paix pour une escapade inoubliable.
@@ -52,7 +52,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 border-t pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Karibuni Oasis. Tous droits réservés.</p>
+          <p>&copy; {new Date().getFullYear()} Karibuni. Tous droits réservés.</p>
         </div>
       </div>
     </footer>

@@ -23,7 +23,7 @@ export default function Hero() {
       <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-white">
         <div className="container px-4 md:px-6">
           <h1 className="mb-4 font-headline text-5xl font-bold tracking-tight md:text-7xl">
-            Bienvenue à l'Hôtel Karibuni Oasis
+            Bienvenue à l'Hôtel Karibuni
           </h1>
           <p className="mx-auto mb-8 max-w-2xl text-lg text-white/90 md:text-xl">
             Découvrez un sanctuaire de paix et de luxe où chaque séjour devient un souvenir précieux.

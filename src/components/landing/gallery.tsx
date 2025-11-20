@@ -37,7 +37,7 @@ export default function Gallery() {
         <div className="mb-12 text-center">
           <h2 className="font-headline text-4xl font-bold md:text-5xl">Galerie & Expériences</h2>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-            Plongez dans l'univers de Karibuni Oasis et découvrez ce que nos hôtes disent de nous.
+            Plongez dans l'univers de Karibuni et découvrez ce que nos hôtes disent de nous.
           </p>
         </div>
 
