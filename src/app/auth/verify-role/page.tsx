@@ -23,13 +23,13 @@ export default function VerifyRolePage() {
         if (userProfile.role === 'superadmin') {
           router.replace('/admin');
         } else {
-          router.replace('/');
+          // For any other role, redirect to a general user dashboard
+          router.replace('/dashboard');
         }
       } else {
         // If there's a user but no profile document in Firestore,
-        // it's likely a regular user. Send them to the homepage.
-        // This can happen if the doc creation failed or is delayed.
-        router.replace('/');
+        // it's likely a regular user. Send them to the user dashboard.
+        router.replace('/dashboard');
       }
     }
   }, [user, userProfile, isLoading, router]);
