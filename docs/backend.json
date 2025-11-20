@@ -35,6 +35,54 @@
         "email",
         "role"
       ]
+    },
+    "Room": {
+      "title": "Room",
+      "description": "Represents a hotel room.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "The name of the room."
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "Standard",
+            "Deluxe",
+            "Suite"
+          ]
+        },
+        "price": {
+          "type": "number",
+          "description": "The price per night."
+        },
+        "description": {
+          "type": "string",
+          "description": "A short description of the room."
+        },
+        "imageUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "The URL of the room's image."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Disponible",
+            "Occupée",
+            "En nettoyage"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "price",
+        "description",
+        "imageUrl",
+        "status"
+      ]
     }
   },
   "auth": {
@@ -48,6 +96,12 @@
         "$ref": "#/entities/UserProfile"
       },
       "description": "Stores public information for each user."
+    },
+    "/rooms/{roomId}": {
+      "schema": {
+        "$ref": "#/entities/Room"
+      },
+      "description": "Stores information about hotel rooms."
     }
   }
 }

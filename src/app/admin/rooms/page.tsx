@@ -18,7 +18,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MoreHorizontal, PlusCircle } from 'lucide-react';
+import { MoreHorizontal, PlusCircle, Loader2 } from 'lucide-react';
 import Image from 'next/image';
 import {
     DropdownMenu,
@@ -26,42 +26,11 @@ import {
     DropdownMenuItem,
     DropdownMenuLabel,
     DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu"
-
-const mockRooms = [
-  {
-    id: 'ROOM-101',
-    imageUrl: 'https://picsum.photos/seed/room101/120/80',
-    name: 'Suite Océan',
-    type: 'Suite',
-    price: 250,
-    status: 'Disponible',
-  },
-  {
-    id: 'ROOM-102',
-    imageUrl: 'https://picsum.photos/seed/room102/120/80',
-    name: 'Chambre Deluxe Vue Jardin',
-    type: 'Deluxe',
-    price: 180,
-    status: 'Occupée',
-  },
-  {
-    id: 'ROOM-205',
-    imageUrl: 'https://picsum.photos/seed/room205/120/80',
-    name: 'Chambre Standard',
-    type: 'Standard',
-    price: 120,
-    status: 'En nettoyage',
-  },
-    {
-    id: 'ROOM-301',
-    imageUrl: 'https://picsum.photos/seed/room301/120/80',
-    name: 'Suite Présidentielle',
-    type: 'Suite',
-    price: 450,
-    status: 'Disponible',
-  },
-];
+  } from "@/components/ui/dropdown-menu";
+import Link from 'next/link';
+import { useCollection } from '@/firebase/firestore/use-collection';
+import { collection } from 'firebase/firestore';
+import { useFirebase } from '@/firebase';
 
 const getStatusVariant = (status: string) => {
   switch (status) {
@@ -78,6 +47,10 @@ const getStatusVariant = (status: string) => {
 
 
 export default function AdminRoomsPage() {
+  const { firestore } = useFirebase();
+  const roomsCollectionRef = collection(firestore, 'rooms');
+  const { data: rooms, isLoading } = useCollection(roomsCollectionRef);
+
   return (
     <>
       <header className="mb-8 flex items-center justify-between">
@@ -89,9 +62,11 @@ export default function AdminRoomsPage() {
             Ajoutez, modifiez et gérez les chambres de votre hôtel.
             </p>
         </div>
-        <Button>
+        <Button asChild>
+          <Link href="/admin/rooms/add">
             <PlusCircle className="mr-2 h-4 w-4" />
             Ajouter une chambre
+          </Link>
         </Button>
       </header>
       <Card>
@@ -102,64 +77,70 @@ export default function AdminRoomsPage() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="hidden w-[100px] sm:table-cell">
-                  Image
-                </TableHead>
-                <TableHead>Nom</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Prix / Nuit</TableHead>
-                <TableHead>Statut</TableHead>
-                <TableHead>
-                  <span className="sr-only">Actions</span>
-                </TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {mockRooms.map((room) => (
-                <TableRow key={room.id}>
-                  <TableCell className="hidden sm:table-cell">
-                    <Image
-                      alt={room.name}
-                      className="aspect-video rounded-md object-cover"
-                      height="80"
-                      src={room.imageUrl}
-                      width="120"
-                    />
-                  </TableCell>
-                  <TableCell className="font-medium">{room.name}</TableCell>
-                  <TableCell>{room.type}</TableCell>
-                  <TableCell>{room.price.toFixed(2)}€</TableCell>
-                  <TableCell>
-                    <Badge variant={getStatusVariant(room.status)}>
-                      {room.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button
-                          aria-haspopup="true"
-                          size="icon"
-                          variant="ghost"
-                        >
-                          <MoreHorizontal className="h-4 w-4" />
-                          <span className="sr-only">Toggle menu</span>
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem>Modifier</DropdownMenuItem>
-                        <DropdownMenuItem>Supprimer</DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
-                  </TableCell>
+          {isLoading ? (
+            <div className="flex h-48 items-center justify-center">
+              <Loader2 className="h-8 w-8 animate-spin" />
+            </div>
+          ) : (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="hidden w-[100px] sm:table-cell">
+                    Image
+                  </TableHead>
+                  <TableHead>Nom</TableHead>
+                  <TableHead>Type</TableHead>
+                  <TableHead>Prix / Nuit</TableHead>
+                  <TableHead>Statut</TableHead>
+                  <TableHead>
+                    <span className="sr-only">Actions</span>
+                  </TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {rooms && (rooms as any[]).map((room: any) => (
+                  <TableRow key={room.id}>
+                    <TableCell className="hidden sm:table-cell">
+                      <Image
+                        alt={room.name}
+                        className="aspect-video rounded-md object-cover"
+                        height="80"
+                        src={room.imageUrl}
+                        width="120"
+                      />
+                    </TableCell>
+                    <TableCell className="font-medium">{room.name}</TableCell>
+                    <TableCell>{room.type}</TableCell>
+                    <TableCell>{room.price.toFixed(2)}€</TableCell>
+                    <TableCell>
+                      <Badge variant={getStatusVariant(room.status)}>
+                        {room.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            aria-haspopup="true"
+                            size="icon"
+                            variant="ghost"
+                          >
+                            <MoreHorizontal className="h-4 w-4" />
+                            <span className="sr-only">Toggle menu</span>
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                          <DropdownMenuItem>Modifier</DropdownMenuItem>
+                          <DropdownMenuItem>Supprimer</DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          )}
         </CardContent>
       </Card>
     </>
