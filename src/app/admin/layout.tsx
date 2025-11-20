@@ -67,7 +67,7 @@ export default function AdminLayout({
         <SidebarContent>
           <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={pathname === '/admin'} className="data-[active=false]:hover:bg-primary data-[active=false]:hover:text-primary-foreground">
+              <SidebarMenuButton asChild isActive={pathname === '/admin'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
                 <Link href="/admin">
                   <Home />
                   Tableau de bord
@@ -75,7 +75,7 @@ export default function AdminLayout({
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={pathname === '/admin/users'} className="data-[active=false]:hover:bg-primary data-[active=false]:hover:text-primary-foreground">
+              <SidebarMenuButton asChild isActive={pathname === '/admin/users'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
                 <Link href="/admin/users">
                   <Users />
                   Utilisateurs
@@ -83,7 +83,7 @@ export default function AdminLayout({
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild className="data-[active=false]:hover:bg-primary data-[active=false]:hover:text-primary-foreground">
+              <SidebarMenuButton asChild className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
                 <Link href="#">
                   <LineChart />
                   Analyses
@@ -91,7 +91,7 @@ export default function AdminLayout({
               </SidebarMenuButton>
             </SidebarMenuItem>
              <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={pathname === '/admin/profile'} className="data-[active=false]:hover:bg-primary data-[active=false]:hover:text-primary-foreground">
+              <SidebarMenuButton asChild isActive={pathname === '/admin/profile'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
                 <Link href="/admin/profile">
                   <UserCircle2 />
                   Profil
@@ -99,7 +99,7 @@ export default function AdminLayout({
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
-              <SidebarMenuButton asChild className="data-[active=false]:hover:bg-primary data-[active=false]:hover:text-primary-foreground">
+              <SidebarMenuButton asChild className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
                 <Link href="#">
                   <Settings />
                   Paramètres
@@ -110,14 +110,14 @@ export default function AdminLayout({
         </SidebarContent>
         <SidebarFooter>
             <div className="flex items-center gap-3">
-                 <Link href="/admin/profile" className="group flex flex-1 items-center gap-3 overflow-hidden rounded-md p-1 transition-colors hover:bg-primary">
+                 <Link href="/admin/profile" className="group flex flex-1 items-center gap-3 overflow-hidden rounded-md p-1 transition-colors hover:bg-primary/5">
                     <Avatar className="h-9 w-9">
                         <AvatarImage src={userProfile?.photoURL || ''} alt={userProfile?.displayName || ''} />
                         <AvatarFallback>{userProfile?.displayName?.charAt(0) || 'A'}</AvatarFallback>
                     </Avatar>
                     <div className="flex-1 overflow-hidden">
-                        <p className="truncate text-sm font-semibold group-hover:text-primary-foreground">{userProfile?.displayName || 'Admin'}</p>
-                        <p className="truncate text-xs text-muted-foreground group-hover:text-primary-foreground/80">{userProfile?.email}</p>
+                        <p className="truncate text-sm font-semibold group-hover:text-primary">{userProfile?.displayName || 'Admin'}</p>
+                        <p className="truncate text-xs text-muted-foreground group-hover:text-primary/80">{userProfile?.email}</p>
                     </div>
                  </Link>
                 <AlertDialog>
