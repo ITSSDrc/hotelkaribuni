@@ -25,7 +25,7 @@ import { useFirebase } from '@/firebase';
 
 const loginFormSchema = z.object({
   email: z.string().email('Veuillez entrer une adresse e-mail valide.'),
-  password: z.string().min(8, 'Le mot de passe doit contenir au moins 8 caractères.'),
+  password: z.string().min(7, 'Le mot de passe doit contenir au moins 7 caractères.'),
 });
 
 type LoginFormValues = z.infer<typeof loginFormSchema>;
