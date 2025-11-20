@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import type { CollectionReference, DocumentData, Query } from 'firebase/firestore';
 import { onSnapshot } from 'firebase/firestore';
+import { errorEmitter } from '../error-emitter';
+import { FirestorePermissionError } from '../errors';
 
 interface Options {
   listen?: boolean;
@@ -32,10 +34,15 @@ export function useCollection<T = DocumentData>(
         }));
         setData(documents as T[]);
         setIsLoading(false);
+        setError(null);
       },
       (err) => {
-        console.error(err);
-        setError(err);
+        const permissionError = new FirestorePermissionError({
+          path: query.path,
+          operation: 'list',
+        });
+        errorEmitter.emit('permission-error', permissionError);
+        setError(permissionError);
         setIsLoading(false);
       }
     );

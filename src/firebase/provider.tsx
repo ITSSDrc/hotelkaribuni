@@ -1,9 +1,10 @@
 'use client';
 
 import { FirebaseApp } from 'firebase/app';
-import { Auth, getAuth } from 'firebase/auth';
-import { Firestore, getFirestore } from 'firebase/firestore';
+import { Auth } from 'firebase/auth';
+import { Firestore } from 'firebase/firestore';
 import { createContext, ReactNode, useContext } from 'react';
+import { FirebaseErrorListener } from '@/components/FirebaseErrorListener';
 
 // Define the shape of the context
 interface FirebaseContextValue {
@@ -35,7 +36,10 @@ export function FirebaseProvider({
   const value = { app, auth, firestore };
 
   return (
-    <FirebaseContext.Provider value={value}>{children}</FirebaseContext.Provider>
+    <FirebaseContext.Provider value={value}>
+      {children}
+      <FirebaseErrorListener />
+    </FirebaseContext.Provider>
   );
 }
 
