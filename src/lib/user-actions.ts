@@ -15,18 +15,16 @@ interface UserData {
 
 const serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
 
-if (!serviceAccount) {
-    throw new Error('La clé de compte de service Firebase est manquante dans les variables d`environnement.');
-}
-
-const serviceAccountKey = JSON.parse(serviceAccount);
-
 // Initialize Firebase Admin SDK if not already initialized
 if (!getApps().length) {
-  initializeApp({
-    credential: cert(serviceAccountKey),
-    databaseURL: `https://${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}.firebaseio.com`
-  });
+    if (!serviceAccount) {
+        throw new Error('La clé de compte de service Firebase est manquante dans les variables d`environnement.');
+    }
+    const serviceAccountKey = JSON.parse(serviceAccount);
+    initializeApp({
+        credential: cert(serviceAccountKey),
+        databaseURL: `https://${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}.firebaseio.com`
+    });
 }
 
 const adminAuth = getAuth();
