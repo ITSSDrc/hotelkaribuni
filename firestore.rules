@@ -14,8 +14,8 @@ service cloud.firestore {
 
     // Rules for the 'users' collection
     match /users/{userId} {
-      // A user can GET their own document. This is necessary for role checking after login.
-      allow get: if request.auth != null && request.auth.uid == userId;
+      // A user can READ (get, list) their own document. This is necessary for role checking after login.
+      allow read: if request.auth != null && request.auth.uid == userId;
 
       // A user can UPDATE their own document.
       allow update: if request.auth != null && request.auth.uid == userId;
