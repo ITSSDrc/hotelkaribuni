@@ -1,7 +1,6 @@
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import Hero from '@/components/landing/hero';
-import RoomShowcase from '@/components/landing/room-showcase';
 import Booking from '@/components/landing/booking';
 import Gallery from '@/components/landing/gallery';
 import MapSection from '@/components/landing/map';
@@ -16,7 +15,6 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         <Hero />
-        <RoomShowcase />
         <Salle />
         <Piscines />
         <RestauBar />

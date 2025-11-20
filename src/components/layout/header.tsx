@@ -26,7 +26,7 @@ const navLinks = [
   {
     label: 'Découvrir',
     subLinks: [
-      { href: '/#chambres', label: 'Chambres' },
+      { href: '/chambres', label: 'Chambres' },
       { href: '/#salle', label: 'Salle' },
       { href: '/#piscines', label: 'Piscines' },
       { href: '/#restau-bar', label: 'Restau-bar' },
