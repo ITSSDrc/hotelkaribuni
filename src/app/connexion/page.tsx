@@ -54,6 +54,9 @@ export default function ConnexionPage() {
       let description = "Une erreur est survenue lors de la connexion.";
       if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
         description = "L'adresse e-mail ou le mot de passe est incorrect.";
+      } else {
+        // Affiche le message d'erreur spécifique de Firebase pour le débogage
+        description = error.message || description;
       }
       toast({
         variant: 'destructive',
