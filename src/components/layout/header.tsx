@@ -1,4 +1,3 @@
-
 'use client';
 
 import * as React from 'react';
@@ -11,10 +10,10 @@ import Logo from '../icons/logo';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
-  { href: '#chambres', label: 'Chambres' },
-  { href: '#recommandations', label: 'Découvrir' },
-  { href: '#galerie', label: 'Galerie' },
-  { href: '#contact', label: 'Contact' },
+  { href: '/#chambres', label: 'Chambres' },
+  { href: '/#recommandations', label: 'Découvrir' },
+  { href: '/#galerie', label: 'Galerie' },
+  { href: '/#contact', label: 'Contact' },
 ];
 
 export default function Header() {
@@ -56,7 +55,7 @@ export default function Header() {
 
         <div className="hidden items-center gap-2 md:flex">
           <Button asChild>
-            <Link href="#reservation">Réserver</Link>
+            <Link href="/connexion">Connexion</Link>
           </Button>
         </div>
 
@@ -94,8 +93,8 @@ export default function Header() {
                 </nav>
                 <div className="border-t p-4">
                   <Button asChild className="w-full">
-                    <Link href="#reservation" onClick={() => setOpen(false)}>
-                      Réserver Maintenant
+                    <Link href="/connexion" onClick={() => setOpen(false)}>
+                      Connexion
                     </Link>
                   </Button>
                 </div>
