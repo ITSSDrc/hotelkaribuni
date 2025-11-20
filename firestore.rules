@@ -14,7 +14,7 @@ service cloud.firestore {
 
     // Rules for the 'users' collection
     match /users/{userId} {
-      // A user can READ (get, list) their own document. This is necessary for role checking after login.
+      // A user can READ their own document. This is necessary for role checking after login.
       allow read: if request.auth != null && request.auth.uid == userId;
 
       // A user can UPDATE their own document.
@@ -29,10 +29,6 @@ service cloud.firestore {
       allow read, write: if hasRole('superadmin');
     }
 
-    // Fallback rule: By default, deny all reads and writes to any other collection
-    // to ensure a secure-by-default posture.
-    match /{document=**} {
-      allow read, write: if false;
-    }
+    // By default, no other collections are accessible. This is a secure default.
   }
 }
