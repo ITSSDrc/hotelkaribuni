@@ -1,4 +1,3 @@
-
 'use client';
 
 import {
@@ -14,7 +13,7 @@ import {
   SidebarInset,
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
-import { Home, Settings, Users, LineChart, LogOut, PanelLeft } from 'lucide-react';
+import { Home, Settings, Users, LineChart, LogOut, PanelLeft, UserCircle2 } from 'lucide-react';
 import Logo from '@/components/icons/logo';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useUserProfile } from '@/firebase/auth/use-user-profile';
@@ -90,6 +89,14 @@ export default function AdminLayout({
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
+             <SidebarMenuItem>
+              <SidebarMenuButton asChild isActive={pathname === '/admin/profile'}>
+                <Link href="/admin/profile">
+                  <UserCircle2 />
+                  Profil
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton asChild>
                 <Link href="#">
@@ -102,14 +109,16 @@ export default function AdminLayout({
         </SidebarContent>
         <SidebarFooter>
             <div className="flex items-center gap-3">
-                 <Avatar className="h-9 w-9">
-                    <AvatarImage src={userProfile?.photoURL || ''} alt={userProfile?.displayName || ''} />
-                    <AvatarFallback>{userProfile?.displayName?.charAt(0) || 'A'}</AvatarFallback>
-                </Avatar>
-                <div className="flex-1 overflow-hidden">
-                    <p className="truncate text-sm font-semibold">{userProfile?.displayName || 'Admin'}</p>
-                    <p className="truncate text-xs text-muted-foreground">{userProfile?.email}</p>
-                </div>
+                 <Link href="/admin/profile" className="flex flex-1 items-center gap-3 overflow-hidden rounded-md p-1 transition-colors hover:bg-sidebar-accent">
+                    <Avatar className="h-9 w-9">
+                        <AvatarImage src={userProfile?.photoURL || ''} alt={userProfile?.displayName || ''} />
+                        <AvatarFallback>{userProfile?.displayName?.charAt(0) || 'A'}</AvatarFallback>
+                    </Avatar>
+                    <div className="flex-1 overflow-hidden">
+                        <p className="truncate text-sm font-semibold">{userProfile?.displayName || 'Admin'}</p>
+                        <p className="truncate text-xs text-muted-foreground">{userProfile?.email}</p>
+                    </div>
+                 </Link>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button variant="outline" size="icon" className="h-9 w-9 flex-shrink-0">
