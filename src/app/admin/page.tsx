@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { ShieldCheck, Users } from 'lucide-react';
+import { ShieldCheck, Users, ConciergeBell, Package } from 'lucide-react';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 
 export default function AdminDashboardPage() {
@@ -51,13 +51,15 @@ export default function AdminDashboardPage() {
 
   const totalUsers = users?.length || 0;
   const adminUsers = users?.filter((u: any) => u.role === 'superadmin').length || 0;
+  const receptionists = users?.filter((u: any) => u.role === 'receptionist').length || 0;
+  const stockManagers = users?.filter((u: any) => u.role === 'stock_manager').length || 0;
 
   return (
     <>
       <header className="mb-8 flex items-center justify-between">
         <div>
-            <h1 className="font-headline text-4xl font-bold tracking-tight">Tableau de Bord</h1>
-            <p className="mt-2 text-lg text-muted-foreground">Aperçu général du système.</p>
+            <h1 className="font-headline text-4xl font-bold tracking-tight">Tableau de Bord Administrateur</h1>
+            <p className="mt-2 text-lg text-muted-foreground">Aperçu général de la gestion de l'hôtel.</p>
         </div>
         <div className="md:hidden">
             <SidebarTrigger />
@@ -72,7 +74,7 @@ export default function AdminDashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{totalUsers}</div>
-            <p className="text-xs text-muted-foreground">Nombre total d'inscrits</p>
+            <p className="text-xs text-muted-foreground">Nombre total de comptes</p>
           </CardContent>
         </Card>
         <Card>
@@ -82,56 +84,15 @@ export default function AdminDashboardPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{adminUsers}</div>
-            <p className="text-xs text-muted-foreground">Comptes avec privilèges élevés</p>
+            <p className="text-xs text-muted-foreground">Comptes Superadmin</p>
           </CardContent>
         </Card>
-      </div>
-
-      <Card className="shadow-sm">
-        <CardHeader>
-          <CardTitle>Gestion des Utilisateurs</CardTitle>
-          <CardDescription>
-            Liste de tous les utilisateurs enregistrés dans le système.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Utilisateur</TableHead>
-                  <TableHead className="hidden sm:table-cell">Email</TableHead>
-                  <TableHead className="text-right">Rôle</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {users?.map((u: any) => (
-                  <TableRow key={u.id}>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar>
-                          <AvatarImage src={u.photoURL} alt={u.displayName} />
-                          <AvatarFallback>{u.displayName?.charAt(0) || u.email?.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <p className="font-medium">{u.displayName || 'N/A'}</p>
-                          <p className="text-sm text-muted-foreground sm:hidden">{u.email}</p>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell className="hidden sm:table-cell">{u.email}</TableCell>
-                    <TableCell className="text-right">
-                      <Badge variant={u.role === 'superadmin' ? 'default' : 'secondary'}>
-                        {u.role}
-                      </Badge>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
-      </Card>
-    </>
-  );
-}
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Réceptionnistes</CardTitle>
+            <ConciergeBell className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{receptionists}</div>
+            <p className="text-xs text-muted-foreground">Personnel de la réception</p>
+          </C
