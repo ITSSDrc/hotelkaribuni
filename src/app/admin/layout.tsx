@@ -72,7 +72,7 @@ export default function AdminLayout({
               <SidebarMenuButton asChild isActive={pathname === '/admin'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
                 <Link href="/admin">
                   <Home />
-                  Tableau de bord
+                  <span>Tableau de bord</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -80,7 +80,7 @@ export default function AdminLayout({
               <SidebarMenuButton asChild isActive={pathname === '/admin/users'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
                 <Link href="/admin/users">
                   <Users />
-                  Utilisateurs
+                  <span>Utilisateurs</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -88,7 +88,7 @@ export default function AdminLayout({
               <SidebarMenuButton asChild className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
                 <Link href="#">
                   <LineChart />
-                  Analyses
+                  <span>Analyses</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -96,7 +96,7 @@ export default function AdminLayout({
               <SidebarMenuButton asChild isActive={pathname === '/admin/profile'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
                 <Link href="/admin/profile">
                   <UserCircle2 />
-                  Profil
+                  <span>Profil</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -104,7 +104,7 @@ export default function AdminLayout({
               <SidebarMenuButton asChild className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
                 <Link href="#">
                   <Settings />
-                  Paramètres
+                  <span>Paramètres</span>
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
