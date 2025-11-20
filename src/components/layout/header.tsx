@@ -15,7 +15,7 @@ import { useFirebase } from '@/firebase';
 import { useToast } from '@/hooks/use-toast';
 
 const navLinks = [
-  { href: '/#chambres', label: 'Chambres' },
+  { href: '/', label: 'Accueil' },
   { href: '/#recommandations', label: 'Découvrir' },
   { href: '/#galerie', label: 'Galerie' },
   { href: '/#contact', label: 'Contact' },
