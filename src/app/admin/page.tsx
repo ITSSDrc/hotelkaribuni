@@ -95,4 +95,64 @@ export default function AdminDashboardPage() {
           <CardContent>
             <div className="text-2xl font-bold">{receptionists}</div>
             <p className="text-xs text-muted-foreground">Personnel de la réception</p>
-          </C
+          </CardContent>
+        </Card>
+        <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Gestionnaires de Stock</CardTitle>
+                <Package className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+                <div className="text-2xl font-bold">{stockManagers}</div>
+                <p className="text-xs text-muted-foreground">Personnel de la logistique</p>
+            </CardContent>
+        </Card>
+      </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Gestion des Utilisateurs</CardTitle>
+          <CardDescription>Liste de tous les utilisateurs enregistrés dans le système.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Utilisateur</TableHead>
+                <TableHead>Rôle</TableHead>
+                <TableHead>Date d'inscription</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {users && (users as any[]).map((user: any) => (
+                <TableRow key={user.id}>
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <Avatar>
+                        <AvatarImage src={user.photoURL} />
+                        <AvatarFallback>{user.displayName?.charAt(0) || 'U'}</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <p className="font-medium">{user.displayName}</p>
+                        <p className="text-sm text-muted-foreground">{user.email}</p>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={user.role === 'superadmin' ? 'default' : 'secondary'}>
+                      {user.role}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    {/* Placeholder for creation date */}
+                    24 Mai, 2024
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+    </>
+  );
+}

@@ -20,16 +20,27 @@
           "description": "The URL of the user's profile picture."
         },
         "role": {
-            "type": "string",
-            "enum": ["superadmin", "guest"],
-            "description": "The role of the user within the application."
+          "type": "string",
+          "enum": [
+            "superadmin",
+            "receptionist",
+            "stock_manager",
+            "guest"
+          ],
+          "description": "The role of the user within the application."
         }
       },
-      "required": ["displayName", "email", "role"]
+      "required": [
+        "displayName",
+        "email",
+        "role"
+      ]
     }
   },
   "auth": {
-    "providers": ["email"]
+    "providers": [
+      "email"
+    ]
   },
   "firestore": {
     "/users/{userId}": {
