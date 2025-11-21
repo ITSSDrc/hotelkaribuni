@@ -57,16 +57,15 @@ export default function Header() {
     toast({
       title: 'Déconnexion réussie',
     });
-    router.push('/');
-    router.refresh(); // Force a refresh to update user state across the app
+    router.replace('/');
   };
 
   const getDashboardLink = () => {
-    if (!userProfile) return null;
-    if (userProfile.role === 'superadmin') {
+    if (!user || !userProfile) return null;
+    const isAdminOrStaff = ['superadmin', 'receptionist', 'stock_manager'].includes(userProfile.role);
+    if (isAdminOrStaff) {
       return { href: '/admin', label: 'Admin' };
     }
-    // For any other role
     return { href: '/dashboard', label: 'Tableau de bord' };
   };
 
