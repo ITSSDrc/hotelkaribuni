@@ -87,6 +87,53 @@
         "imageUrls",
         "status"
       ]
+    },
+    "Salle": {
+      "title": "Salle",
+      "description": "Représente une salle de conférence ou d'événement.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Le nom de la salle."
+        },
+        "capacity": {
+          "type": "number",
+          "description": "La capacité maximale de la salle."
+        },
+        "price": {
+          "type": "number",
+          "description": "Le prix de location (par heure ou par jour)."
+        },
+        "description": {
+          "type": "string",
+          "description": "Une courte description de la salle et de ses équipements."
+        },
+        "imageUrls": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "description": "Une liste d'URLs pour les images de la salle."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Disponible",
+            "Réservée",
+            "En maintenance"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "capacity",
+        "price",
+        "description",
+        "imageUrls",
+        "status"
+      ]
     }
   },
   "auth": {
@@ -106,6 +153,12 @@
         "$ref": "#/entities/Room"
       },
       "description": "Stores information about hotel rooms."
+    },
+    "/salles/{salleId}": {
+      "schema": {
+        "$ref": "#/entities/Salle"
+      },
+      "description": "Stores information about conference/event halls."
     }
   }
 }
