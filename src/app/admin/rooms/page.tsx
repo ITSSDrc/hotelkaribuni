@@ -48,7 +48,7 @@ import {
 import { useCollection } from '@/firebase/firestore/use-collection';
 import { collection, deleteDoc, doc } from 'firebase/firestore';
 import { useFirebase } from '@/firebase';
-import AddRoomForm from './add-room-form';
+import EditRoomForm from './edit-room-form';
 import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { errorEmitter } from '@/firebase/error-emitter';
@@ -72,9 +72,15 @@ export default function AdminRoomsPage() {
   const roomsCollectionRef = collection(firestore, 'rooms');
   const { data: rooms, isLoading, forceRefetch } = useCollection(roomsCollectionRef);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
   const [selectedRoom, setSelectedRoom] = useState<any>(null);
   const { toast } = useToast();
+  
+  const handleEditClick = (room: any) => {
+    setSelectedRoom(room);
+    setIsEditModalOpen(true);
+  };
 
   const handleDeleteClick = (room: any) => {
     setSelectedRoom(room);
@@ -138,7 +144,7 @@ export default function AdminRoomsPage() {
                 Remplissez les détails ci-dessous pour créer une nouvelle chambre.
               </DialogDescription>
             </DialogHeader>
-            <AddRoomForm
+            <EditRoomForm
               onFinished={() => {
                 forceRefetch();
                 setIsAddModalOpen(false);
@@ -210,7 +216,9 @@ export default function AdminRoomsPage() {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem>Modifier</DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => handleEditClick(room)}>
+                              Modifier
+                            </DropdownMenuItem>
                             <DropdownMenuItem
                               className="text-destructive focus:bg-destructive/10 focus:text-destructive"
                               onClick={() => handleDeleteClick(room)}
@@ -227,6 +235,28 @@ export default function AdminRoomsPage() {
           )}
         </CardContent>
       </Card>
+      
+      {/* Edit Room Dialog */}
+      <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
+        <DialogContent className="sm:max-w-[625px]">
+          <DialogHeader>
+            <DialogTitle>Modifier la chambre</DialogTitle>
+            <DialogDescription>
+              Mettez à jour les informations de la chambre.
+            </DialogDescription>
+          </DialogHeader>
+          <EditRoomForm
+            initialData={selectedRoom}
+            onFinished={() => {
+              forceRefetch();
+              setIsEditModalOpen(false);
+              setSelectedRoom(null);
+            }}
+          />
+        </DialogContent>
+      </Dialog>
+      
+      {/* Delete Room Alert */}
       <AlertDialog open={isDeleteAlertOpen} onOpenChange={setIsDeleteAlertOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>

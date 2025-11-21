@@ -1,4 +1,3 @@
-
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -25,10 +24,10 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, ImageIcon, RefreshCw } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useFirebase } from '@/firebase';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 
@@ -43,18 +42,19 @@ const roomFormSchema = z.object({
 
 type RoomFormValues = z.infer<typeof roomFormSchema>;
 
-interface AddRoomFormProps {
+interface EditRoomFormProps {
   onFinished?: () => void;
+  initialData?: any;
 }
 
-export default function AddRoomForm({ onFinished }: AddRoomFormProps) {
+export default function EditRoomForm({ onFinished, initialData }: EditRoomFormProps) {
   const { toast } = useToast();
   const { firestore } = useFirebase();
   const [preview, setPreview] = useState<string | null>(null);
 
   const form = useForm<RoomFormValues>({
     resolver: zodResolver(roomFormSchema),
-    defaultValues: {
+    defaultValues: initialData || {
       name: '',
       type: 'Standard',
       price: 0,
@@ -63,6 +63,13 @@ export default function AddRoomForm({ onFinished }: AddRoomFormProps) {
       status: 'Disponible',
     },
   });
+  
+  useEffect(() => {
+    if (initialData) {
+      form.reset(initialData);
+      setPreview(initialData.imageUrl);
+    }
+  }, [initialData, form]);
 
   const generateRandomImage = () => {
     const seed = Math.floor(Math.random() * 1000);
@@ -81,32 +88,58 @@ export default function AddRoomForm({ onFinished }: AddRoomFormProps) {
       return;
     }
     
-    const roomsCollectionRef = collection(firestore, 'rooms');
-    
-    addDoc(roomsCollectionRef, data)
-      .then(() => {
-        toast({
-          title: 'Chambre ajoutée !',
-          description: `La chambre "${data.name}" a été créée avec succès.`,
-        });
-        form.reset();
-        setPreview(null);
-        onFinished?.();
-      })
-      .catch((serverError) => {
-          const permissionError = new FirestorePermissionError({
-              path: roomsCollectionRef.path,
-              operation: 'create',
-              requestResourceData: data,
+    if(initialData) {
+        // Update existing room
+        const roomDocRef = doc(firestore, 'rooms', initialData.id);
+        setDoc(roomDocRef, data, { merge: true })
+            .then(() => {
+                toast({
+                    title: 'Chambre modifiée !',
+                    description: `La chambre "${data.name}" a été mise à jour.`,
+                });
+                onFinished?.();
+            })
+            .catch((serverError) => {
+                const permissionError = new FirestorePermissionError({
+                    path: roomDocRef.path,
+                    operation: 'update',
+                    requestResourceData: data,
+                });
+                errorEmitter.emit('permission-error', permissionError);
+                toast({
+                    variant: 'destructive',
+                    title: 'Oh non ! Erreur de permission.',
+                    description: "Vous n'avez pas les droits pour modifier cette chambre.",
+                });
+            });
+    } else {
+        // Add new room
+        const roomsCollectionRef = collection(firestore, 'rooms');
+        addDoc(roomsCollectionRef, data)
+          .then(() => {
+            toast({
+              title: 'Chambre ajoutée !',
+              description: `La chambre "${data.name}" a été créée avec succès.`,
+            });
+            form.reset();
+            setPreview(null);
+            onFinished?.();
+          })
+          .catch((serverError) => {
+              const permissionError = new FirestorePermissionError({
+                  path: roomsCollectionRef.path,
+                  operation: 'create',
+                  requestResourceData: data,
+              });
+              errorEmitter.emit('permission-error', permissionError);
+              
+              toast({
+                  variant: 'destructive',
+                  title: 'Oh non ! Erreur de permission.',
+                  description: "Vous n'avez pas les droits pour ajouter une chambre.",
+              });
           });
-          errorEmitter.emit('permission-error', permissionError);
-          
-          toast({
-              variant: 'destructive',
-              title: 'Oh non ! Erreur de permission.',
-              description: "Vous n'avez pas les droits pour ajouter une chambre.",
-          });
-      });
+    }
   };
 
   return (
@@ -237,7 +270,9 @@ export default function AddRoomForm({ onFinished }: AddRoomFormProps) {
         <div className="flex justify-end pt-4">
             <Button type="submit" disabled={form.formState.isSubmitting}>
                 {form.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {form.formState.isSubmitting ? 'Ajout en cours...' : 'Ajouter la chambre'}
+                {form.formState.isSubmitting 
+                    ? (initialData ? 'Modification en cours...' : 'Ajout en cours...') 
+                    : (initialData ? 'Modifier la chambre' : 'Ajouter la chambre')}
             </Button>
         </div>
       </form>
