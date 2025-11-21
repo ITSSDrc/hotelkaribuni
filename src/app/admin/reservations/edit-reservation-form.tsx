@@ -32,7 +32,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Loader2, CalendarIcon } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useFirebase } from '@/firebase';
-import { collection, doc, runTransaction, serverTimestamp, writeBatch } from 'firebase/firestore';
+import { collection, doc, serverTimestamp, writeBatch, getDoc } from 'firebase/firestore';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { useCollection } from '@/firebase/firestore/use-collection';
@@ -110,7 +110,7 @@ export default function EditReservationForm({ onFinished, initialData }: EditRes
     }
   }, [initialData, form]);
 
-  const onSubmit = (data: ReservationFormValues) => {
+  const onSubmit = async (data: ReservationFormValues) => {
     if (!firestore || !selectedRoom) {
       toast({ variant: 'destructive', title: 'Erreur', description: 'Données manquantes.' });
       return;
@@ -125,15 +125,14 @@ export default function EditReservationForm({ onFinished, initialData }: EditRes
         createdAt: serverTimestamp()
     };
     
-    // Remove dateRange as it is not part of the Firestore document
     delete (reservationData as any).dateRange;
 
+    const batch = writeBatch(firestore);
+
     if (initialData) { // Updating existing reservation
-        const batch = writeBatch(firestore);
         const reservationRef = doc(firestore, "reservations", initialData.id);
         batch.update(reservationRef, reservationData);
         
-        // If room changed, update old and new room status
         if(initialData.roomId !== data.roomId) {
             const oldRoomRef = doc(firestore, "rooms", initialData.roomId);
             batch.update(oldRoomRef, { status: "Disponible" });
@@ -156,47 +155,49 @@ export default function EditReservationForm({ onFinished, initialData }: EditRes
                 errorEmitter.emit('permission-error', permissionError);
             });
 
-    } else { // Creating a new reservation with transaction
-        runTransaction(firestore, async (transaction) => {
-            const roomRef = doc(firestore, 'rooms', data.roomId);
-            const roomDoc = await transaction.get(roomRef);
-
+    } else { // Creating a new reservation with batch
+        const roomRef = doc(firestore, 'rooms', data.roomId);
+        
+        try {
+            const roomDoc = await getDoc(roomRef);
             if (!roomDoc.exists() || roomDoc.data().status !== 'Disponible') {
-                throw new Error("Cette chambre n'est plus disponible.");
+                toast({ variant: 'destructive', title: 'Action impossible', description: "Cette chambre n'est plus disponible." });
+                return;
             }
 
-            transaction.update(roomRef, { status: 'Occupée' });
+            // Prepare batch operations
+            const newReservationRef = doc(collection(firestore, 'reservations'));
+            batch.set(newReservationRef, reservationData);
+            batch.update(roomRef, { status: 'Occupée' });
 
-            const reservationRef = doc(collection(firestore, 'reservations'));
-            transaction.set(reservationRef, reservationData);
-        }).then(() => {
+            // Commit the batch
+            await batch.commit();
+
             toast({ title: 'Réservation créée !', description: `La réservation pour ${data.guestName} a été créée.` });
             form.reset();
             onFinished?.();
-        }).catch((serverError: any) => {
-            // Check if it's a regular error or a permission error
+
+        } catch (serverError: any) {
             if (serverError.code === 'permission-denied') {
-                 const permissionError = new FirestorePermissionError({
-                    path: 'reservations', // Path can be more specific if known, but transaction errors are tricky
+                const permissionError = new FirestorePermissionError({
+                    path: 'reservations',
                     operation: 'create',
                     requestResourceData: reservationData,
                 });
                 errorEmitter.emit('permission-error', permissionError);
             } else {
-                toast({
+                 toast({
                     variant: 'destructive',
-                    title: 'Échec de l\'opération',
-                    description: serverError.message || "Une erreur est survenue lors de la création de la réservation.",
+                    title: 'Échec de la création',
+                    description: serverError.message || "Une erreur est survenue.",
                 });
             }
-        });
+        }
     }
   };
 
   const availableRooms = useMemo(() => {
     if (!rooms) return [];
-    // If editing, the currently selected room is always available in the list.
-    // Otherwise, only show 'Disponible' rooms.
     return (rooms as any[]).filter(room => room.status === 'Disponible' || (initialData && room.id === initialData.roomId));
   }, [rooms, initialData]);
 
@@ -351,4 +352,3 @@ export default function EditReservationForm({ onFinished, initialData }: EditRes
     </Form>
   );
 }
-

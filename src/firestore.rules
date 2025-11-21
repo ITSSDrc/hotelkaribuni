@@ -1,3 +1,4 @@
+
 rules_version = '2';
 
 service cloud.firestore {
@@ -10,6 +11,12 @@ service cloud.firestore {
       // `.data.role` accesses the 'role' field in the document.
       return exists(/databases/$(database)/documents/users/$(request.auth.uid))
              && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == role;
+    }
+
+    // Helper function to check for multiple roles.
+    function hasAnyRole(roles) {
+      return exists(/databases/$(database)/documents/users/$(request.auth.uid))
+             && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in roles;
     }
 
     // Rules for the 'users' collection
@@ -34,8 +41,44 @@ service cloud.firestore {
       // Anyone can read room information for the showcase.
       allow get, list: if true;
       
-      // Only superadmins can create, update, or delete rooms.
-      allow create, update, delete: if hasRole('superadmin');
+      // Receptionists can update rooms (mainly for status changes).
+      allow update: if hasAnyRole(['superadmin', 'receptionist']);
+      
+      // Only superadmins can create or delete rooms.
+      allow create, delete: if hasRole('superadmin');
+    }
+
+    // Rules for the 'salles' collection
+    match /salles/{salleId} {
+      // Anyone can read room information for the showcase.
+      allow get, list: if true;
+      
+      // Only superadmins can create, update, or delete salles.
+      allow write: if hasRole('superadmin');
+    }
+
+    // Rules for the 'piscines' collection
+    match /piscines/{piscineId} {
+      // Anyone can read piscine information for the showcase.
+      allow get, list: if true;
+
+      // Only superadmins can create, update, or delete piscines.
+      allow write: if hasRole('superadmin');
+    }
+    
+    // Rules for the 'restau-bar' collection
+    match /restau-bar/{restauBarId} {
+      // Anyone can read restaurant/bar information for the showcase.
+      allow get, list: true;
+
+      // Only superadmins can create, update, or delete items.
+      allow write: if hasRole('superadmin');
+    }
+
+    // Rules for the 'reservations' collection
+    match /reservations/{reservationId} {
+      // Receptionists and superadmins can read, create, update, delete reservations.
+      allow read, write: if hasAnyRole(['superadmin', 'receptionist']);
     }
 
 
