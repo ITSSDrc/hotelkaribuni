@@ -24,7 +24,7 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { addRoom } from '@/lib/actions';
+import { addRoom } from '@/ai/flows/add-room-flow';
 import { Loader2, ImageIcon, RefreshCw } from 'lucide-react';
 import { useState } from 'react';
 import Image from 'next/image';
@@ -112,7 +112,11 @@ export default function AddRoomForm({ onFinished }: AddRoomFormProps) {
         throw new Error("L'image est requise.");
       }
 
-      await addRoom({ ...data, imageUrl });
+      const result = await addRoom({ ...data, imageUrl });
+
+      if (result.error) {
+        throw new Error(result.error);
+      }
 
       toast({
         title: 'Chambre ajoutée !',
