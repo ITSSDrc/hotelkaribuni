@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -52,7 +53,7 @@ export default function ConnexionPage() {
       });
 
       // Redirect to the role verification page which will handle routing
-      router.push('/auth/verify-role');
+      router.replace('/auth/verify-role');
 
     } catch (error: any) {
       let description = "Une erreur est survenue lors de la connexion.";

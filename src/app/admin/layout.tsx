@@ -48,7 +48,7 @@ export default function AdminLayout({
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      router.push('/connexion');
+      router.replace('/connexion');
       router.refresh(); // Force a hard refresh to clear all client-side state
     } catch (error) {
       console.error('Logout failed', error);
