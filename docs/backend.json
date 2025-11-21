@@ -134,6 +134,53 @@
         "imageUrls",
         "status"
       ]
+    },
+    "Piscine": {
+      "title": "Piscine",
+      "description": "Représente une piscine de l'hôtel.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Le nom de la piscine."
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "Intérieure",
+            "Extérieure",
+            "Pour enfants"
+          ],
+          "description": "Le type de piscine."
+        },
+        "description": {
+          "type": "string",
+          "description": "Une courte description de la piscine."
+        },
+        "imageUrls": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "description": "Une liste d'URLs pour les images de la piscine."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Ouverte",
+            "Fermée",
+            "En maintenance"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "description",
+        "imageUrls",
+        "status"
+      ]
     }
   },
   "auth": {
@@ -159,6 +206,12 @@
         "$ref": "#/entities/Salle"
       },
       "description": "Stores information about conference/event halls."
+    },
+    "/piscines/{piscineId}": {
+      "schema": {
+        "$ref": "#/entities/Piscine"
+      },
+      "description": "Stores information about hotel pools."
     }
   }
 }

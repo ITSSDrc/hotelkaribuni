@@ -48,6 +48,15 @@ service cloud.firestore {
       allow write: if hasRole('superadmin');
     }
 
+    // Rules for the 'piscines' collection
+    match /piscines/{piscineId} {
+      // Anyone can read piscine information for the showcase.
+      allow read: if true;
+
+      // Only superadmins can create, update, or delete piscines.
+      allow write: if hasRole('superadmin');
+    }
+
 
     // Fallback rule: By default, deny all reads and writes to any other collection
     // to ensure a secure-by-default posture.
