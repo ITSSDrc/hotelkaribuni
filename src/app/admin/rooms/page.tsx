@@ -35,11 +35,24 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { useCollection } from '@/firebase/firestore/use-collection';
-import { collection } from 'firebase/firestore';
+import { collection, deleteDoc, doc } from 'firebase/firestore';
 import { useFirebase } from '@/firebase';
 import AddRoomForm from './add-room-form';
 import { useState } from 'react';
+import { useToast } from '@/hooks/use-toast';
+import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError } from '@/firebase/errors';
 
 const getStatusVariant = (status: string) => {
   switch (status) {
@@ -57,8 +70,48 @@ const getStatusVariant = (status: string) => {
 export default function AdminRoomsPage() {
   const { firestore } = useFirebase();
   const roomsCollectionRef = collection(firestore, 'rooms');
-  const { data: rooms, isLoading } = useCollection(roomsCollectionRef);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { data: rooms, isLoading, forceRefetch } = useCollection(roomsCollectionRef);
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+  const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
+  const [selectedRoom, setSelectedRoom] = useState<any>(null);
+  const { toast } = useToast();
+
+  const handleDeleteClick = (room: any) => {
+    setSelectedRoom(room);
+    setIsDeleteAlertOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!selectedRoom || !firestore) return;
+
+    const roomDocRef = doc(firestore, 'rooms', selectedRoom.id);
+
+    deleteDoc(roomDocRef)
+      .then(() => {
+        toast({
+          title: 'Chambre supprimée',
+          description: `La chambre "${selectedRoom.name}" a été supprimée.`,
+        });
+        forceRefetch(); // Refresh the list
+        setIsDeleteAlertOpen(false);
+        setSelectedRoom(null);
+      })
+      .catch((serverError) => {
+        const permissionError = new FirestorePermissionError({
+          path: roomDocRef.path,
+          operation: 'delete',
+        });
+        errorEmitter.emit('permission-error', permissionError);
+
+        toast({
+          variant: 'destructive',
+          title: 'Erreur de permission',
+          description: "Vous n'avez pas les droits pour supprimer cette chambre.",
+        });
+        setIsDeleteAlertOpen(false);
+        setSelectedRoom(null);
+      });
+  };
 
   return (
     <>
@@ -71,7 +124,7 @@ export default function AdminRoomsPage() {
             Ajoutez, modifiez et gérez les chambres de votre hôtel.
           </p>
         </div>
-        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
           <DialogTrigger asChild>
             <Button>
               <PlusCircle className="mr-2 h-4 w-4" />
@@ -85,7 +138,12 @@ export default function AdminRoomsPage() {
                 Remplissez les détails ci-dessous pour créer une nouvelle chambre.
               </DialogDescription>
             </DialogHeader>
-            <AddRoomForm onFinished={() => setIsModalOpen(false)} />
+            <AddRoomForm
+              onFinished={() => {
+                forceRefetch();
+                setIsAddModalOpen(false);
+              }}
+            />
           </DialogContent>
         </Dialog>
       </header>
@@ -153,7 +211,12 @@ export default function AdminRoomsPage() {
                           <DropdownMenuContent align="end">
                             <DropdownMenuLabel>Actions</DropdownMenuLabel>
                             <DropdownMenuItem>Modifier</DropdownMenuItem>
-                            <DropdownMenuItem>Supprimer</DropdownMenuItem>
+                            <DropdownMenuItem
+                              className="text-destructive focus:bg-destructive/10 focus:text-destructive"
+                              onClick={() => handleDeleteClick(room)}
+                            >
+                              Supprimer
+                            </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </TableCell>
@@ -164,6 +227,22 @@ export default function AdminRoomsPage() {
           )}
         </CardContent>
       </Card>
+      <AlertDialog open={isDeleteAlertOpen} onOpenChange={setIsDeleteAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Êtes-vous absolument sûr ?</AlertDialogTitle>
+            <AlertDialogDescription>
+              Cette action est irréversible. La chambre "{selectedRoom?.name}" sera supprimée définitivement de la base de données.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setSelectedRoom(null)}>Annuler</AlertDialogCancel>
+            <AlertDialogAction onClick={handleConfirmDelete}>
+              Confirmer la suppression
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

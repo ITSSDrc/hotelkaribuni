@@ -32,11 +32,6 @@ import { addDoc, collection } from 'firebase/firestore';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-
-// The form schema no longer needs to handle file uploads directly for the logic,
-// but we keep validation for the user experience.
 const roomFormSchema = z.object({
   name: z.string().min(5, 'Le nom doit contenir au moins 5 caractères.'),
   type: z.enum(['Standard', 'Deluxe', 'Suite']),
@@ -76,10 +71,7 @@ export default function AddRoomForm({ onFinished }: AddRoomFormProps) {
     setPreview(imageUrl);
   };
   
-  // We remove the direct file handling logic as we will rely on generated URLs for simplicity.
-  // A proper implementation would require Firebase Storage.
-
-  const onSubmit = async (data: RoomFormValues) => {
+  const onSubmit = (data: RoomFormValues) => {
     if (!firestore) {
       toast({
         variant: 'destructive',
@@ -89,46 +81,32 @@ export default function AddRoomForm({ onFinished }: AddRoomFormProps) {
       return;
     }
     
-    try {
-      const roomsCollectionRef = collection(firestore, 'rooms');
-      
-      // Directly use addDoc with form data.
-      // This will be executed on the client and respect Firestore security rules.
-      addDoc(roomsCollectionRef, data)
-        .then(() => {
-          toast({
-            title: 'Chambre ajoutée !',
-            description: `La chambre "${data.name}" a été créée avec succès.`,
-          });
-          form.reset();
-          setPreview(null);
-          onFinished?.();
-        })
-        .catch((serverError) => {
-           const permissionError = new FirestorePermissionError({
-                path: roomsCollectionRef.path,
-                operation: 'create',
-                requestResourceData: data,
-            });
-            errorEmitter.emit('permission-error', permissionError);
-            
-            // Also show a toast for user feedback
-            toast({
-                variant: 'destructive',
-                title: 'Oh non ! Erreur de permission.',
-                description: "Vous n'avez pas les droits pour ajouter une chambre.",
-            });
+    const roomsCollectionRef = collection(firestore, 'rooms');
+    
+    addDoc(roomsCollectionRef, data)
+      .then(() => {
+        toast({
+          title: 'Chambre ajoutée !',
+          description: `La chambre "${data.name}" a été créée avec succès.`,
         });
-
-    } catch (error) {
-      console.error(error);
-      const errorMessage = error instanceof Error ? error.message : "Impossible d'ajouter la chambre. Veuillez réessayer.";
-      toast({
-        variant: 'destructive',
-        title: 'Oh non ! Une erreur est survenue.',
-        description: errorMessage,
+        form.reset();
+        setPreview(null);
+        onFinished?.();
+      })
+      .catch((serverError) => {
+          const permissionError = new FirestorePermissionError({
+              path: roomsCollectionRef.path,
+              operation: 'create',
+              requestResourceData: data,
+          });
+          errorEmitter.emit('permission-error', permissionError);
+          
+          toast({
+              variant: 'destructive',
+              title: 'Oh non ! Erreur de permission.',
+              description: "Vous n'avez pas les droits pour ajouter une chambre.",
+          });
       });
-    }
   };
 
   return (
