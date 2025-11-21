@@ -6,6 +6,10 @@
       "description": "Represents a user's public profile information.",
       "type": "object",
       "properties": {
+        "uid": {
+          "type": "string",
+          "description": "The user's unique ID from Firebase Authentication."
+        },
         "displayName": {
           "type": "string",
           "description": "The user's display name."
@@ -32,6 +36,7 @@
         }
       },
       "required": [
+        "uid",
         "displayName",
         "email",
         "role"

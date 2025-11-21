@@ -7,10 +7,15 @@ import { useDoc } from '../firestore/use-doc';
 
 export function useUserProfile() {
   const { firestore } = useFirebase();
-  const { user } = useUser();
+  const { user, isLoading: isUserLoading } = useUser();
 
-  const userProfileRef = user ? doc(firestore, 'users', user.uid) : null;
-  const { data: userProfile, isLoading, error } = useDoc(userProfileRef);
+  // Create a stable reference to the document path.
+  const userProfilePath = user ? `users/${user.uid}` : null;
+  const userProfileRef = userProfilePath ? doc(firestore, userProfilePath) : null;
+
+  const { data: userProfile, isLoading: isProfileLoading, error } = useDoc(userProfileRef);
+  
+  const isLoading = isUserLoading || (user && isProfileLoading);
 
   return { user, userProfile, isLoading, error };
 }
