@@ -80,9 +80,9 @@ export default function ChambresPage() {
                         </div>
                     </CardContent>
                     <CardFooter>
-                      <Button asChild className="w-full" disabled={room.status !== 'Disponible'}>
-                        <Link href="/#reservation">
-                          Réserver
+                      <Button asChild className="w-full">
+                        <Link href={`/chambres/${room.id}`}>
+                          Voir les détails
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </Link>
                       </Button>
