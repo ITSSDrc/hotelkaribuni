@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -94,11 +95,13 @@ export default function AdminLayout({
                 <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
                         <SidebarMenuButton asChild isActive={isHotelSectionActive} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary justify-between">
-                            <div className="flex items-center gap-2">
-                                <Hotel />
-                                <span>Hôtel</span>
+                            <div>
+                                <div className="flex items-center gap-2">
+                                    <Hotel />
+                                    <span>Hôtel</span>
+                                </div>
+                                <ChevronDown className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
                             </div>
-                            <ChevronDown className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
                         </SidebarMenuButton>
                     </CollapsibleTrigger>
                     <CollapsibleContent>
