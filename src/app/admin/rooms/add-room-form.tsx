@@ -24,31 +24,25 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { addRoom } from '@/ai/flows/add-room-flow';
 import { Loader2, ImageIcon, RefreshCw } from 'lucide-react';
 import { useState } from 'react';
 import Image from 'next/image';
+import { useFirebase } from '@/firebase';
+import { addDoc, collection } from 'firebase/firestore';
+import { errorEmitter } from '@/firebase/error-emitter';
+import { FirestorePermissionError } from '@/firebase/errors';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 
+// The form schema no longer needs to handle file uploads directly for the logic,
+// but we keep validation for the user experience.
 const roomFormSchema = z.object({
   name: z.string().min(5, 'Le nom doit contenir au moins 5 caractères.'),
   type: z.enum(['Standard', 'Deluxe', 'Suite']),
   price: z.coerce.number().min(1, 'Le prix doit être supérieur à 0.'),
   description: z.string().min(10, 'La description doit contenir au moins 10 caractères.'),
-  image: z
-    .any()
-    .refine(
-        (value) => {
-            if (typeof value === 'string') return true;
-            return value?.size > 0 && ACCEPTED_IMAGE_TYPES.includes(value?.type);
-        },
-        { message: "Veuillez sélectionner une image valide (JPG, PNG, WebP)." }
-    )
-    .refine((value) => typeof value === 'string' || value?.size <= MAX_FILE_SIZE, {
-        message: `La taille du fichier ne doit pas dépasser 5 Mo.`,
-    }),
+  imageUrl: z.string().url("L'URL de l'image est requise et doit être valide."),
   status: z.enum(['Disponible', 'Occupée', 'En nettoyage']),
 });
 
@@ -60,6 +54,7 @@ interface AddRoomFormProps {
 
 export default function AddRoomForm({ onFinished }: AddRoomFormProps) {
   const { toast } = useToast();
+  const { firestore } = useFirebase();
   const [preview, setPreview] = useState<string | null>(null);
 
   const form = useForm<RoomFormValues>({
@@ -69,7 +64,7 @@ export default function AddRoomForm({ onFinished }: AddRoomFormProps) {
       type: 'Standard',
       price: 0,
       description: '',
-      image: undefined,
+      imageUrl: '',
       status: 'Disponible',
     },
   });
@@ -77,54 +72,54 @@ export default function AddRoomForm({ onFinished }: AddRoomFormProps) {
   const generateRandomImage = () => {
     const seed = Math.floor(Math.random() * 1000);
     const imageUrl = `https://picsum.photos/seed/${seed}/1200/800`;
-    form.setValue('image', imageUrl);
+    form.setValue('imageUrl', imageUrl);
     setPreview(imageUrl);
   };
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      form.setValue('image', file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
+  
+  // We remove the direct file handling logic as we will rely on generated URLs for simplicity.
+  // A proper implementation would require Firebase Storage.
 
   const onSubmit = async (data: RoomFormValues) => {
-    try {
-      let imageUrl = '';
-      if (data.image instanceof File) {
-         const toBase64 = (file: File): Promise<string> => new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result as string);
-            reader.onerror = error => reject(error);
-        });
-        imageUrl = await toBase64(data.image);
-      } else if (typeof data.image === 'string') {
-        imageUrl = data.image;
-      }
-      
-      if (!imageUrl) {
-        throw new Error("L'image est requise.");
-      }
-
-      const result = await addRoom({ ...data, imageUrl });
-
-      if (result.error) {
-        throw new Error(result.error);
-      }
-
+    if (!firestore) {
       toast({
-        title: 'Chambre ajoutée !',
-        description: `La chambre "${data.name}" a été créée avec succès.`,
+        variant: 'destructive',
+        title: 'Erreur',
+        description: 'La base de données n\'est pas prête. Veuillez réessayer.',
       });
-      form.reset();
-      setPreview(null);
-      onFinished?.();
+      return;
+    }
+    
+    try {
+      const roomsCollectionRef = collection(firestore, 'rooms');
+      
+      // Directly use addDoc with form data.
+      // This will be executed on the client and respect Firestore security rules.
+      addDoc(roomsCollectionRef, data)
+        .then(() => {
+          toast({
+            title: 'Chambre ajoutée !',
+            description: `La chambre "${data.name}" a été créée avec succès.`,
+          });
+          form.reset();
+          setPreview(null);
+          onFinished?.();
+        })
+        .catch((serverError) => {
+           const permissionError = new FirestorePermissionError({
+                path: roomsCollectionRef.path,
+                operation: 'create',
+                requestResourceData: data,
+            });
+            errorEmitter.emit('permission-error', permissionError);
+            
+            // Also show a toast for user feedback
+            toast({
+                variant: 'destructive',
+                title: 'Oh non ! Erreur de permission.',
+                description: "Vous n'avez pas les droits pour ajouter une chambre.",
+            });
+        });
+
     } catch (error) {
       console.error(error);
       const errorMessage = error instanceof Error ? error.message : "Impossible d'ajouter la chambre. Veuillez réessayer.";
@@ -211,11 +206,11 @@ export default function AddRoomForm({ onFinished }: AddRoomFormProps) {
 
         <FormField
           control={form.control}
-          name="image"
+          name="imageUrl"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Image de la chambre</FormLabel>
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <div className="relative flex h-32 w-48 flex-shrink-0 items-center justify-center rounded-md border border-dashed">
                   {preview ? (
                     <Image src={preview} alt="Aperçu de l'image" fill className="object-cover rounded-md" />
@@ -224,26 +219,14 @@ export default function AddRoomForm({ onFinished }: AddRoomFormProps) {
                   )}
                 </div>
                 <div className='flex flex-row sm:flex-col gap-2'>
-                  <Button type="button" asChild variant="outline" size="sm">
-                    <label htmlFor="image-upload-modal" className="cursor-pointer">
-                      Téléverser
-                      <input
-                        id="image-upload-modal"
-                        type="file"
-                        className="sr-only"
-                        accept={ACCEPTED_IMAGE_TYPES.join(',')}
-                        onChange={handleImageChange}
-                      />
-                    </label>
-                  </Button>
-                  <Button type="button" variant="secondary" size="sm" onClick={generateRandomImage}>
+                   <Button type="button" variant="secondary" size="sm" onClick={generateRandomImage}>
                     <RefreshCw className="mr-2 h-4 w-4" />
-                    Générer
+                    Générer une image
                   </Button>
                 </div>
               </div>
               <FormDescription>
-                Taille max : 5Mo.
+                Cliquez sur "Générer" pour obtenir une image aléatoire. Le téléversement de fichiers sera bientôt disponible.
               </FormDescription>
               <FormMessage />
             </FormItem>
