@@ -1,40 +1,53 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useUserProfile } from '@/firebase/auth/use-user-profile';
 import { Loader2 } from 'lucide-react';
 
 export default function VerifyRolePage() {
   const { user, userProfile, isLoading } = useUserProfile();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
-    // Wait until the loading is complete
+    // If still loading user data, do nothing.
     if (isLoading) {
       return;
     }
 
-    // If there's no authenticated user at all, redirect to login.
+    // If no user is logged in, redirect them to the login page.
     if (!user) {
       router.replace('/connexion');
       return;
     }
 
-    // If we have a user profile from Firestore, check their role.
-    if (userProfile) {
-      if (userProfile.role === 'superadmin' || userProfile.role === 'receptionist' || userProfile.role === 'stock_manager') {
+    // If the user is logged in, but we are still waiting for the Firestore profile
+    if (user && !userProfile) {
+      // Still loading the profile, wait.
+      return;
+    }
+
+    // If we have a user and their profile, decide where to send them.
+    if (user && userProfile) {
+      const isAdminOrStaff = ['superadmin', 'receptionist', 'stock_manager'].includes(userProfile.role);
+      
+      if (isAdminOrStaff) {
+        // This is the main admin dashboard path.
+        // We replace the history state so the user can't go back to login/verify pages.
         router.replace('/admin');
       } else {
-        // Handle guest or other roles
+        // For other roles like 'guest'.
         router.replace('/dashboard');
       }
-    } else {
-      // This case handles a logged-in user who doesn't have a document in the 'users' collection yet.
-      // This might happen for a 'guest' role or during sign-up race conditions.
-      // We'll send them to the general dashboard.
-      router.replace('/dashboard');
     }
+    
+    // Fallback case: if a user is logged in but has no profile document (should be rare)
+    // send them to the general user dashboard.
+    if (user && !isLoading && !userProfile) {
+        router.replace('/dashboard');
+    }
+
   }, [user, userProfile, isLoading, router]);
 
   return (
