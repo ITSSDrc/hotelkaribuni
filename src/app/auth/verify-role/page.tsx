@@ -6,31 +6,34 @@ import { useUserProfile } from '@/firebase/auth/use-user-profile';
 import { Loader2 } from 'lucide-react';
 
 export default function VerifyRolePage() {
-  const { userProfile, isLoading, user } = useUserProfile();
+  const { user, userProfile, isLoading } = useUserProfile();
   const router = useRouter();
 
   useEffect(() => {
-    // If it's not loading and we have a result
-    if (!isLoading) {
-      // If there's no user, they shouldn't be here, send to login
-      if (!user) {
-        router.replace('/connexion');
-        return;
-      }
+    // Wait until the loading is complete
+    if (isLoading) {
+      return;
+    }
 
-      // If we have a user profile, check the role
-      if (userProfile) {
-        if (userProfile.role === 'superadmin') {
-          router.replace('/admin');
-        } else {
-          // For any other role, redirect to a general user dashboard
-          router.replace('/dashboard');
-        }
+    // If there's no authenticated user at all, redirect to login.
+    if (!user) {
+      router.replace('/connexion');
+      return;
+    }
+
+    // If we have a user profile from Firestore, check their role.
+    if (userProfile) {
+      if (userProfile.role === 'superadmin' || userProfile.role === 'receptionist' || userProfile.role === 'stock_manager') {
+        router.replace('/admin');
       } else {
-        // If there's a user but no profile document in Firestore (e.g. guest role)
-        // send them to the user dashboard.
+        // Handle guest or other roles
         router.replace('/dashboard');
       }
+    } else {
+      // This case handles a logged-in user who doesn't have a document in the 'users' collection yet.
+      // This might happen for a 'guest' role or during sign-up race conditions.
+      // We'll send them to the general dashboard.
+      router.replace('/dashboard');
     }
   }, [user, userProfile, isLoading, router]);
 
