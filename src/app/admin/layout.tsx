@@ -15,7 +15,7 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar';
 import Link from 'next/link';
-import { Home, Settings, Users, LineChart, LogOut, PanelLeft, UserCircle2, BedDouble, Hotel, Dumbbell, Waves, UtensilsCrossed, ChevronDown } from 'lucide-react';
+import { Home, Settings, Users, LineChart, LogOut, PanelLeft, UserCircle2, BedDouble, Hotel, Dumbbell, Waves, UtensilsCrossed, ChevronDown, CalendarCheck } from 'lucide-react';
 import Logo from '@/components/icons/logo';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useUserProfile } from '@/firebase/auth/use-user-profile';
@@ -82,6 +82,14 @@ export default function AdminLayout({
                 </Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild isActive={pathname === '/admin/reservations'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
+                <Link href="/admin/reservations">
+                  <CalendarCheck />
+                  <span>Réservations</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
              <SidebarMenuItem>
               <SidebarMenuButton asChild isActive={pathname === '/admin/users'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
                 <Link href="/admin/users">
@@ -95,7 +103,7 @@ export default function AdminLayout({
                 <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
                         <SidebarMenuButton asChild isActive={isHotelSectionActive} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary justify-between">
-                            <div>
+                            <div className='flex w-full items-center justify-between'>
                                 <div className="flex items-center gap-2">
                                     <Hotel />
                                     <span>Hôtel</span>

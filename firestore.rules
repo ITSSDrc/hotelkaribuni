@@ -13,6 +13,12 @@ service cloud.firestore {
              && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == role;
     }
 
+    // Helper function to check for multiple roles.
+    function hasAnyRole(roles) {
+      return exists(/databases/$(database)/documents/users/$(request.auth.uid))
+             && get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in roles;
+    }
+
     // Rules for the 'users' collection
     match /users/{userId} {
       // A user can READ their own document. This is necessary for role checking after login.
@@ -64,6 +70,12 @@ service cloud.firestore {
 
       // Only superadmins can create, update, or delete items.
       allow write: if hasRole('superadmin');
+    }
+
+    // Rules for the 'reservations' collection
+    match /reservations/{reservationId} {
+      // Receptionists and superadmins can manage reservations.
+      allow read, write: if hasAnyRole(['superadmin', 'receptionist']);
     }
 
 

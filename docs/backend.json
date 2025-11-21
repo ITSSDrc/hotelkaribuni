@@ -225,6 +225,63 @@
         "imageUrls",
         "status"
       ]
+    },
+    "Reservation": {
+      "title": "Reservation",
+      "description": "Represents a guest's room reservation.",
+      "type": "object",
+      "properties": {
+        "guestName": {
+          "type": "string",
+          "description": "The name of the primary guest."
+        },
+        "checkInDate": {
+          "type": "string",
+          "format": "date",
+          "description": "The check-in date."
+        },
+        "checkOutDate": {
+          "type": "string",
+          "format": "date",
+          "description": "The check-out date."
+        },
+        "numberOfGuests": {
+          "type": "number",
+          "description": "The number of guests staying."
+        },
+        "roomId": {
+          "type": "string",
+          "description": "The ID of the reserved room."
+        },
+        "roomName": {
+          "type": "string",
+          "description": "The name of the reserved room."
+        },
+        "totalPrice": {
+          "type": "number",
+          "description": "The total price for the stay."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Confirmée",
+            "Annulée",
+            "Terminée",
+            "En cours"
+          ],
+          "description": "The status of the reservation."
+        }
+      },
+      "required": [
+        "guestName",
+        "checkInDate",
+        "checkOutDate",
+        "numberOfGuests",
+        "roomId",
+        "roomName",
+        "totalPrice",
+        "status"
+      ]
     }
   },
   "auth": {
@@ -262,6 +319,12 @@
         "$ref": "#/entities/RestauBar"
       },
       "description": "Stores information about hotel restaurants and bars."
+    },
+    "/reservations/{reservationId}": {
+      "schema": {
+        "$ref": "#/entities/Reservation"
+      },
+      "description": "Stores guest reservation details."
     }
   }
 }
