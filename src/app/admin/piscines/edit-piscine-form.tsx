@@ -231,7 +231,7 @@ export default function EditPiscineForm({ onFinished, initialData }: EditPiscine
                         </Button>
                       </div>
                     ))}
-                    {!imageUrls || imageUrls.length === 0 && (
+                    {(!imageUrls || imageUrls.length === 0) && (
                       <div className="col-span-full flex flex-col items-center justify-center h-32 border border-dashed rounded-md">
                         <ImageIcon className="h-10 w-10 text-muted-foreground" />
                         <p className="text-sm text-muted-foreground mt-2">Aucune image</p>
@@ -268,7 +268,7 @@ export default function EditPiscineForm({ onFinished, initialData }: EditPiscine
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Sélectionnez un statut" />
-                  </Trigger>
+                  </SelectTrigger>
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="Ouverte">Ouverte</SelectItem>
