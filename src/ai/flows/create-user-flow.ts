@@ -14,26 +14,27 @@ import { getFirestore } from 'firebase-admin/firestore';
 import { getApps, initializeApp, cert } from 'firebase-admin/app';
 
 // Helper function to initialize Firebase Admin SDK if not already done.
-function initializeFirebaseAdmin() {
-    if (!getApps().length) {
+// This needs to be called within the flow execution to ensure env variables are loaded.
+const initializeFirebaseAdmin = () => {
+    if (getApps().length === 0) {
         const serviceAccountJson = process.env.FIREBASE_ADMIN_SDK_CONFIG;
-        if (serviceAccountJson) {
-            try {
-                const serviceAccount = JSON.parse(serviceAccountJson);
-                initializeApp({
-                    credential: cert(serviceAccount),
-                });
-                console.log('Firebase Admin SDK initialized successfully.');
-            } catch (e) {
-                console.error('Failed to parse or initialize Firebase Admin SDK:', e);
-            }
-        } else {
-            console.warn(
-                'Firebase Admin SDK config not found. Flows requiring admin privileges will likely fail.'
+        if (!serviceAccountJson) {
+            throw new Error(
+                'FIREBASE_ADMIN_SDK_CONFIG environment variable not set. Cannot initialize Firebase Admin.'
             );
         }
+        try {
+            const serviceAccount = JSON.parse(serviceAccountJson);
+            initializeApp({
+                credential: cert(serviceAccount),
+            });
+            console.log('Firebase Admin SDK initialized successfully.');
+        } catch (e: any) {
+            console.error('Failed to parse or initialize Firebase Admin SDK:', e.message);
+            throw new Error('Failed to initialize Firebase Admin SDK.');
+        }
     }
-}
+};
 
 
 // Define the input schema for the flow
@@ -67,12 +68,13 @@ const createUserFlow = ai.defineFlow(
     outputSchema: CreateUserOutputSchema,
   },
   async (userData) => {
-    // Ensure Firebase Admin is initialized before proceeding
-    initializeFirebaseAdmin();
-
-    const adminAuth = getAuth();
-    const adminFirestore = getFirestore();
     try {
+      // Ensure Firebase Admin is initialized before proceeding.
+      initializeFirebaseAdmin();
+
+      const adminAuth = getAuth();
+      const adminFirestore = getFirestore();
+      
       // 1. Create user in Firebase Authentication
       const userRecord = await adminAuth.createUser({
         email: userData.email,
@@ -105,7 +107,10 @@ const createUserFlow = ai.defineFlow(
           'Cette adresse e-mail est déjà utilisée par un autre compte.';
       } else if (error.code === 'auth/invalid-password') {
         errorMessage = 'Le mot de passe doit comporter au moins 6 caractères.';
+      } else if (error.message.includes('FIREBASE_ADMIN_SDK_CONFIG')) {
+        errorMessage = "La configuration du SDK d'administration Firebase est manquante.";
       }
+
 
       return { error: errorMessage };
     }
