@@ -77,7 +77,7 @@ service cloud.firestore {
 
     // Rules for the 'reservations' collection
     match /reservations/{reservationId} {
-      // Receptionists and superadmins can manage reservations.
+      // Receptionists and superadmins can manage reservations (read, create, update, delete).
       allow read, write: if hasAnyRole(['superadmin', 'receptionist']);
     }
 
