@@ -105,8 +105,8 @@ const createUserFlow = ai.defineFlow(
           'Cette adresse e-mail est déjà utilisée par un autre compte.';
       } else if (error.code === 'auth/invalid-password') {
         errorMessage = 'Le mot de passe doit comporter au moins 6 caractères.';
-      } else if (error.message.includes('FIREBASE_ADMIN_SDK_CONFIG')) {
-        errorMessage = "La configuration du SDK d'administration Firebase est manquante.";
+      } else if (error.message.includes('Firebase Admin SDK')) {
+        errorMessage = "La configuration du SDK d'administration Firebase est manquante ou invalide.";
       }
 
 

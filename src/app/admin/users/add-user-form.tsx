@@ -54,7 +54,7 @@ export default function AddUserForm({ onFinished }: AddUserFormProps) {
   const onSubmit = async (data: UserFormValues) => {
     const result = await createUser(data);
 
-    if (result && result.uid) {
+    if (result && result.success) {
       toast({
         title: 'Utilisateur créé !',
         description: `Le compte pour ${data.displayName} a été créé avec succès.`,
@@ -62,7 +62,7 @@ export default function AddUserForm({ onFinished }: AddUserFormProps) {
       form.reset();
       onFinished?.();
     } else {
-        const errorMessage = (result as any).error || "Impossible de créer l'utilisateur.";
+        const errorMessage = result.error || "Impossible de créer l'utilisateur.";
         toast({
             variant: 'destructive',
             title: 'Oh non ! Une erreur est survenue.',
