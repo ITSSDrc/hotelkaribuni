@@ -53,6 +53,7 @@ import { useState } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
+import { useUserProfile } from '@/firebase/auth/use-user-profile';
 
 const getStatusVariant = (status: string) => {
   switch (status) {
@@ -67,6 +68,7 @@ const getStatusVariant = (status: string) => {
 
 export default function AdminRestauBarPage() {
   const { firestore } = useFirebase();
+  const { userProfile } = useUserProfile();
   const restauBarCollectionRef = collection(firestore, 'restau-bar');
   const { data: items, isLoading, forceRefetch } = useCollection(restauBarCollectionRef);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -109,6 +111,8 @@ export default function AdminRestauBarPage() {
       });
   };
 
+  const isSuperAdmin = userProfile?.role === 'superadmin';
+
   return (
     <>
       <header className="mb-8 flex items-center justify-between">
@@ -120,28 +124,30 @@ export default function AdminRestauBarPage() {
             Gérez les établissements de restauration de votre hôtel.
           </p>
         </div>
-        <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
-          <DialogTrigger asChild>
-            <Button>
-              <PlusCircle className="mr-2 h-4 w-4" />
-              Ajouter un établissement
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[625px]">
-            <DialogHeader>
-              <DialogTitle>Ajouter un nouvel établissement</DialogTitle>
-              <DialogDescription>
-                Remplissez les détails ci-dessous.
-              </DialogDescription>
-            </DialogHeader>
-            <EditRestauBarForm
-              onFinished={() => {
-                forceRefetch();
-                setIsAddModalOpen(false);
-              }}
-            />
-          </DialogContent>
-        </Dialog>
+        {isSuperAdmin && (
+          <Dialog open={isAddModalOpen} onOpenChange={setIsAddModalOpen}>
+            <DialogTrigger asChild>
+              <Button>
+                <PlusCircle className="mr-2 h-4 w-4" />
+                Ajouter un établissement
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[625px]">
+              <DialogHeader>
+                <DialogTitle>Ajouter un nouvel établissement</DialogTitle>
+                <DialogDescription>
+                  Remplissez les détails ci-dessous.
+                </DialogDescription>
+              </DialogHeader>
+              <EditRestauBarForm
+                onFinished={() => {
+                  forceRefetch();
+                  setIsAddModalOpen(false);
+                }}
+              />
+            </DialogContent>
+          </Dialog>
+        )}
       </header>
       <Card>
         <CardHeader>
@@ -165,9 +171,11 @@ export default function AdminRestauBarPage() {
                   <TableHead>Nom</TableHead>
                   <TableHead>Type</TableHead>
                   <TableHead>Statut</TableHead>
-                  <TableHead>
-                    <span className="sr-only">Actions</span>
-                  </TableHead>
+                  {isSuperAdmin && (
+                    <TableHead>
+                      <span className="sr-only">Actions</span>
+                    </TableHead>
+                  )}
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -190,32 +198,34 @@ export default function AdminRestauBarPage() {
                           {item.status}
                         </Badge>
                       </TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              aria-haspopup="true"
-                              size="icon"
-                              variant="ghost"
-                            >
-                              <MoreHorizontal className="h-4 w-4" />
-                              <span className="sr-only">Toggle menu</span>
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem onClick={() => handleEditClick(item)}>
-                              Modifier
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              className="text-destructive focus:bg-destructive/10 focus:text-destructive"
-                              onClick={() => handleDeleteClick(item)}
-                            >
-                              Supprimer
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
+                      {isSuperAdmin && (
+                        <TableCell>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button
+                                aria-haspopup="true"
+                                size="icon"
+                                variant="ghost"
+                              >
+                                <MoreHorizontal className="h-4 w-4" />
+                                <span className="sr-only">Toggle menu</span>
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                              <DropdownMenuItem onClick={() => handleEditClick(item)}>
+                                Modifier
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                className="text-destructive focus:bg-destructive/10 focus:text-destructive"
+                                onClick={() => handleDeleteClick(item)}
+                              >
+                                Supprimer
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </TableCell>
+                      )}
                     </TableRow>
                   ))}
               </TableBody>

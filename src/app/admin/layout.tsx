@@ -35,8 +35,8 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
-import { cn } from '@/lib/utils';
 import React from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 
 export default function AdminLayout({
@@ -44,7 +44,7 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { userProfile } = useUserProfile();
+  const { userProfile, isLoading } = useUserProfile();
   const { auth } = useFirebase();
   const router = useRouter();
   const pathname = usePathname();
@@ -56,11 +56,143 @@ export default function AdminLayout({
       router.refresh(); // Force a hard refresh to clear all client-side state
     } catch (error) {
       console.error('Logout failed', error);
-      // Optionally, show a toast message for the error
     }
   };
   
   const isHotelSectionActive = pathname.startsWith('/admin/rooms') || pathname.startsWith('/admin/salles') || pathname.startsWith('/admin/piscines') || pathname.startsWith('/admin/restau-bar');
+
+  const renderSidebarContent = () => {
+    if (isLoading) {
+      return (
+        <div className="flex flex-col gap-2 p-4">
+            <Skeleton className="h-9 w-full" />
+            <Skeleton className="h-9 w-full" />
+            <Skeleton className="h-9 w-full" />
+            <Skeleton className="h-9 w-full" />
+        </div>
+      );
+    }
+
+    const role = userProfile?.role;
+    
+    return (
+       <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild isActive={pathname === '/admin'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
+                <Link href="/admin">
+                  <Home />
+                  <span>Tableau de bord</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+
+            {(role === 'superadmin' || role === 'receptionist') && (
+                <SidebarMenuItem>
+                <SidebarMenuButton asChild isActive={pathname === '/admin/reservations'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
+                    <Link href="/admin/reservations">
+                    <CalendarCheck />
+                    <span>Réservations</span>
+                    </Link>
+                </SidebarMenuButton>
+                </SidebarMenuItem>
+            )}
+
+            {role === 'superadmin' && (
+                <>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton asChild isActive={pathname === '/admin/users'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
+                            <Link href="/admin/users">
+                            <Users />
+                            <span>Utilisateurs</span>
+                            </Link>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    
+                    <Collapsible asChild>
+                        <SidebarMenuItem>
+                            <CollapsibleTrigger asChild>
+                                <SidebarMenuButton asChild isActive={isHotelSectionActive} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary justify-between">
+                                    <div className='flex w-full items-center justify-between'>
+                                        <div className="flex items-center gap-2">
+                                            <Hotel />
+                                            <span>Hôtel</span>
+                                        </div>
+                                        <ChevronDown className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                                    </div>
+                                </SidebarMenuButton>
+                            </CollapsibleTrigger>
+                            <CollapsibleContent>
+                                <SidebarMenu className='pl-6'>
+                                    <SidebarMenuItem>
+                                        <SidebarMenuButton asChild isActive={pathname === '/admin/rooms'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
+                                            <Link href="/admin/rooms">
+                                            <BedDouble />
+                                            <span>Chambres</span>
+                                            </Link>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                    <SidebarMenuItem>
+                                        <SidebarMenuButton asChild isActive={pathname === '/admin/salles'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
+                                            <Link href="/admin/salles">
+                                            <Dumbbell />
+                                            <span>Salles</span>
+                                            </Link>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                    <SidebarMenuItem>
+                                        <SidebarMenuButton asChild isActive={pathname === '/admin/piscines'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
+                                            <Link href="/admin/piscines">
+                                            <Waves />
+                                            <span>Piscines</span>
+                                            </Link>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                    <SidebarMenuItem>
+                                        <SidebarMenuButton asChild isActive={pathname === '/admin/restau-bar'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
+                                            <Link href="/restau-bar">
+                                            <UtensilsCrossed />
+                                            <span>Restau-bar</span>
+                                            </Link>
+                                        </SidebarMenuButton>
+                                    </SidebarMenuItem>
+                                </SidebarMenu>
+                            </CollapsibleContent>
+                        </SidebarMenuItem>
+                    </Collapsible>
+
+                    <SidebarMenuItem>
+                        <SidebarMenuButton asChild className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
+                            <Link href="#">
+                            <LineChart />
+                            <span>Analyses</span>
+                            </Link>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </>
+            )}
+
+            <SidebarMenuItem>
+              <SidebarMenuButton asChild isActive={pathname === '/admin/profile'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
+                <Link href="/admin/profile">
+                  <UserCircle2 />
+                  <span>Profil</span>
+                </Link>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+
+             {role === 'superadmin' && (
+                <SidebarMenuItem>
+                <SidebarMenuButton asChild className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
+                    <Link href="#">
+                    <Settings />
+                    <span>Paramètres</span>
+                    </Link>
+                </SidebarMenuButton>
+                </SidebarMenuItem>
+             )}
+          </SidebarMenu>
+    );
+  }
 
   return (
     <SidebarProvider>
@@ -73,109 +205,7 @@ export default function AdminLayout({
           </div>
         </SidebarHeader>
         <SidebarContent>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={pathname === '/admin'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
-                <Link href="/admin">
-                  <Home />
-                  <span>Tableau de bord</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={pathname === '/admin/reservations'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
-                <Link href="/admin/reservations">
-                  <CalendarCheck />
-                  <span>Réservations</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-             <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={pathname === '/admin/users'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
-                <Link href="/admin/users">
-                  <Users />
-                  <span>Utilisateurs</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            
-            <Collapsible asChild>
-                <SidebarMenuItem>
-                    <CollapsibleTrigger asChild>
-                        <SidebarMenuButton asChild isActive={isHotelSectionActive} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary justify-between">
-                            <div className='flex w-full items-center justify-between'>
-                                <div className="flex items-center gap-2">
-                                    <Hotel />
-                                    <span>Hôtel</span>
-                                </div>
-                                <ChevronDown className="h-4 w-4 transition-transform duration-200 group-data-[state=open]:rotate-180" />
-                            </div>
-                        </SidebarMenuButton>
-                    </CollapsibleTrigger>
-                    <CollapsibleContent>
-                        <SidebarMenu className='pl-6'>
-                             <SidebarMenuItem>
-                                <SidebarMenuButton asChild isActive={pathname === '/admin/rooms'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
-                                    <Link href="/admin/rooms">
-                                    <BedDouble />
-                                    <span>Chambres</span>
-                                    </Link>
-                                </SidebarMenuButton>
-                            </SidebarMenuItem>
-                             <SidebarMenuItem>
-                                <SidebarMenuButton asChild isActive={pathname === '/admin/salles'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
-                                    <Link href="/admin/salles">
-                                    <Dumbbell />
-                                    <span>Salles</span>
-                                    </Link>
-                                </SidebarMenuButton>
-                            </SidebarMenuItem>
-                             <SidebarMenuItem>
-                                <SidebarMenuButton asChild isActive={pathname === '/admin/piscines'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
-                                    <Link href="/admin/piscines">
-                                    <Waves />
-                                    <span>Piscines</span>
-                                    </Link>
-                                </SidebarMenuButton>
-                            </SidebarMenuItem>
-                            <SidebarMenuItem>
-                                <SidebarMenuButton asChild isActive={pathname === '/admin/restau-bar'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
-                                    <Link href="/admin/restau-bar">
-                                    <UtensilsCrossed />
-                                    <span>Restau-bar</span>
-                                    </Link>
-                                </SidebarMenuButton>
-                            </SidebarMenuItem>
-                        </SidebarMenu>
-                    </CollapsibleContent>
-                </SidebarMenuItem>
-            </Collapsible>
-
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
-                <Link href="#">
-                  <LineChart />
-                  <span>Analyses</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-             <SidebarMenuItem>
-              <SidebarMenuButton asChild isActive={pathname === '/admin/profile'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
-                <Link href="/admin/profile">
-                  <UserCircle2 />
-                  <span>Profil</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton asChild className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
-                <Link href="#">
-                  <Settings />
-                  <span>Paramètres</span>
-                </Link>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          </SidebarMenu>
+          {renderSidebarContent()}
         </SidebarContent>
         <SidebarFooter>
             <div className="flex items-center gap-3">
