@@ -3,7 +3,7 @@
 /**
  * @fileOverview A secure flow for creating new users with specific roles.
  *
- * - createUserFlow - A flow that creates a user in Firebase Auth and sets their profile in Firestore.
+ * - createUser - A function that creates a user in Firebase Auth and sets their profile in Firestore.
  * - CreateUserInput - The input type for the createUser function.
  * - CreateUserOutput - The return type for the createUser function.
  */
@@ -15,7 +15,6 @@ import { getApps, initializeApp, cert, App } from 'firebase-admin/app';
 
 // Helper function to initialize Firebase Admin SDK if not already done.
 // This is idempotent and safe to call multiple times.
-let adminApp: App | undefined;
 function initializeFirebaseAdmin() {
   if (getApps().length > 0) {
     return getApps()[0]!;
@@ -53,8 +52,8 @@ export const CreateUserOutputSchema = z.object({
 });
 export type CreateUserOutput = z.infer<typeof CreateUserOutputSchema>;
 
-// The main flow function
-export const createUserFlow = ai.defineFlow(
+
+const createUserFlow = ai.defineFlow(
   {
     name: 'createUserFlow',
     inputSchema: CreateUserInputSchema,
@@ -105,3 +104,14 @@ export const createUserFlow = ai.defineFlow(
     }
   }
 );
+
+
+/**
+ * Server Action to securely create a new user.
+ * This async function is the only export from this file, compliant with "use server".
+ * @param userData The user data to create.
+ * @returns The result from the Genkit flow.
+ */
+export async function createUser(userData: CreateUserInput): Promise<CreateUserOutput> {
+    return await createUserFlow(userData);
+}

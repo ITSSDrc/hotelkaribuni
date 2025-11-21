@@ -1,7 +1,7 @@
 
 'use server';
 
-import { createUserFlow, type CreateUserInput, type CreateUserOutput } from '@/ai/flows/create-user-flow';
+import { createUser as createUserWithFlow, type CreateUserInput } from '@/ai/flows/create-user-flow';
 
 /**
  * Server Action to securely create a new user.
@@ -11,8 +11,8 @@ import { createUserFlow, type CreateUserInput, type CreateUserOutput } from '@/a
  */
 export async function createUser(userData: CreateUserInput): Promise<{ success: boolean, uid?: string, error?: string }> {
   try {
-    // Call the Genkit flow directly from the server action.
-    const result: CreateUserOutput = await createUserFlow(userData);
+    // Call the Genkit flow wrapper function directly from the server action.
+    const result = await createUserWithFlow(userData);
 
     if (!result.uid) {
       throw new Error('The flow did not return a user ID.');
