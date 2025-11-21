@@ -1,3 +1,4 @@
+
 'use client';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -20,10 +21,10 @@ export default function RestauBar() {
                 <p className="text-lg text-muted-foreground mb-6">
                 Notre restaurant-bar vous propose une expérience culinaire inoubliable. Dégustez des plats raffinés préparés avec des produits locaux frais, ou sirotez un cocktail signature dans une ambiance chic et décontractée.
                 </p>
-                <Button asChild variant="outline">
-                <Link href="#">
-                    Voir le menu
-                </Link>
+                <Button asChild variant="outline" size="lg">
+                    <Link href="/restau-bar">
+                        Découvrir nos espaces
+                    </Link>
                 </Button>
             </div>
             <div className="order-1 md:order-2">

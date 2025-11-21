@@ -33,7 +33,7 @@ service cloud.firestore {
     // Rules for the 'rooms' collection
     match /rooms/{roomId} {
       // Anyone can read room information for the showcase.
-      allow read: if true;
+      allow get, list: if true;
       
       // Only superadmins can create, update, or delete rooms.
       allow write: if hasRole('superadmin');
@@ -42,7 +42,7 @@ service cloud.firestore {
     // Rules for the 'salles' collection
     match /salles/{salleId} {
       // Anyone can read room information for the showcase.
-      allow read: if true;
+      allow get, list: if true;
       
       // Only superadmins can create, update, or delete salles.
       allow write: if hasRole('superadmin');
@@ -51,9 +51,18 @@ service cloud.firestore {
     // Rules for the 'piscines' collection
     match /piscines/{piscineId} {
       // Anyone can read piscine information for the showcase.
-      allow read: if true;
+      allow get, list: if true;
 
       // Only superadmins can create, update, or delete piscines.
+      allow write: if hasRole('superadmin');
+    }
+    
+    // Rules for the 'restau-bar' collection
+    match /restau-bar/{restauBarId} {
+      // Anyone can read restaurant/bar information for the showcase.
+      allow get, list: if true;
+
+      // Only superadmins can create, update, or delete items.
       allow write: if hasRole('superadmin');
     }
 

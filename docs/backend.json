@@ -181,6 +181,50 @@
         "imageUrls",
         "status"
       ]
+    },
+    "RestauBar": {
+      "title": "Restaurant & Bar",
+      "description": "Représente un restaurant ou un bar de l'hôtel.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Le nom de l'établissement."
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "Restaurant",
+            "Bar"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "description": "Une courte description de l'établissement."
+        },
+        "imageUrls": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "description": "Une liste d'URLs pour les images de l'établissement."
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "Ouvert",
+            "Fermé"
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "type",
+        "description",
+        "imageUrls",
+        "status"
+      ]
     }
   },
   "auth": {
@@ -212,6 +256,12 @@
         "$ref": "#/entities/Piscine"
       },
       "description": "Stores information about hotel pools."
+    },
+    "/restau-bar/{restauBarId}": {
+      "schema": {
+        "$ref": "#/entities/RestauBar"
+      },
+      "description": "Stores information about hotel restaurants and bars."
     }
   }
 }
