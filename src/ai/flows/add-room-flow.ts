@@ -12,7 +12,7 @@ import { z } from 'genkit';
 import { getFirestore } from 'firebase-admin/firestore';
 
 // Define the input schema for the flow
-export const AddRoomInputSchema = z.object({
+const AddRoomInputSchema = z.object({
   name: z.string(),
   type: z.enum(['Standard', 'Deluxe', 'Suite']),
   price: z.number(),
@@ -23,7 +23,7 @@ export const AddRoomInputSchema = z.object({
 export type AddRoomInput = z.infer<typeof AddRoomInputSchema>;
 
 // Define the output schema for the flow
-export const AddRoomOutputSchema = z.object({
+const AddRoomOutputSchema = z.object({
   roomId: z.string().optional(),
   error: z.string().optional(),
 });
@@ -42,8 +42,6 @@ const addRoomFlow = ai.defineFlow(
     name: 'addRoomFlow',
     inputSchema: AddRoomInputSchema,
     outputSchema: AddRoomOutputSchema,
-    // Add authentication to ensure only logged-in users can call this.
-    // Further checks for 'superadmin' role should be done within the flow if needed.
     auth: (auth) => {
         if (!auth) {
             throw new Error('User must be authenticated.');
@@ -53,6 +51,8 @@ const addRoomFlow = ai.defineFlow(
   async (roomData) => {
     const adminFirestore = getFirestore();
     try {
+      // Further validation could be done here to check if the authenticated user
+      // has the 'superadmin' role before proceeding.
       const docRef = await adminFirestore.collection('rooms').add(roomData);
       return { roomId: docRef.id };
     } catch (error: any) {

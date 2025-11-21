@@ -13,7 +13,7 @@ import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
 
 // Define the input schema for the flow
-export const CreateUserInputSchema = z.object({
+const CreateUserInputSchema = z.object({
   displayName: z.string(),
   email: z.string().email(),
   password: z.string(),
@@ -22,7 +22,7 @@ export const CreateUserInputSchema = z.object({
 export type CreateUserInput = z.infer<typeof CreateUserInputSchema>;
 
 // Define the output schema for the flow
-export const CreateUserOutputSchema = z.object({
+const CreateUserOutputSchema = z.object({
   uid: z.string().optional(),
   error: z.string().optional(),
 });
