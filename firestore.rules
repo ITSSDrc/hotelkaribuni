@@ -21,7 +21,8 @@ service cloud.firestore {
 
     // Rules for the 'users' collection
     match /users/{userId} {
-      // A user can READ their own document. This is necessary for role checking after login.
+      // A user can READ their own document. This is necessary for role checking.
+      // Allow any authenticated user to read their own profile.
       allow read: if request.auth != null && request.auth.uid == userId;
 
       // A user can UPDATE their own document.
