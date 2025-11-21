@@ -32,7 +32,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Loader2, CalendarIcon } from 'lucide-react';
 import { useEffect, useMemo } from 'react';
 import { useFirebase } from '@/firebase';
-import { collection, doc, serverTimestamp, writeBatch, getDoc } from 'firebase/firestore';
+import { collection, doc, serverTimestamp, writeBatch, getDoc, addDoc, updateDoc } from 'firebase/firestore';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { useCollection } from '@/firebase/firestore/use-collection';
@@ -137,10 +137,11 @@ export default function EditReservationForm({ onFinished, initialData }: EditRes
         createdAt: serverTimestamp()
     };
 
-    const batch = writeBatch(firestore);
 
     if (initialData) { // Updating existing reservation
         const reservationRef = doc(firestore, "reservations", initialData.id);
+        const batch = writeBatch(firestore);
+
         batch.update(reservationRef, reservationData);
         
         if(initialData.roomId !== data.roomId) {
@@ -167,41 +168,57 @@ export default function EditReservationForm({ onFinished, initialData }: EditRes
             });
 
     } else { // Creating a new reservation
-        const roomRef = doc(firestore, 'rooms', data.roomId);
-        const newReservationRef = doc(collection(firestore, 'reservations'));
+      const roomRef = doc(firestore, 'rooms', data.roomId);
+      
+      try {
+        const roomDoc = await getDoc(roomRef);
+        if (!roomDoc.exists() || roomDoc.data().status !== 'Disponible') {
+          toast({ variant: 'destructive', title: 'Action impossible', description: "Cette chambre n'est plus disponible. Veuillez rafraîchir et en choisir une autre." });
+          refetchRooms();
+          return;
+        }
 
-        try {
-            const roomDoc = await getDoc(roomRef);
-            if (!roomDoc.exists()) {
-                 toast({ variant: 'destructive', title: 'Action impossible', description: "La chambre sélectionnée n'existe plus." });
-                 refetchRooms(); // Refresh the list of rooms in the select dropdown
-                 return;
-            }
-             if (roomDoc.data().status !== 'Disponible') {
-                toast({ variant: 'destructive', title: 'Action impossible', description: "Cette chambre n'est plus disponible. Veuillez en choisir une autre." });
-                refetchRooms(); // Refresh the list of rooms
-                return;
-            }
-
-            // Prepare batch operations
-            batch.set(newReservationRef, reservationData);
-            batch.update(roomRef, { status: 'Occupée' });
-
-            // Commit the batch
-            await batch.commit();
-
-            toast({ title: 'Réservation créée !', description: `La réservation pour ${data.guestName} a été créée.` });
-            form.reset();
-            onFinished?.();
-
-        } catch (serverError: any) {
+        // 1. Create the reservation document
+        const reservationCollectionRef = collection(firestore, 'reservations');
+        await addDoc(reservationCollectionRef, reservationData)
+          .catch((err) => {
             const permissionError = new FirestorePermissionError({
-                path: newReservationRef.path,
-                operation: 'create',
-                requestResourceData: reservationData,
+              path: reservationCollectionRef.path,
+              operation: 'create',
+              requestResourceData: reservationData,
             });
             errorEmitter.emit('permission-error', permissionError);
+            // Throw an error to stop execution
+            throw new Error("Failed to create reservation due to permissions."); 
+          });
+
+        // 2. If reservation is created successfully, update the room status
+        await updateDoc(roomRef, { status: 'Occupée' })
+          .catch((err) => {
+            // This is a problematic state, the reservation was created but the room status failed to update.
+            // For now, we will just log it and inform the user. A more robust solution might involve a retry-mechanism or a cleanup function.
+            console.error("Critical error: Reservation created, but failed to update room status.", err);
+            const permissionError = new FirestorePermissionError({
+              path: roomRef.path,
+              operation: 'update',
+              requestResourceData: { status: 'Occupée' },
+            });
+            errorEmitter.emit('permission-error', permissionError);
+            toast({ variant: 'destructive', title: 'Erreur Critique', description: `La réservation a été créée, mais le statut de la chambre n'a pas pu être mis à jour. Veuillez le faire manuellement pour la chambre ${selectedRoom.name}.` });
+            throw new Error("Failed to update room status due to permissions.");
+          });
+
+        toast({ title: 'Réservation créée !', description: `La réservation pour ${data.guestName} a été créée.` });
+        form.reset();
+        onFinished?.();
+      } catch (error: any) {
+        if (error.message.includes("permissions")) {
+            // Error already handled by the emitters
+        } else {
+            console.error("An unexpected error occurred:", error);
+            toast({ variant: 'destructive', title: 'Erreur Inattendue', description: "Une erreur s'est produite. Veuillez consulter la console." });
         }
+      }
     }
   };
   

@@ -22,6 +22,7 @@ service cloud.firestore {
     // Rules for the 'users' collection
     match /users/{userId} {
       // A user can READ their own document. This is necessary for role checking after login.
+      // Allow any authenticated user to read their own profile.
       allow read: if request.auth != null && request.auth.uid == userId;
 
       // A user can UPDATE their own document.
@@ -78,9 +79,11 @@ service cloud.firestore {
 
     // Rules for the 'reservations' collection
     match /reservations/{reservationId} {
-      // Receptionists and superadmins can create, read, update, delete reservations.
-      allow write: if hasAnyRole(['superadmin', 'receptionist']);
-      allow read: if hasAnyRole(['superadmin', 'receptionist']);
+      // Allow creation for receptionists and superadmins
+      allow create: if hasAnyRole(['superadmin', 'receptionist']);
+      
+      // Receptionists and superadmins can read, update, delete existing reservations.
+      allow read, update, delete: if hasAnyRole(['superadmin', 'receptionist']);
     }
 
 
