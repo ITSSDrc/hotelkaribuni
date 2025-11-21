@@ -8,7 +8,6 @@
  */
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
-import { getApps, initializeApp, cert } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 
 // Define the input schema for the flow
@@ -28,20 +27,6 @@ export const AddRoomOutputSchema = z.object({
   error: z.string().optional(),
 });
 export type AddRoomOutput = z.infer<typeof AddRoomOutputSchema>;
-
-// Initialize Firebase Admin SDK only if it hasn't been already.
-if (!getApps().length) {
-  const serviceAccountJson = process.env.FIREBASE_ADMIN_SDK_CONFIG;
-  if (!serviceAccountJson) {
-    throw new Error(
-      'Firebase Admin SDK config is missing from environment variables.'
-    );
-  }
-  const serviceAccount = JSON.parse(serviceAccountJson);
-  initializeApp({
-    credential: cert(serviceAccount),
-  });
-}
 
 const adminFirestore = getFirestore();
 

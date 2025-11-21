@@ -8,7 +8,6 @@
  */
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
-import { getApps, initializeApp, cert } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
 
@@ -27,21 +26,6 @@ export const CreateUserOutputSchema = z.object({
   error: z.string().optional(),
 });
 export type CreateUserOutput = z.infer<typeof CreateUserOutputSchema>;
-
-// Initialize Firebase Admin SDK only if it hasn't been already.
-// The Genkit environment reliably handles environment variables.
-if (!getApps().length) {
-  const serviceAccountJson = process.env.FIREBASE_ADMIN_SDK_CONFIG;
-  if (!serviceAccountJson) {
-    throw new Error(
-      'Firebase Admin SDK config is missing from environment variables.'
-    );
-  }
-  const serviceAccount = JSON.parse(serviceAccountJson);
-  initializeApp({
-    credential: cert(serviceAccount),
-  });
-}
 
 const adminAuth = getAuth();
 const adminFirestore = getFirestore();
