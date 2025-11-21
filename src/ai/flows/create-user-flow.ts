@@ -11,6 +11,30 @@ import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import { getAuth } from 'firebase-admin/auth';
 import { getFirestore } from 'firebase-admin/firestore';
+import { getApps, initializeApp, cert } from 'firebase-admin/app';
+
+// Helper function to initialize Firebase Admin SDK if not already done.
+function initializeFirebaseAdmin() {
+    if (!getApps().length) {
+        const serviceAccountJson = process.env.FIREBASE_ADMIN_SDK_CONFIG;
+        if (serviceAccountJson) {
+            try {
+                const serviceAccount = JSON.parse(serviceAccountJson);
+                initializeApp({
+                    credential: cert(serviceAccount),
+                });
+                console.log('Firebase Admin SDK initialized successfully.');
+            } catch (e) {
+                console.error('Failed to parse or initialize Firebase Admin SDK:', e);
+            }
+        } else {
+            console.warn(
+                'Firebase Admin SDK config not found. Flows requiring admin privileges will likely fail.'
+            );
+        }
+    }
+}
+
 
 // Define the input schema for the flow
 const CreateUserInputSchema = z.object({
@@ -43,6 +67,9 @@ const createUserFlow = ai.defineFlow(
     outputSchema: CreateUserOutputSchema,
   },
   async (userData) => {
+    // Ensure Firebase Admin is initialized before proceeding
+    initializeFirebaseAdmin();
+
     const adminAuth = getAuth();
     const adminFirestore = getFirestore();
     try {
