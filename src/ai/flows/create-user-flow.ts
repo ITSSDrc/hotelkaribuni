@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview A secure flow for creating new users with specific roles.
@@ -27,9 +28,6 @@ export const CreateUserOutputSchema = z.object({
 });
 export type CreateUserOutput = z.infer<typeof CreateUserOutputSchema>;
 
-const adminAuth = getAuth();
-const adminFirestore = getFirestore();
-
 // Main exported function that wraps the Genkit flow
 export async function createUser(
   input: CreateUserInput
@@ -45,6 +43,8 @@ const createUserFlow = ai.defineFlow(
     outputSchema: CreateUserOutputSchema,
   },
   async (userData) => {
+    const adminAuth = getAuth();
+    const adminFirestore = getFirestore();
     try {
       // 1. Create user in Firebase Authentication
       const userRecord = await adminAuth.createUser({

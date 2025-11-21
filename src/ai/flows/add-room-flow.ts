@@ -1,3 +1,4 @@
+
 'use server';
 /**
  * @fileOverview A secure flow for adding new rooms.
@@ -28,8 +29,6 @@ export const AddRoomOutputSchema = z.object({
 });
 export type AddRoomOutput = z.infer<typeof AddRoomOutputSchema>;
 
-const adminFirestore = getFirestore();
-
 // Main exported function that wraps the Genkit flow
 export async function addRoom(
   input: AddRoomInput
@@ -52,6 +51,7 @@ const addRoomFlow = ai.defineFlow(
     }
   },
   async (roomData) => {
+    const adminFirestore = getFirestore();
     try {
       const docRef = await adminFirestore.collection('rooms').add(roomData);
       return { roomId: docRef.id };
