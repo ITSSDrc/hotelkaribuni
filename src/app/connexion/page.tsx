@@ -6,7 +6,8 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, User } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -26,14 +27,14 @@ import { useFirebase } from '@/firebase';
 
 const loginFormSchema = z.object({
   email: z.string().email('Veuillez entrer une adresse e-mail valide.'),
-  password: z.string().min(7, 'Le mot de passe doit contenir au moins 7 caractères.'),
+  password: z.string().min(6, 'Le mot de passe doit contenir au moins 6 caractères.'),
 });
 
 type LoginFormValues = z.infer<typeof loginFormSchema>;
 
 export default function ConnexionPage() {
   const { toast } = useToast();
-  const { auth } = useFirebase();
+  const { auth, firestore } = useFirebase();
   const router = useRouter();
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
@@ -43,18 +44,40 @@ export default function ConnexionPage() {
     },
   });
 
-  async function onSubmit(data: LoginFormValues) {
-    try {
-      await signInWithEmailAndPassword(auth, data.email, data.password);
+  const handleLoginSuccess = async (user: User) => {
+    if (!firestore) return;
+
+    const userDocRef = doc(firestore, 'users', user.uid);
+    const userDocSnap = await getDoc(userDocRef);
+
+    if (userDocSnap.exists()) {
+      const userProfile = userDocSnap.data();
+      const isAdminOrStaff = ['superadmin', 'receptionist', 'stock_manager'].includes(userProfile.role);
       
       toast({
         title: 'Connexion réussie !',
-        description: 'Vérification de votre compte en cours...',
+        description: 'Redirection vers votre tableau de bord...',
       });
+      
+      if (isAdminOrStaff) {
+        router.replace('/admin');
+      } else {
+        router.replace('/dashboard');
+      }
+    } else {
+      // Fallback for users without a profile document
+      toast({
+        title: 'Profil non trouvé',
+        description: 'Redirection vers le tableau de bord général.',
+      });
+      router.replace('/dashboard');
+    }
+  };
 
-      // Redirect to the role verification page which will handle routing
-      router.replace('/auth/verify-role');
-
+  async function onSubmit(data: LoginFormValues) {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, data.email, data.password);
+      await handleLoginSuccess(userCredential.user);
     } catch (error: any) {
       let description = "Une erreur est survenue lors de la connexion.";
       if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password' || error.code === 'auth/invalid-credential') {
