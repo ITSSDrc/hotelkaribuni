@@ -30,14 +30,14 @@ import {
 import { Calendar } from '@/components/ui/calendar';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, CalendarIcon } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useFirebase } from '@/firebase';
 import { collection, doc, serverTimestamp, writeBatch, getDoc } from 'firebase/firestore';
 import { errorEmitter } from '@/firebase/error-emitter';
 import { FirestorePermissionError } from '@/firebase/errors';
 import { useCollection } from '@/firebase/firestore/use-collection';
 import { cn } from '@/lib/utils';
-import { addDays, differenceInDays, format } from 'date-fns';
+import { differenceInDays, format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
 const reservationFormSchema = z.object({
@@ -49,7 +49,10 @@ const reservationFormSchema = z.object({
       to: z.date({ required_error: 'Date de départ requise.' }),
     },
     { required_error: 'Veuillez sélectionner une période.' }
-  ),
+  ).refine(data => data.to > data.from, {
+    message: "La date de départ doit être après la date d'arrivée.",
+    path: ['to'],
+  }),
   numberOfGuests: z.coerce.number().min(1, 'Il doit y avoir au moins un client.'),
   status: z.enum(['Confirmée', 'En cours', 'Terminée', 'Annulée']),
 });
@@ -65,7 +68,7 @@ export default function EditReservationForm({ onFinished, initialData }: EditRes
   const { toast } = useToast();
   const { firestore } = useFirebase();
   const roomsCollectionRef = useMemo(() => collection(firestore, 'rooms'), [firestore]);
-  const { data: rooms, isLoading: isLoadingRooms } = useCollection(roomsCollectionRef);
+  const { data: rooms, isLoading: isLoadingRooms, forceRefetch: refetchRooms } = useCollection(roomsCollectionRef);
 
   const form = useForm<ReservationFormValues>({
     resolver: zodResolver(reservationFormSchema),
@@ -111,21 +114,28 @@ export default function EditReservationForm({ onFinished, initialData }: EditRes
   }, [initialData, form]);
 
   const onSubmit = async (data: ReservationFormValues) => {
-    if (!firestore || !selectedRoom) {
-      toast({ variant: 'destructive', title: 'Erreur', description: 'Données manquantes.' });
+    if (!firestore) {
+      toast({ variant: 'destructive', title: 'Erreur', description: 'La base de données n\'est pas prête.' });
+      return;
+    }
+    
+    if (!selectedRoom) {
+      toast({ variant: 'destructive', title: 'Erreur', description: 'La chambre sélectionnée est invalide.' });
+      refetchRooms();
       return;
     }
 
     const reservationData = {
-        ...data,
+        guestName: data.guestName,
+        roomId: data.roomId,
+        numberOfGuests: data.numberOfGuests,
+        status: data.status,
         roomName: selectedRoom.name,
         checkInDate: format(data.dateRange.from, 'yyyy-MM-dd'),
         checkOutDate: format(data.dateRange.to, 'yyyy-MM-dd'),
         totalPrice: totalPrice,
         createdAt: serverTimestamp()
     };
-    
-    delete (reservationData as any).dateRange;
 
     const batch = writeBatch(firestore);
 
@@ -134,6 +144,7 @@ export default function EditReservationForm({ onFinished, initialData }: EditRes
         batch.update(reservationRef, reservationData);
         
         if(initialData.roomId !== data.roomId) {
+            // Room has changed, update both old and new rooms
             const oldRoomRef = doc(firestore, "rooms", initialData.roomId);
             batch.update(oldRoomRef, { status: "Disponible" });
             const newRoomRef = doc(firestore, "rooms", data.roomId);
@@ -155,18 +166,24 @@ export default function EditReservationForm({ onFinished, initialData }: EditRes
                 errorEmitter.emit('permission-error', permissionError);
             });
 
-    } else { // Creating a new reservation with batch
+    } else { // Creating a new reservation
         const roomRef = doc(firestore, 'rooms', data.roomId);
-        
+        const newReservationRef = doc(collection(firestore, 'reservations'));
+
         try {
             const roomDoc = await getDoc(roomRef);
-            if (!roomDoc.exists() || roomDoc.data().status !== 'Disponible') {
-                toast({ variant: 'destructive', title: 'Action impossible', description: "Cette chambre n'est plus disponible." });
+            if (!roomDoc.exists()) {
+                 toast({ variant: 'destructive', title: 'Action impossible', description: "La chambre sélectionnée n'existe plus." });
+                 refetchRooms(); // Refresh the list of rooms in the select dropdown
+                 return;
+            }
+             if (roomDoc.data().status !== 'Disponible') {
+                toast({ variant: 'destructive', title: 'Action impossible', description: "Cette chambre n'est plus disponible. Veuillez en choisir une autre." });
+                refetchRooms(); // Refresh the list of rooms
                 return;
             }
 
             // Prepare batch operations
-            const newReservationRef = doc(collection(firestore, 'reservations'));
             batch.set(newReservationRef, reservationData);
             batch.update(roomRef, { status: 'Occupée' });
 
@@ -178,26 +195,20 @@ export default function EditReservationForm({ onFinished, initialData }: EditRes
             onFinished?.();
 
         } catch (serverError: any) {
-            if (serverError.code === 'permission-denied') {
-                const permissionError = new FirestorePermissionError({
-                    path: 'reservations',
-                    operation: 'create',
-                    requestResourceData: reservationData,
-                });
-                errorEmitter.emit('permission-error', permissionError);
-            } else {
-                 toast({
-                    variant: 'destructive',
-                    title: 'Échec de la création',
-                    description: serverError.message || "Une erreur est survenue.",
-                });
-            }
+            const permissionError = new FirestorePermissionError({
+                path: newReservationRef.path,
+                operation: 'create',
+                requestResourceData: reservationData,
+            });
+            errorEmitter.emit('permission-error', permissionError);
         }
     }
   };
-
+  
   const availableRooms = useMemo(() => {
     if (!rooms) return [];
+    // A room is available if its status is 'Disponible'
+    // OR if we are editing a reservation, the room currently assigned to that reservation is also "available" for this form.
     return (rooms as any[]).filter(room => room.status === 'Disponible' || (initialData && room.id === initialData.roomId));
   }, [rooms, initialData]);
 
@@ -231,11 +242,15 @@ export default function EditReservationForm({ onFinished, initialData }: EditRes
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  {availableRooms.map((room: any) => (
-                    <SelectItem key={room.id} value={room.id}>
-                      {room.name} ({room.type}) - {room.price}€/nuit
-                    </SelectItem>
-                  ))}
+                  {availableRooms.length > 0 ? (
+                     availableRooms.map((room: any) => (
+                        <SelectItem key={room.id} value={room.id}>
+                          {room.name} ({room.type}) - {room.price}€/nuit
+                        </SelectItem>
+                      ))
+                  ) : (
+                    <div className="p-4 text-sm text-center text-muted-foreground">Aucune chambre disponible.</div>
+                  )}
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -256,7 +271,7 @@ export default function EditReservationForm({ onFinished, initialData }: EditRes
                       variant={'outline'}
                       className={cn(
                         'w-full justify-start text-left font-normal',
-                        !field.value && 'text-muted-foreground'
+                        !field.value?.from && 'text-muted-foreground'
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
