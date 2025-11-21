@@ -110,7 +110,7 @@ export default function EditReservationForm({ onFinished, initialData }: EditRes
     }
   }, [initialData, form]);
 
-  const onSubmit = async (data: ReservationFormValues) => {
+  const onSubmit = (data: ReservationFormValues) => {
     if (!firestore || !selectedRoom) {
       toast({ variant: 'destructive', title: 'Erreur', description: 'Données manquantes.' });
       return;
@@ -128,47 +128,67 @@ export default function EditReservationForm({ onFinished, initialData }: EditRes
     // Remove dateRange as it is not part of the Firestore document
     delete (reservationData as any).dateRange;
 
-    try {
-        if (initialData) { // Updating existing reservation
-            const batch = writeBatch(firestore);
-            const reservationRef = doc(firestore, "reservations", initialData.id);
-            batch.update(reservationRef, reservationData);
-            
-            // If room changed, update old and new room status
-            if(initialData.roomId !== data.roomId) {
-                const oldRoomRef = doc(firestore, "rooms", initialData.roomId);
-                batch.update(oldRoomRef, { status: "Disponible" });
-                const newRoomRef = doc(firestore, "rooms", data.roomId);
-                batch.update(newRoomRef, { status: "Occupée" });
-            }
-            await batch.commit();
-             toast({ title: 'Réservation modifiée !', description: 'La réservation a été mise à jour.' });
-
-        } else { // Creating a new reservation with transaction
-            await runTransaction(firestore, async (transaction) => {
-                const roomRef = doc(firestore, 'rooms', data.roomId);
-                const roomDoc = await transaction.get(roomRef);
-
-                if (!roomDoc.exists() || roomDoc.data().status !== 'Disponible') {
-                    throw new Error("Cette chambre n'est plus disponible.");
-                }
-
-                transaction.update(roomRef, { status: 'Occupée' });
-
-                const reservationRef = doc(collection(firestore, 'reservations'));
-                transaction.set(reservationRef, reservationData);
-            });
-            toast({ title: 'Réservation créée !', description: `La réservation pour ${data.guestName} a été créée.` });
+    if (initialData) { // Updating existing reservation
+        const batch = writeBatch(firestore);
+        const reservationRef = doc(firestore, "reservations", initialData.id);
+        batch.update(reservationRef, reservationData);
+        
+        // If room changed, update old and new room status
+        if(initialData.roomId !== data.roomId) {
+            const oldRoomRef = doc(firestore, "rooms", initialData.roomId);
+            batch.update(oldRoomRef, { status: "Disponible" });
+            const newRoomRef = doc(firestore, "rooms", data.roomId);
+            batch.update(newRoomRef, { status: "Occupée" });
         }
-        form.reset();
-        onFinished?.();
 
-    } catch (error: any) {
-        console.error("Transaction/Batch failed: ", error);
-        toast({
-            variant: 'destructive',
-            title: 'Échec de l\'opération',
-            description: error.message || "Une erreur est survenue.",
+        batch.commit()
+            .then(() => {
+                 toast({ title: 'Réservation modifiée !', description: 'La réservation a été mise à jour.' });
+                 form.reset();
+                 onFinished?.();
+            })
+            .catch((serverError) => {
+                const permissionError = new FirestorePermissionError({
+                    path: reservationRef.path,
+                    operation: 'update',
+                    requestResourceData: reservationData,
+                });
+                errorEmitter.emit('permission-error', permissionError);
+            });
+
+    } else { // Creating a new reservation with transaction
+        runTransaction(firestore, async (transaction) => {
+            const roomRef = doc(firestore, 'rooms', data.roomId);
+            const roomDoc = await transaction.get(roomRef);
+
+            if (!roomDoc.exists() || roomDoc.data().status !== 'Disponible') {
+                throw new Error("Cette chambre n'est plus disponible.");
+            }
+
+            transaction.update(roomRef, { status: 'Occupée' });
+
+            const reservationRef = doc(collection(firestore, 'reservations'));
+            transaction.set(reservationRef, reservationData);
+        }).then(() => {
+            toast({ title: 'Réservation créée !', description: `La réservation pour ${data.guestName} a été créée.` });
+            form.reset();
+            onFinished?.();
+        }).catch((serverError: any) => {
+            // Check if it's a regular error or a permission error
+            if (serverError.code === 'permission-denied') {
+                 const permissionError = new FirestorePermissionError({
+                    path: 'reservations', // Path can be more specific if known, but transaction errors are tricky
+                    operation: 'create',
+                    requestResourceData: reservationData,
+                });
+                errorEmitter.emit('permission-error', permissionError);
+            } else {
+                toast({
+                    variant: 'destructive',
+                    title: 'Échec de l\'opération',
+                    description: serverError.message || "Une erreur est survenue lors de la création de la réservation.",
+                });
+            }
         });
     }
   };
@@ -331,3 +351,4 @@ export default function EditReservationForm({ onFinished, initialData }: EditRes
     </Form>
   );
 }
+
