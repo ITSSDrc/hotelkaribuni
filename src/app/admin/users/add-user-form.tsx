@@ -52,27 +52,22 @@ export default function AddUserForm({ onFinished }: AddUserFormProps) {
   });
 
   const onSubmit = async (data: UserFormValues) => {
-    try {
-      const result = await createUser(data);
+    const result = await createUser(data);
 
-      if (result.error) {
-        throw new Error(result.error);
-      }
-
+    if (result && result.uid) {
       toast({
         title: 'Utilisateur créé !',
         description: `Le compte pour ${data.displayName} a été créé avec succès.`,
       });
       form.reset();
       onFinished?.();
-    } catch (error) {
-      console.error(error);
-      const errorMessage = error instanceof Error ? error.message : "Impossible de créer l'utilisateur.";
-      toast({
-        variant: 'destructive',
-        title: 'Oh non ! Une erreur est survenue.',
-        description: errorMessage,
-      });
+    } else {
+        const errorMessage = (result as any).error || "Impossible de créer l'utilisateur.";
+        toast({
+            variant: 'destructive',
+            title: 'Oh non ! Une erreur est survenue.',
+            description: errorMessage,
+        });
     }
   };
 

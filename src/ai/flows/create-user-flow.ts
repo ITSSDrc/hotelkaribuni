@@ -19,16 +19,14 @@ const initializeFirebaseAdmin = () => {
     if (getApps().length === 0) {
         const serviceAccountJson = process.env.FIREBASE_ADMIN_SDK_CONFIG;
         if (!serviceAccountJson) {
-            throw new Error(
-                'FIREBASE_ADMIN_SDK_CONFIG environment variable not set. Cannot initialize Firebase Admin.'
-            );
+            console.error('FIREBASE_ADMIN_SDK_CONFIG is not set.');
+            throw new Error('Firebase Admin SDK configuration is missing.');
         }
         try {
             const serviceAccount = JSON.parse(serviceAccountJson);
             initializeApp({
                 credential: cert(serviceAccount),
             });
-            console.log('Firebase Admin SDK initialized successfully.');
         } catch (e: any) {
             console.error('Failed to parse or initialize Firebase Admin SDK:', e.message);
             throw new Error('Failed to initialize Firebase Admin SDK.');
@@ -80,7 +78,7 @@ const createUserFlow = ai.defineFlow(
         email: userData.email,
         password: userData.password,
         displayName: userData.displayName,
-        emailVerified: true,
+        emailVerified: true, // Let's auto-verify emails for users created by an admin
         disabled: false,
       });
 

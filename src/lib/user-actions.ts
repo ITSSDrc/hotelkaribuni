@@ -1,3 +1,4 @@
+
 'use server';
 
 import {
@@ -11,6 +12,7 @@ export async function createUser(userData: CreateUserInput) {
     const result = await createFirebaseUser(userData);
 
     if (result.error) {
+      console.error('Error from createUser flow:', result.error);
       return { success: false, error: result.error };
     }
 
