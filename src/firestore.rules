@@ -21,9 +21,9 @@ service cloud.firestore {
 
     // Rules for the 'users' collection
     match /users/{userId} {
-      // A user can READ their own document. This is necessary for role checking after login.
       // Allow any authenticated user to read their own profile.
-      allow read: if request.auth != null && request.auth.uid == userId;
+      // This is crucial for role-based security rules to work across the app.
+      allow get: if request.auth != null && request.auth.uid == userId;
 
       // A user can UPDATE their own document.
       allow update: if request.auth != null && request.auth.uid == userId;
@@ -32,8 +32,7 @@ service cloud.firestore {
       // The document ID must match their authentication UID.
       allow create: if request.auth != null && request.auth.uid == userId;
 
-      // A user with the 'superadmin' role can perform any read (get, list) or write (create, update, delete)
-      // operation on any document in the 'users' collection.
+      // A 'superadmin' can perform any read or write operation on any user document.
       allow read, write: if hasRole('superadmin');
     }
     
