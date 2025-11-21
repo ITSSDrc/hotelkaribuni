@@ -1,3 +1,4 @@
+
 'use client';
 
 import Image from 'next/image';
@@ -57,7 +58,7 @@ export default function ChambresPage() {
                   <Card key={room.id} className="flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-2xl">
                     <div className="relative h-60 w-full">
                       <Image
-                        src={room.imageUrl}
+                        src={(room.imageUrls && room.imageUrls[0]) || room.imageUrl || "https://placehold.co/400x300"}
                         alt={room.name}
                         fill
                         className="object-cover"

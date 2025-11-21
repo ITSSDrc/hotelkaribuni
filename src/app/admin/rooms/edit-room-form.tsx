@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -36,7 +37,7 @@ const roomFormSchema = z.object({
   type: z.enum(['Standard', 'Deluxe', 'Suite']),
   price: z.coerce.number().min(1, 'Le prix doit être supérieur à 0.'),
   description: z.string().min(10, 'La description doit contenir au moins 10 caractères.'),
-  imageUrl: z.string().url("L'URL de l'image est requise et doit être valide."),
+  imageUrls: z.array(z.string().url("L'URL de l'image est requise et doit être valide.")).min(1, "Au moins une image est requise."),
   status: z.enum(['Disponible', 'Occupée', 'En nettoyage']),
 });
 
@@ -54,27 +55,31 @@ export default function EditRoomForm({ onFinished, initialData }: EditRoomFormPr
 
   const form = useForm<RoomFormValues>({
     resolver: zodResolver(roomFormSchema),
-    defaultValues: initialData || {
+    defaultValues: {
       name: '',
       type: 'Standard',
       price: 0,
       description: '',
-      imageUrl: '',
+      imageUrls: [],
       status: 'Disponible',
+      ...initialData,
     },
   });
   
   useEffect(() => {
     if (initialData) {
-      form.reset(initialData);
-      setPreview(initialData.imageUrl);
+      form.reset({
+        ...initialData,
+        imageUrls: initialData.imageUrls || [initialData.imageUrl], // Compatibility
+      });
+      setPreview(initialData.imageUrls ? initialData.imageUrls[0] : initialData.imageUrl);
     }
   }, [initialData, form]);
 
   const generateRandomImage = () => {
     const seed = Math.floor(Math.random() * 1000);
     const imageUrl = `https://picsum.photos/seed/${seed}/1200/800`;
-    form.setValue('imageUrl', imageUrl);
+    form.setValue('imageUrls', [imageUrl, `https://picsum.photos/seed/${seed+1}/1200/800`, `https://picsum.photos/seed/${seed+2}/1200/800`]);
     setPreview(imageUrl);
   };
   
@@ -106,11 +111,6 @@ export default function EditRoomForm({ onFinished, initialData }: EditRoomFormPr
                     requestResourceData: data,
                 });
                 errorEmitter.emit('permission-error', permissionError);
-                toast({
-                    variant: 'destructive',
-                    title: 'Oh non ! Erreur de permission.',
-                    description: "Vous n'avez pas les droits pour modifier cette chambre.",
-                });
             });
     } else {
         // Add new room
@@ -132,12 +132,6 @@ export default function EditRoomForm({ onFinished, initialData }: EditRoomFormPr
                   requestResourceData: data,
               });
               errorEmitter.emit('permission-error', permissionError);
-              
-              toast({
-                  variant: 'destructive',
-                  title: 'Oh non ! Erreur de permission.',
-                  description: "Vous n'avez pas les droits pour ajouter une chambre.",
-              });
           });
     }
   };
@@ -217,10 +211,10 @@ export default function EditRoomForm({ onFinished, initialData }: EditRoomFormPr
 
         <FormField
           control={form.control}
-          name="imageUrl"
+          name="imageUrls"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Image de la chambre</FormLabel>
+              <FormLabel>Images de la chambre</FormLabel>
                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <div className="relative flex h-32 w-48 flex-shrink-0 items-center justify-center rounded-md border border-dashed">
                   {preview ? (
@@ -232,12 +226,12 @@ export default function EditRoomForm({ onFinished, initialData }: EditRoomFormPr
                 <div className='flex flex-row sm:flex-col gap-2'>
                    <Button type="button" variant="secondary" size="sm" onClick={generateRandomImage}>
                     <RefreshCw className="mr-2 h-4 w-4" />
-                    Générer une image
+                    Générer la galerie
                   </Button>
                 </div>
               </div>
               <FormDescription>
-                Cliquez sur "Générer" pour obtenir une image aléatoire. Le téléversement de fichiers sera bientôt disponible.
+                Cliquez sur "Générer" pour obtenir une galerie d'images aléatoires.
               </FormDescription>
               <FormMessage />
             </FormItem>

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useParams } from 'next/navigation';
@@ -12,6 +13,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 export default function RoomDetailPage() {
   const params = useParams();
@@ -36,6 +38,11 @@ export default function RoomDetailPage() {
       </div>
     );
   }
+  
+  const roomData = room as any;
+  const galleryImages = roomData.imageUrls && roomData.imageUrls.length > 0
+    ? roomData.imageUrls
+    : [roomData.imageUrl]; // Fallback for old data structure
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -43,46 +50,59 @@ export default function RoomDetailPage() {
       <main className="flex-1 bg-background py-12 md:py-20">
         <div className="container mx-auto px-4 md:px-6">
           <Card className="overflow-hidden shadow-lg">
-            <div className="grid grid-cols-1 lg:grid-cols-2">
-              <div className="relative h-80 lg:h-auto min-h-[400px]">
-                <Image
-                  src={(room as any).imageUrl}
-                  alt={(room as any).name}
-                  fill
-                  priority
-                  className="object-cover"
-                />
+            <div className="grid grid-cols-1 lg:grid-cols-5">
+              <div className="lg:col-span-3 p-4">
+                <Carousel className="w-full">
+                  <CarouselContent>
+                    {galleryImages.map((url: string, index: number) => (
+                      <CarouselItem key={index}>
+                        <div className="relative aspect-video w-full overflow-hidden rounded-lg">
+                          <Image
+                            src={url}
+                            alt={`${roomData.name} - image ${index + 1}`}
+                            fill
+                            priority={index === 0}
+                            className="object-cover"
+                            sizes="(max-width: 1024px) 100vw, 60vw"
+                          />
+                        </div>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  <CarouselPrevious className="left-2" />
+                  <CarouselNext className="right-2" />
+                </Carousel>
               </div>
-              <div className="flex flex-col p-8">
+              <div className="flex flex-col p-8 lg:col-span-2">
                 <h1 className="font-headline text-4xl font-bold md:text-5xl mb-2">
-                  {(room as any).name}
+                  {roomData.name}
                 </h1>
                 <Badge variant="outline" className="w-fit text-lg mb-4">
-                  {(room as any).type}
+                  {roomData.type}
                 </Badge>
                 
                 <p className="text-lg text-muted-foreground mb-6">
-                  {(room as any).description}
+                  {roomData.description}
                 </p>
 
                 <div className="space-y-4 mb-8">
                   <div className="flex items-center gap-3">
                     <BadgeDollarSign className="h-6 w-6 text-primary" />
                     <span className="text-2xl font-bold text-primary">
-                      {(room as any).price.toFixed(2)}€ 
+                      {roomData.price.toFixed(2)}€ 
                       <span className="text-base font-normal text-muted-foreground"> / nuit</span>
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Info className="h-6 w-6 text-primary" />
-                     <Badge variant={(room as any).status === 'Disponible' ? 'default' : 'destructive'} className="text-base">
-                        {(room as any).status}
+                     <Badge variant={roomData.status === 'Disponible' ? 'default' : 'destructive'} className="text-base">
+                        {roomData.status}
                      </Badge>
                   </div>
                 </div>
 
                 <div className="mt-auto">
-                    <Button size="lg" className="w-full" asChild disabled={(room as any).status !== 'Disponible'}>
+                    <Button size="lg" className="w-full" asChild disabled={roomData.status !== 'Disponible'}>
                         <Link href="/#reservation">
                             <CalendarCheck className='mr-2 h-5 w-5' />
                             Réserver maintenant
@@ -98,3 +118,4 @@ export default function RoomDetailPage() {
     </div>
   );
 }
+

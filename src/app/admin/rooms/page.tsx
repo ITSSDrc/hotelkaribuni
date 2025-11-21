@@ -108,14 +108,6 @@ export default function AdminRoomsPage() {
           operation: 'delete',
         });
         errorEmitter.emit('permission-error', permissionError);
-
-        toast({
-          variant: 'destructive',
-          title: 'Erreur de permission',
-          description: "Vous n'avez pas les droits pour supprimer cette chambre.",
-        });
-        setIsDeleteAlertOpen(false);
-        setSelectedRoom(null);
       });
   };
 
@@ -190,7 +182,7 @@ export default function AdminRoomsPage() {
                           alt={room.name}
                           className="aspect-video rounded-md object-cover"
                           height="80"
-                          src={room.imageUrl}
+                          src={(room.imageUrls && room.imageUrls[0]) || room.imageUrl || "https://placehold.co/120x80"}
                           width="120"
                         />
                       </TableCell>

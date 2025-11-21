@@ -1,3 +1,4 @@
+
 {
   "entities": {
     "UserProfile": {
@@ -61,10 +62,13 @@
           "type": "string",
           "description": "A short description of the room."
         },
-        "imageUrl": {
-          "type": "string",
-          "format": "uri",
-          "description": "The URL of the room's image."
+        "imageUrls": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "format": "uri"
+          },
+          "description": "A list of URLs for the room's images."
         },
         "status": {
           "type": "string",
@@ -80,7 +84,7 @@
         "type",
         "price",
         "description",
-        "imageUrl",
+        "imageUrls",
         "status"
       ]
     }
