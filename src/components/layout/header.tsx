@@ -1,3 +1,4 @@
+
 'use client';
 
 import * as React from 'react';
@@ -27,7 +28,7 @@ const navLinks = [
     label: 'Découvrir',
     subLinks: [
       { href: '/chambres', label: 'Chambres' },
-      { href: '/#salle', label: 'Salle' },
+      { href: '/salles', label: 'Salles' },
       { href: '/#piscines', label: 'Piscines' },
       { href: '/#restau-bar', label: 'Restau-bar' },
     ],
