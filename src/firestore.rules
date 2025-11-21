@@ -21,8 +21,8 @@ service cloud.firestore {
 
     // Rules for the 'users' collection
     match /users/{userId} {
+      // Allow any authenticated user to READ their own document. This is necessary for role checking.
       // Allow any authenticated user to read their own profile.
-      // This is crucial for role-based security rules to work across the app.
       allow get: if request.auth != null && request.auth.uid == userId;
 
       // A user can UPDATE their own document.
@@ -32,18 +32,18 @@ service cloud.firestore {
       // The document ID must match their authentication UID.
       allow create: if request.auth != null && request.auth.uid == userId;
 
-      // A 'superadmin' can perform any read or write operation on any user document.
+      // A user with the 'superadmin' role can perform any read (get, list) or write (create, update, delete)
+      // operation on any document in the 'users' collection.
       allow read, write: if hasRole('superadmin');
     }
     
     // Rules for the 'rooms' collection
     match /rooms/{roomId} {
-      // Anyone can list rooms for the showcase.
-      allow list: if true;
+      // Anyone can read room information for the showcase.
+      allow list, get: if true;
       
-      // Receptionists can read a single room (to check status) and update its status.
-      // Superadmins can do everything.
-      allow get, update: if hasAnyRole(['superadmin', 'receptionist']);
+      // Receptionists can update rooms (mainly for status changes).
+      allow update: if hasAnyRole(['superadmin', 'receptionist']);
       
       // Only superadmins can create or delete rooms.
       allow create, delete: if hasRole('superadmin');
@@ -78,11 +78,8 @@ service cloud.firestore {
 
     // Rules for the 'reservations' collection
     match /reservations/{reservationId} {
-      // Allow creation for receptionists and superadmins
-      allow create: if hasAnyRole(['superadmin', 'receptionist']);
-      
-      // Receptionists and superadmins can read, update, delete existing reservations.
-      allow read, update, delete: if hasAnyRole(['superadmin', 'receptionist']);
+      // Allow read and write (create, update, delete) for receptionists and superadmins
+      allow read, write: if hasAnyRole(['superadmin', 'receptionist']);
     }
 
 
