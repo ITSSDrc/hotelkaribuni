@@ -17,6 +17,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter,
 } from '@/components/ui/dialog';
 import QRCode from 'qrcode';
 import Image from 'next/image';
@@ -98,6 +99,11 @@ export default function WhatsappButton() {
             </Link>
           </Button>
         </div>
+         <DialogFooter className="text-center text-xs text-muted-foreground pt-4">
+            <p>
+                Designed by <a href="https://itssdrc.com" target="_blank" rel="noopener noreferrer" className="font-medium text-primary hover:underline">itssdrc.com</a>
+            </p>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
