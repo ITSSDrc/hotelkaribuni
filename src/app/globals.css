@@ -44,24 +44,24 @@ body {
   }
 
   .dark {
-    --background: 222 84% 5%; /* Deep Blue */
-    --foreground: 38 60% 90%; /* Warm Cream */
-    --card: 222 80% 9%; /* Slightly lighter blue */
-    --card-foreground: 38 60% 90%;
-    --popover: 222 84% 5%;
-    --popover-foreground: 38 60% 90%;
-    --primary: 45 93% 47%; /* Gold/Amber */
+    --background: 224 71% 4%;
+    --foreground: 210 40% 98%;
+    --card: 224 71% 4%;
+    --card-foreground: 210 40% 98%;
+    --popover: 224 71% 4%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 45 93% 47%;
     --primary-foreground: 222 84% 5%;
-    --secondary: 215 28% 18%; /* Darker muted blue */
-    --secondary-foreground: 38 60% 90%;
-    --muted: 215 28% 18%;
+    --secondary: 215 28% 18%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 17%;
     --muted-foreground: 215 20% 65%;
-    --accent: 45 93% 47%;
-    --accent-foreground: 222 84% 5%;
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 40% 98%;
     --destructive: 0 63% 31%;
     --destructive-foreground: 210 40% 98%;
-    --border: 215 28% 18%;
-    --input: 215 28% 18%;
+    --border: 217 33% 17%;
+    --input: 217 33% 17%;
     --ring: 45 93% 47%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
