@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { Analytics } from '@vercel/analytics/react';
 import { Inter } from 'next/font/google';
 import { ThemeProvider } from '@/components/layout/theme-provider';
+import WhatsappButton from '@/components/layout/whatsapp-button';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
@@ -33,11 +34,12 @@ export default function RootLayout({
       <body className={cn('min-h-screen bg-background font-body antialiased', inter.variable)}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
           {children}
+          <WhatsappButton />
           <Toaster />
           <Analytics />
         </ThemeProvider>
