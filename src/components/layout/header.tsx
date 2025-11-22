@@ -16,6 +16,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { ThemeToggle } from './theme-toggle';
 
 const navLinks = [
   { href: '/', label: 'Accueil' },
@@ -126,6 +127,7 @@ export default function Header() {
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
+            <ThemeToggle />
             <Button asChild>
                 <Link href="/#reservation">Réserver</Link>
             </Button>
@@ -154,7 +156,8 @@ export default function Header() {
                 <nav className="flex flex-1 flex-col gap-2 p-4">
                   {renderNavLinks(true)}
                 </nav>
-                <div className="border-t border-white/10 p-4">
+                 <div className="border-t border-border/50 p-4 flex flex-col gap-4">
+                    <ThemeToggle />
                     <Button asChild className="w-full">
                         <Link href="/#reservation" onClick={() => setOpen(false)}>Réserver</Link>
                     </Button>
