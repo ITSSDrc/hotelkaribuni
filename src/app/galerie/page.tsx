@@ -11,6 +11,7 @@ import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Dialog,
   DialogContent,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
 
@@ -70,14 +71,17 @@ export default function GalleryPage() {
                 </div>
                  <DialogContent className="max-w-4xl p-0 border-0">
                     {selectedImage && (
-                         <div className="relative aspect-video w-full">
-                            <Image
-                                src={selectedImage.url}
-                                alt={selectedImage.alt}
-                                fill
-                                className="object-contain"
-                            />
-                        </div>
+                        <>
+                            <DialogTitle className="sr-only">{selectedImage.alt}</DialogTitle>
+                            <div className="relative aspect-video w-full">
+                                <Image
+                                    src={selectedImage.url}
+                                    alt={selectedImage.alt}
+                                    fill
+                                    className="object-contain"
+                                />
+                            </div>
+                        </>
                     )}
                 </DialogContent>
             </Dialog>
