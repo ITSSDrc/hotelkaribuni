@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useCallback, KeyboardEvent } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import { getGalleryImages, GalleryImage } from '@/lib/static-data';
 import Header from '@/components/layout/header';
@@ -59,14 +59,14 @@ export default function GalleryPage() {
         handleClose();
       }
     }
-  }, [selectedImageIndex, handleNext, handlePrevious]);
+  }, [selectedImageIndex, handleNext, handlePrevious, handleClose]);
 
-  useState(() => {
+  useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  });
+  }, [handleKeyDown]);
 
   const selectedImage = selectedImageIndex !== null ? filteredImages[selectedImageIndex] : null;
 
