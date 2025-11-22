@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from '@/components/ui/button';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 
 export default function GalleryPage() {
@@ -59,7 +58,7 @@ export default function GalleryPage() {
         handleClose();
       }
     }
-  }, [selectedImageIndex, handleNext, handlePrevious, handleClose]);
+  }, [selectedImageIndex, handleNext, handlePrevious]);
 
   useEffect(() => {
     window.addEventListener('keydown', handleKeyDown);
@@ -93,7 +92,7 @@ export default function GalleryPage() {
             </Tabs>
             
             <Dialog open={selectedImageIndex !== null} onOpenChange={(isOpen) => !isOpen && handleClose()}>
-                <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+                <div key={selectedCategory} className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 animate-fade-in">
                 {filteredImages.map((image, index) => (
                     <DialogTrigger asChild key={image.id} onClick={() => handleImageClick(index)}>
                         <Card className="group cursor-pointer overflow-hidden transition-shadow duration-300 hover:shadow-xl">
@@ -121,8 +120,14 @@ export default function GalleryPage() {
                                     className="object-contain"
                                 />
                             </div>
-                             <DialogTitle className="absolute bottom-4 left-1/2 -translate-x-1/2 w-auto whitespace-nowrap rounded-md bg-black/50 px-4 py-2 text-lg text-white">
-                                {selectedImage.alt}
+                            <DialogTitle className="absolute bottom-4 left-1/2 -translate-x-1/2 w-auto whitespace-nowrap rounded-md bg-black/50 px-4 py-2 text-base text-white flex items-center gap-2">
+                                <span>{selectedImage.alt}</span>
+                                {filteredImages.length > 1 && (
+                                  <>
+                                  <span className='text-white/70'>•</span>
+                                  <span className="text-sm text-white/70">{selectedImageIndex! + 1} / {filteredImages.length}</span>
+                                  </>
+                                )}
                             </DialogTitle>
 
                             {filteredImages.length > 1 && (
