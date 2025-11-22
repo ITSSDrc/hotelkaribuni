@@ -7,24 +7,6 @@
       "imageHint": "hotel pool"
     },
     {
-      "id": "room-standard",
-      "description": "A clean and modern standard hotel room.",
-      "imageUrl": "https://images.unsplash.com/photo-1711059985570-4c32ed12a12c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxob3RlbCUyMHJvb218ZW58MHx8fHwxNzYzNjM1MzU5fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "hotel room"
-    },
-    {
-      "id": "room-deluxe",
-      "description": "A spacious deluxe hotel room with a nice view.",
-      "imageUrl": "https://images.unsplash.com/photo-1587985064135-0366536eab42?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxsdXh1cnklMjBiZWRyb29tfGVufDB8fHx8MTc2MzUzNjcwM3ww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "luxury bedroom"
-    },
-    {
-      "id": "room-suite",
-      "description": "A luxurious hotel suite with a separate living area.",
-      "imageUrl": "https://images.unsplash.com/photo-1746730920916-9537eae97ab6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bHV4dXJ5JTIwc3VpdGV8ZW58MHx8fHwxNzYzNjExNzA4fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "luxury suite"
-    },
-    {
       "id": "gallery-1",
       "description": "Guests enjoying breakfast by the pool.",
       "imageUrl": "https://images.unsplash.com/photo-1676951593715-b1e225f747d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxicmVha2Zhc3QlMjBwb29sc2lkZXxlbnwwfHx8fDE3NjM2MzUzNTl8MA&ixlib=rb-4.1.0&q=80&w=1080",

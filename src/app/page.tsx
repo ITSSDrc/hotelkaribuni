@@ -8,6 +8,7 @@ import Contact from '@/components/landing/contact';
 import Salle from '@/components/landing/salle';
 import Piscines from '@/components/landing/piscines';
 import RestauBar from '@/components/landing/restau-bar';
+import RoomShowcase from '@/components/landing/room-showcase';
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         <Hero />
+        <RoomShowcase />
         <Salle />
         <Piscines />
         <RestauBar />

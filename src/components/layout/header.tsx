@@ -4,16 +4,11 @@
 import * as React from 'react';
 import Link from 'next/link';
 import { Menu, X, ChevronDown } from 'lucide-react';
-import { signOut } from 'firebase/auth';
-import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import Logo from '../icons/logo';
 import { cn } from '@/lib/utils';
-import { useUserProfile } from '@/firebase/auth/use-user-profile';
-import { useFirebase } from '@/firebase';
-import { useToast } from '@/hooks/use-toast';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -38,10 +33,6 @@ const navLinks = [
 ];
 
 export default function Header() {
-  const { user, userProfile, isLoading } = useUserProfile();
-  const { auth } = useFirebase();
-  const router = useRouter();
-  const { toast } = useToast();
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [open, setOpen] = React.useState(false);
 
@@ -52,68 +43,6 @@ export default function Header() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const handleLogout = async () => {
-    await signOut(auth);
-    toast({
-      title: 'Déconnexion réussie',
-    });
-    router.replace('/');
-  };
-
-  const getDashboardLink = () => {
-    if (!user || !userProfile) return null;
-    const isAdminOrStaff = ['superadmin', 'receptionist', 'stock_manager'].includes(userProfile.role);
-    if (isAdminOrStaff) {
-      return { href: '/admin', label: 'Admin' };
-    }
-    return { href: '/dashboard', label: 'Tableau de bord' };
-  };
-
-  const dashboardLink = getDashboardLink();
-
-  const renderAuthButtons = () => {
-    if (isLoading) {
-      return <Button disabled>Chargement...</Button>;
-    }
-
-    if (user) {
-      return (
-        <div className="flex items-center gap-2">
-           {dashboardLink && (
-            <Button variant="outline" asChild>
-              <Link href={dashboardLink.href}>{dashboardLink.label}</Link>
-            </Button>
-          )}
-          <Button onClick={handleLogout}>Déconnexion</Button>
-        </div>
-      );
-    }
-
-    return (
-      <Button asChild>
-        <Link href="/connexion">Connexion</Link>
-      </Button>
-    );
-  };
-  
-  const renderMobileAuthButtons = () => {
-    if (isLoading) {
-      return <Button disabled className="w-full">Chargement...</Button>;
-    }
-
-    if (user) {
-      return <Button onClick={() => { handleLogout(); setOpen(false); }} className="w-full">Déconnexion</Button>;
-    }
-
-    return (
-       <Button asChild className="w-full">
-        <Link href="/connexion" onClick={() => setOpen(false)}>
-          Connexion
-        </Link>
-      </Button>
-    );
-  }
 
   const renderNavLinks = (isMobile = false) => {
     return navLinks.map((link, index) => {
@@ -197,7 +126,9 @@ export default function Header() {
         </nav>
 
         <div className="hidden items-center gap-2 md:flex">
-          {renderAuthButtons()}
+            <Button asChild>
+                <Link href="/#reservation">Réserver</Link>
+            </Button>
         </div>
 
         <div className="md:hidden">
@@ -222,18 +153,11 @@ export default function Header() {
                 </div>
                 <nav className="flex flex-1 flex-col gap-2 p-4">
                   {renderNavLinks(true)}
-                  {dashboardLink && (
-                     <Link
-                      href={dashboardLink.href}
-                      className="rounded-md px-3 py-2 text-lg font-medium transition-colors hover:bg-accent/50"
-                      onClick={() => setOpen(false)}
-                    >
-                      {dashboardLink.label}
-                    </Link>
-                  )}
                 </nav>
                 <div className="border-t p-4">
-                  {renderMobileAuthButtons()}
+                    <Button asChild className="w-full">
+                        <Link href="/#reservation" onClick={() => setOpen(false)}>Réserver</Link>
+                    </Button>
                 </div>
               </div>
             </SheetContent>

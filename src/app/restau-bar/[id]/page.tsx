@@ -3,31 +3,19 @@
 
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
-import { doc } from 'firebase/firestore';
-import { useFirebase } from '@/firebase';
-import { useDoc } from '@/firebase/firestore/use-doc';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
-import { Loader2, Info, Clock, UtensilsCrossed } from 'lucide-react';
+import { Info, Clock } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { StaticData } from '@/lib/static-data';
 
 export default function RestauBarDetailPage() {
   const params = useParams();
   const { id } = params;
-  const { firestore } = useFirebase();
 
-  const itemDocRef = typeof id === 'string' ? doc(firestore, 'restau-bar', id) : null;
-  const { data: item, isLoading } = useDoc(itemDocRef);
-
-  if (isLoading) {
-    return (
-      <div className="flex h-screen items-center justify-center">
-        <Loader2 className="h-12 w-12 animate-spin text-primary" />
-      </div>
-    );
-  }
+  const item = StaticData.restauBar.find(i => i.id === id);
 
   if (!item) {
     return (
@@ -40,7 +28,7 @@ export default function RestauBarDetailPage() {
   const itemData = item as any;
   const galleryImages = itemData.imageUrls && itemData.imageUrls.length > 0
     ? itemData.imageUrls
-    : ["https://placehold.co/1200x800"];
+    : [];
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -50,26 +38,32 @@ export default function RestauBarDetailPage() {
           <Card className="overflow-hidden shadow-lg">
             <div className="grid grid-cols-1 lg:grid-cols-5">
               <div className="lg:col-span-3 p-4">
-                <Carousel className="w-full">
-                  <CarouselContent>
-                    {galleryImages.map((url: string, index: number) => (
-                      <CarouselItem key={index}>
-                        <div className="relative aspect-video w-full overflow-hidden rounded-lg">
-                          <Image
-                            src={url}
-                            alt={`${itemData.name} - image ${index + 1}`}
-                            fill
-                            priority={index === 0}
-                            className="object-cover"
-                            sizes="(max-width: 1024px) 100vw, 60vw"
-                          />
-                        </div>
-                      </CarouselItem>
-                    ))}
-                  </CarouselContent>
-                  <CarouselPrevious className="left-2" />
-                  <CarouselNext className="right-2" />
-                </Carousel>
+                {galleryImages.length > 0 ? (
+                    <Carousel className="w-full">
+                    <CarouselContent>
+                        {galleryImages.map((url: string, index: number) => (
+                        <CarouselItem key={index}>
+                            <div className="relative aspect-video w-full overflow-hidden rounded-lg">
+                            <Image
+                                src={url}
+                                alt={`${itemData.name} - image ${index + 1}`}
+                                fill
+                                priority={index === 0}
+                                className="object-cover"
+                                sizes="(max-width: 1024px) 100vw, 60vw"
+                            />
+                            </div>
+                        </CarouselItem>
+                        ))}
+                    </CarouselContent>
+                    <CarouselPrevious className="left-2" />
+                    <CarouselNext className="right-2" />
+                    </Carousel>
+                ) : (
+                    <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-muted flex items-center justify-center">
+                       <p className='text-muted-foreground'>Pas d'image</p>
+                    </div>
+                )}
               </div>
               <div className="flex flex-col p-8 lg:col-span-2">
                 <Badge variant="outline" className="w-fit text-lg mb-4">

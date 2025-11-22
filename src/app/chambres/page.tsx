@@ -5,14 +5,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Loader2 } from 'lucide-react';
-import { useCollection } from '@/firebase/firestore/use-collection';
-import { collection, query, orderBy } from 'firebase/firestore';
-import { useFirebase } from '@/firebase';
+import { ArrowRight } from 'lucide-react';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import { Badge } from '@/components/ui/badge';
-
+import { StaticData } from '@/lib/static-data';
 
 const getStatusVariant = (status: string) => {
     switch (status) {
@@ -25,15 +22,10 @@ const getStatusVariant = (status: string) => {
       default:
         return 'outline';
     }
-  };
-  
+};
 
 export default function ChambresPage() {
-  const { firestore } = useFirebase();
-  const roomsCollectionRef = collection(firestore, 'rooms');
-  const roomsQuery = query(roomsCollectionRef, orderBy('price', 'asc'));
-
-  const { data: rooms, isLoading } = useCollection(roomsQuery);
+  const rooms = StaticData.rooms;
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -48,50 +40,44 @@ export default function ChambresPage() {
               </p>
             </div>
 
-            {isLoading ? (
-              <div className="flex h-64 items-center justify-center">
-                <Loader2 className="h-12 w-12 animate-spin text-primary" />
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                {rooms && (rooms as any[]).map((room: any) => (
-                  <Card key={room.id} className="flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-2xl">
-                    <div className="relative h-60 w-full">
-                      <Image
-                        src={(room.imageUrls && room.imageUrls[0]) || room.imageUrl || "https://placehold.co/400x300"}
-                        alt={room.name}
-                        fill
-                        className="object-cover"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                      />
-                       <Badge variant={getStatusVariant(room.status)} className="absolute top-2 right-2">
-                        {room.status}
-                      </Badge>
-                    </div>
-                    <CardHeader>
-                      <CardTitle className="font-headline text-2xl">{room.name}</CardTitle>
-                      <CardDescription>{room.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-grow">
-                        <div className='flex justify-between items-center'>
-                            <p className="text-xl font-semibold text-primary">
-                                {room.price.toFixed(2)}€ <span className="text-sm font-normal text-muted-foreground">/ nuit</span>
-                            </p>
-                            <Badge variant="outline">{room.type}</Badge>
-                        </div>
-                    </CardContent>
-                    <CardFooter>
-                      <Button asChild className="w-full">
-                        <Link href={`/chambres/${room.id}`}>
-                          Voir les détails
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </Link>
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                ))}
-              </div>
-            )}
+            <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {rooms.map((room: any) => (
+                <Card key={room.id} className="flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-2xl">
+                  <div className="relative h-60 w-full">
+                    <Image
+                      src={(room.imageUrls && room.imageUrls[0]) || "https://placehold.co/400x300"}
+                      alt={room.name}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                    <Badge variant={getStatusVariant(room.status)} className="absolute top-2 right-2">
+                      {room.status}
+                    </Badge>
+                  </div>
+                  <CardHeader>
+                    <CardTitle className="font-headline text-2xl">{room.name}</CardTitle>
+                    <CardDescription>{room.description}</CardDescription>
+                  </CardHeader>
+                  <CardContent className="flex-grow">
+                      <div className='flex justify-between items-center'>
+                          <p className="text-xl font-semibold text-primary">
+                              {room.price.toFixed(2)}€ <span className="text-sm font-normal text-muted-foreground">/ nuit</span>
+                          </p>
+                          <Badge variant="outline">{room.type}</Badge>
+                      </div>
+                  </CardContent>
+                  <CardFooter>
+                    <Button asChild className="w-full">
+                      <Link href={`/chambres/${room.id}`}>
+                        Voir les détails
+                        <ArrowRight className="ml-2 h-4 w-4" />
+                      </Link>
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
           </div>
         </section>
       </main>
