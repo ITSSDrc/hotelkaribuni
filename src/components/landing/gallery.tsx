@@ -1,3 +1,4 @@
+
 'use client';
 import Image from 'next/image';
 import {
@@ -9,6 +10,9 @@ import {
 } from '@/components/ui/carousel';
 import { Card, CardContent } from '@/components/ui/card';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Button } from '../ui/button';
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 
 const galleryImages = PlaceHolderImages.filter(img => img.id.startsWith('gallery-'));
 
@@ -55,6 +59,16 @@ export default function Gallery() {
             <CarouselNext className="-translate-x-12" />
           </Carousel>
         </div>
+
+        <div className="mt-16 text-center">
+            <Button asChild size="lg">
+                <Link href="/galerie">
+                    Voir toute la galerie
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+            </Button>
+        </div>
+
       </div>
     </section>
   );

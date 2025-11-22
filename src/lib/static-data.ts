@@ -5,7 +5,6 @@ export const StaticData = {
             "id": "1",
             "name": "Chambre Standard",
             "type": "Standard",
-            "price": 120,
             "description": "Une chambre confortable et élégante, parfaite pour les voyageurs seuls ou en couple, avec toutes les commodités modernes.",
             "imageUrls": [
                 "https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=2070&auto=format&fit=crop",
@@ -17,7 +16,6 @@ export const StaticData = {
             "id": "2",
             "name": "Chambre Deluxe Vue Mer",
             "type": "Deluxe",
-            "price": 180,
             "description": "Profitez d'un espace généreux et d'une vue imprenable sur l'océan depuis votre balcon privé. Le luxe et le confort à leur apogée.",
             "imageUrls": [
                 "https://images.unsplash.com/photo-1590490359854-dfba5968267c?q=80&w=1974&auto=format&fit=crop",
@@ -29,7 +27,6 @@ export const StaticData = {
             "id": "3",
             "name": "Suite Royale",
             "type": "Suite",
-            "price": 350,
             "description": "L'expérience ultime du luxe. Notre suite Royale dispose d'un salon séparé, d'une grande terrasse et de services exclusifs.",
             "imageUrls": [
                 "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=2070&auto=format&fit=crop",
@@ -96,3 +93,60 @@ export const StaticData = {
         }
     ]
 }
+
+export type GalleryImage = {
+  id: string;
+  url: string;
+  alt: string;
+  category: string;
+};
+
+export const getGalleryImages = (): GalleryImage[] => {
+  const allImages: GalleryImage[] = [];
+
+  StaticData.rooms.forEach(room => {
+    room.imageUrls.forEach((url, index) => {
+      allImages.push({
+        id: `${room.id}-img-${index}`,
+        url: url,
+        alt: room.name,
+        category: 'Chambres'
+      });
+    });
+  });
+
+  StaticData.salles.forEach(salle => {
+    salle.imageUrls.forEach((url, index) => {
+      allImages.push({
+        id: `${salle.id}-img-${index}`,
+        url: url,
+        alt: salle.name,
+        category: 'Salles'
+      });
+    });
+  });
+
+  StaticData.piscines.forEach(piscine => {
+    piscine.imageUrls.forEach((url, index) => {
+      allImages.push({
+        id: `${piscine.id}-img-${index}`,
+        url: url,
+        alt: piscine.name,
+        category: 'Piscines'
+      });
+    });
+  });
+
+  StaticData.restauBar.forEach(item => {
+    item.imageUrls.forEach((url, index) => {
+      allImages.push({
+        id: `${item.id}-img-${index}`,
+        url: url,
+        alt: item.name,
+        category: 'Restaurant & Bar'
+      });
+    });
+  });
+
+  return allImages;
+};

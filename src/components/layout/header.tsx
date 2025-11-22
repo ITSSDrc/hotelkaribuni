@@ -29,7 +29,7 @@ const navLinks = [
       { href: '/restau-bar', label: 'Restau-bar' },
     ],
   },
-  { href: '/#galerie', label: 'Galerie' },
+  { href: '/galerie', label: 'Galerie' },
   { href: '/#contact', label: 'Contact' },
 ];
 
