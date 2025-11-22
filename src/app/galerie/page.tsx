@@ -68,6 +68,7 @@ export default function GalleryPage() {
     };
   }, [handleKeyDown]);
 
+
   const selectedImage = selectedImageIndex !== null ? filteredImages[selectedImageIndex] : null;
 
   return (
@@ -112,7 +113,6 @@ export default function GalleryPage() {
                  <DialogContent className="max-w-4xl w-full p-0 border-0 bg-transparent shadow-none" onKeyDown={handleKeyDown as any}>
                     {selectedImage && (
                         <>
-                            <DialogTitle className="sr-only">{selectedImage.alt}</DialogTitle>
                             <div className="relative aspect-video w-full">
                                 <Image
                                     src={selectedImage.url}
@@ -121,6 +121,9 @@ export default function GalleryPage() {
                                     className="object-contain"
                                 />
                             </div>
+                             <DialogTitle className="absolute bottom-4 left-1/2 -translate-x-1/2 w-auto whitespace-nowrap rounded-md bg-black/50 px-4 py-2 text-lg text-white">
+                                {selectedImage.alt}
+                            </DialogTitle>
 
                             {filteredImages.length > 1 && (
                                 <>
