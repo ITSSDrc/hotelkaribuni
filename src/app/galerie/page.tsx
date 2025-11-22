@@ -95,15 +95,16 @@ export default function GalleryPage() {
                 <div key={selectedCategory} className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 animate-fade-in">
                 {filteredImages.map((image, index) => (
                     <DialogTrigger asChild key={image.id} onClick={() => handleImageClick(index)}>
-                        <Card className="group cursor-pointer overflow-hidden transition-shadow duration-300 hover:shadow-xl">
+                        <Card className="group cursor-pointer overflow-hidden transition-shadow duration-300 hover:shadow-2xl">
                             <CardContent className="relative aspect-square p-0">
                             <Image
                                 src={image.url}
                                 alt={image.alt}
                                 fill
-                                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                                className="object-cover transition-transform duration-500 group-hover:scale-110"
                                 sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
                             />
+                            <div className="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
                             </CardContent>
                         </Card>
                     </DialogTrigger>
