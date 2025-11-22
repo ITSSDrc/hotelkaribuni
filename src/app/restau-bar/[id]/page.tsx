@@ -5,11 +5,23 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
-import { Info, Clock } from 'lucide-react';
+import { Info, Clock, Fish, Sun, Award, Grape, Martini, Sunrise, Music, Cookie } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { StaticData } from '@/lib/static-data';
+import { Separator } from '@/components/ui/separator';
+
+const iconMap: { [key: string]: React.ElementType } = {
+    Fish,
+    Sun,
+    Award,
+    Grape,
+    Martini,
+    Sunrise,
+    Music,
+    Cookie
+};
 
 export default function RestauBarDetailPage() {
   const params = useParams();
@@ -77,7 +89,7 @@ export default function RestauBarDetailPage() {
                   {itemData.description}
                 </p>
 
-                <div className="space-y-4 mb-8">
+                <div className="space-y-4 mb-6">
                   <div className="flex items-center gap-3">
                     <Info className="h-6 w-6 text-primary" />
                      <Badge variant={itemData.status === 'Ouvert' ? 'default' : 'destructive'} className="text-base">
@@ -86,11 +98,31 @@ export default function RestauBarDetailPage() {
                   </div>
                   <div className="flex items-center gap-3">
                     <Clock className="h-6 w-6 text-primary" />
-                     <span className="text-xl font-semibold">
+                     <span className="text-lg font-semibold">
                         Horaires à consulter sur place
                      </span>
                   </div>
                 </div>
+
+                {itemData.amenities && itemData.amenities.length > 0 && (
+                  <>
+                    <Separator className="my-6" />
+                    <div className="mb-6">
+                        <h2 className="text-xl font-headline font-semibold mb-4">Points Forts</h2>
+                        <div className="grid grid-cols-2 gap-4">
+                            {itemData.amenities.map((amenity: {name: string, icon: string}) => {
+                                const Icon = iconMap[amenity.icon];
+                                return (
+                                <div key={amenity.name} className="flex items-center gap-3 text-muted-foreground">
+                                    {Icon && <Icon className="h-5 w-5 text-primary" />}
+                                    <span>{amenity.name}</span>
+                                </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </Card>

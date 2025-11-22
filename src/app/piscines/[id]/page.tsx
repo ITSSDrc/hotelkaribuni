@@ -5,11 +5,24 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
-import { Loader2, Sun, Info } from 'lucide-react';
+import { Info, Umbrella, Check, Martini, ToyBrick, Thermometer, Waves, Wind, Sparkles } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { StaticData } from '@/lib/static-data';
+import { Separator } from '@/components/ui/separator';
+
+const iconMap: { [key: string]: React.ElementType } = {
+    Umbrella,
+    Check,
+    Martini,
+    ToyBrick,
+    Thermometer,
+    Waves,
+    Wind,
+    Sparkles,
+};
+
 
 export default function PiscineDetailPage() {
   const params = useParams();
@@ -77,20 +90,35 @@ export default function PiscineDetailPage() {
                   {piscineData.description}
                 </p>
 
-                <div className="space-y-4 mb-8">
+                <div className="space-y-4 mb-6">
                   <div className="flex items-center gap-3">
                     <Info className="h-6 w-6 text-primary" />
                      <Badge variant={piscineData.status === 'Ouverte' ? 'default' : 'destructive'} className="text-base">
                         {piscineData.status}
                      </Badge>
                   </div>
-                  <div className="flex items-center gap-3">
-                    <Sun className="h-6 w-6 text-primary" />
-                     <span className="text-xl font-semibold">
-                        Accessible toute la journée
-                     </span>
-                  </div>
                 </div>
+
+                 {piscineData.amenities && piscineData.amenities.length > 0 && (
+                  <>
+                    <Separator className="my-6" />
+                    <div className="mb-6">
+                        <h2 className="text-xl font-headline font-semibold mb-4">Services & Équipements</h2>
+                        <div className="grid grid-cols-2 gap-4">
+                            {piscineData.amenities.map((amenity: {name: string, icon: string}) => {
+                                const Icon = iconMap[amenity.icon];
+                                return (
+                                <div key={amenity.name} className="flex items-center gap-3 text-muted-foreground">
+                                    {Icon && <Icon className="h-5 w-5 text-primary" />}
+                                    <span>{amenity.name}</span>
+                                </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                  </>
+                )}
+
               </div>
             </div>
           </Card>

@@ -5,13 +5,23 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
-import { Users, BadgeDollarSign, Info, CalendarCheck } from 'lucide-react';
+import { Users, Info, CalendarCheck, MonitorPlay, Presentation, Wifi, Volume2, AirVent } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { StaticData } from '@/lib/static-data';
+import { Separator } from '@/components/ui/separator';
+
+const iconMap: { [key: string]: React.ElementType } = {
+    MonitorPlay,
+    Presentation,
+    Wifi,
+    Volume2,
+    AirVent,
+};
+
 
 export default function SalleDetailPage() {
   const params = useParams();
@@ -76,7 +86,7 @@ export default function SalleDetailPage() {
                   {salleData.description}
                 </p>
 
-                <div className="space-y-4 mb-8">
+                <div className="space-y-4 mb-6">
                     <div className="flex items-center gap-3">
                         <Users className="h-6 w-6 text-primary" />
                         <span className="text-xl font-semibold">
@@ -84,19 +94,32 @@ export default function SalleDetailPage() {
                         </span>
                     </div>
                   <div className="flex items-center gap-3">
-                    <BadgeDollarSign className="h-6 w-6 text-primary" />
-                    <span className="text-2xl font-bold text-primary">
-                      {salleData.price.toFixed(2)}€ 
-                      <span className="text-base font-normal text-muted-foreground"> / jour</span>
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
                     <Info className="h-6 w-6 text-primary" />
                      <Badge variant={salleData.status === 'Disponible' ? 'default' : 'destructive'} className="text-base">
                         {salleData.status}
                      </Badge>
                   </div>
                 </div>
+
+                 {salleData.amenities && salleData.amenities.length > 0 && (
+                  <>
+                    <Separator className="my-6" />
+                    <div className="mb-6">
+                        <h2 className="text-xl font-headline font-semibold mb-4">Équipements Inclus</h2>
+                        <div className="grid grid-cols-2 gap-4">
+                            {salleData.amenities.map((amenity: {name: string, icon: string}) => {
+                                const Icon = iconMap[amenity.icon];
+                                return (
+                                <div key={amenity.name} className="flex items-center gap-3 text-muted-foreground">
+                                    {Icon && <Icon className="h-5 w-5 text-primary" />}
+                                    <span>{amenity.name}</span>
+                                </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                  </>
+                )}
 
                 <div className="mt-auto">
                     <Button size="lg" className="w-full" asChild disabled={salleData.status !== 'Disponible'}>

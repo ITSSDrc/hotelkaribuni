@@ -5,13 +5,28 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
-import { Loader2, BedDouble, BadgeDollarSign, Info, CalendarCheck } from 'lucide-react';
+import { Info, CalendarCheck, Wifi, AirVent, Tv, ConciergeBell, Waves, GalleryVerticalEnd, GlassWater, Sofa, Sun, Bath, Star } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { StaticData } from '@/lib/static-data';
+import { Separator } from '@/components/ui/separator';
+
+const iconMap: { [key: string]: React.ElementType } = {
+  Wifi,
+  AirVent,
+  Tv,
+  ConciergeBell,
+  Waves,
+  GalleryVerticalEnd,
+  GlassWater,
+  Sofa,
+  Sun,
+  Bath,
+  Star
+};
 
 export default function RoomDetailPage() {
   const params = useParams();
@@ -79,7 +94,7 @@ export default function RoomDetailPage() {
                   {roomData.description}
                 </p>
 
-                <div className="space-y-4 mb-8">
+                <div className="space-y-4 mb-6">
                   <div className="flex items-center gap-3">
                     <Info className="h-6 w-6 text-primary" />
                      <Badge variant={roomData.status === 'Disponible' ? 'default' : 'destructive'} className="text-base">
@@ -87,6 +102,27 @@ export default function RoomDetailPage() {
                      </Badge>
                   </div>
                 </div>
+
+                {roomData.amenities && roomData.amenities.length > 0 && (
+                  <>
+                    <Separator className="my-6" />
+                    <div className="mb-6">
+                        <h2 className="text-xl font-headline font-semibold mb-4">Équipements</h2>
+                        <div className="grid grid-cols-2 gap-4">
+                            {roomData.amenities.map((amenity: {name: string, icon: string}) => {
+                                const Icon = iconMap[amenity.icon];
+                                return (
+                                <div key={amenity.name} className="flex items-center gap-3 text-muted-foreground">
+                                    {Icon && <Icon className="h-5 w-5 text-primary" />}
+                                    <span>{amenity.name}</span>
+                                </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                  </>
+                )}
+
 
                 <div className="mt-auto">
                     <Button size="lg" className="w-full" asChild disabled={roomData.status !== 'Disponible'}>
