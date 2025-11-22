@@ -38,10 +38,7 @@ export default function RoomShowcase() {
                 <CardContent className="p-6">
                   <h3 className="font-headline text-2xl font-semibold text-foreground mb-2">{room.name}</h3>
                   <p className="text-muted-foreground mb-4 line-clamp-2">{room.description}</p>
-                  <div className="flex justify-between items-center">
-                     <p className="text-lg font-semibold text-primary">
-                        À partir de {room.price.toFixed(2)}€ <span className="text-sm font-normal text-muted-foreground">/ nuit</span>
-                    </p>
+                  <div className="flex justify-end items-center">
                      <Button asChild variant="ghost" size="sm" className="text-primary hover:bg-primary/10">
                         <Link href={`/chambres/${room.id}`}>
                           Détails

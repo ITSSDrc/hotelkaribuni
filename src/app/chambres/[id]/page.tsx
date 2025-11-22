@@ -81,13 +81,6 @@ export default function RoomDetailPage() {
 
                 <div className="space-y-4 mb-8">
                   <div className="flex items-center gap-3">
-                    <BadgeDollarSign className="h-6 w-6 text-primary" />
-                    <span className="text-2xl font-bold text-primary">
-                      {roomData.price.toFixed(2)}€ 
-                      <span className="text-base font-normal text-muted-foreground"> / nuit</span>
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-3">
                     <Info className="h-6 w-6 text-primary" />
                      <Badge variant={roomData.status === 'Disponible' ? 'default' : 'destructive'} className="text-base">
                         {roomData.status}

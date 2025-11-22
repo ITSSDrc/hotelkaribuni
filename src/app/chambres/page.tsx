@@ -60,10 +60,7 @@ export default function ChambresPage() {
                     <CardDescription>{room.description}</CardDescription>
                   </CardHeader>
                   <CardContent className="flex-grow">
-                      <div className='flex justify-between items-center'>
-                          <p className="text-xl font-semibold text-primary">
-                              {room.price.toFixed(2)}€ <span className="text-sm font-normal text-muted-foreground">/ nuit</span>
-                          </p>
+                      <div className='flex justify-end items-center'>
                           <Badge variant="outline">{room.type}</Badge>
                       </div>
                   </CardContent>
