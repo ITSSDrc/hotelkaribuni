@@ -42,16 +42,16 @@ export default function Contact() {
   }
 
   return (
-    <section id="contact" className="bg-card py-16 md:py-24">
+    <section id="contact" className="bg-background py-16 md:py-32">
       <div className="container mx-auto px-4 md:px-6">
-        <Card className="mx-auto max-w-2xl shadow-lg">
-          <CardHeader className="text-center">
-            <CardTitle className="font-headline text-4xl font-bold md:text-5xl">Contactez-nous</CardTitle>
-            <CardDescription>
-              Une question ou une demande particulière ? Remplissez le formulaire ci-dessous.
+        <Card className="mx-auto max-w-2xl shadow-2xl shadow-primary/10 border-primary/20">
+          <CardHeader className="text-center p-8">
+            <CardTitle className="section-title">Contactez-nous</CardTitle>
+            <CardDescription className="section-subtitle">
+              Une question ou une demande particulière ? Nous sommes à votre écoute.
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-8">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
@@ -61,7 +61,7 @@ export default function Contact() {
                     <FormItem>
                       <FormLabel>Nom</FormLabel>
                       <FormControl>
-                        <Input placeholder="Votre nom complet" {...field} />
+                        <Input placeholder="Votre nom complet" {...field} className="h-12" />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -74,7 +74,7 @@ export default function Contact() {
                     <FormItem>
                       <FormLabel>Email</FormLabel>
                       <FormControl>
-                        <Input placeholder="votre.email@example.com" {...field} />
+                        <Input placeholder="votre.email@example.com" {...field} className="h-12"/>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -87,13 +87,13 @@ export default function Contact() {
                     <FormItem>
                       <FormLabel>Message</FormLabel>
                       <FormControl>
-                        <Textarea placeholder="Écrivez votre message ici..." className="min-h-[120px]" {...field} />
+                        <Textarea placeholder="Écrivez votre message ici..." className="min-h-[150px]" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full">Envoyer le message</Button>
+                <Button type="submit" size="lg" className="w-full h-12">Envoyer le message</Button>
               </form>
             </Form>
           </CardContent>

@@ -50,7 +50,7 @@ export default function Header() {
         if (isMobile) {
           return (
             <Collapsible key={index}>
-              <CollapsibleTrigger className="flex w-full items-center justify-between rounded-md px-3 py-2 text-lg font-medium transition-colors hover:bg-accent/50 [&[data-state=open]>svg]:rotate-180">
+              <CollapsibleTrigger className="flex w-full items-center justify-between rounded-md px-3 py-2 text-lg font-medium transition-colors hover:bg-accent/10 [&[data-state=open]>svg]:rotate-180">
                 {link.label}
                 <ChevronDown className="h-5 w-5 transition-transform" />
               </CollapsibleTrigger>
@@ -60,7 +60,7 @@ export default function Header() {
                     <Link
                       key={subIndex}
                       href={subLink.href}
-                      className="rounded-md px-3 py-2 text-base font-medium transition-colors hover:bg-accent/50"
+                      className="rounded-md px-3 py-2 text-base font-medium transition-colors hover:bg-accent/10"
                       onClick={() => setOpen(false)}
                     >
                       {subLink.label}
@@ -112,7 +112,7 @@ export default function Header() {
     <header
       className={cn(
         'sticky top-0 z-50 w-full transition-all duration-300',
-        isScrolled ? 'bg-background/80 shadow-md backdrop-blur-md' : 'bg-transparent'
+        isScrolled ? 'bg-background/80 shadow-md backdrop-blur-sm' : 'bg-transparent'
       )}
     >
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
@@ -141,7 +141,7 @@ export default function Header() {
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px] bg-background p-0">
               <div className="flex h-full flex-col">
-                <div className="flex items-center justify-between border-b p-4">
+                <div className="flex items-center justify-between border-b border-white/10 p-4">
                   <Link href="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
                     <Logo className="h-6 w-6 text-primary" />
                     <span className="font-headline text-xl font-bold">Karibuni</span>
@@ -154,7 +154,7 @@ export default function Header() {
                 <nav className="flex flex-1 flex-col gap-2 p-4">
                   {renderNavLinks(true)}
                 </nav>
-                <div className="border-t p-4">
+                <div className="border-t border-white/10 p-4">
                     <Button asChild className="w-full">
                         <Link href="/#reservation" onClick={() => setOpen(false)}>Réserver</Link>
                     </Button>

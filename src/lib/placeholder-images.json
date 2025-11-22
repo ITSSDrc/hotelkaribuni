@@ -2,62 +2,74 @@
   "placeholderImages": [
     {
       "id": "hero-background",
-      "description": "A beautiful, sunny hotel exterior with a pool.",
-      "imageUrl": "https://images.unsplash.com/photo-1562778612-e1e0cda9915c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxob3RlbCUyMHBvb2x8ZW58MHx8fHwxNzYzNTc1OTg0fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "hotel pool"
+      "description": "Luxurious hotel infinity pool at twilight with a stunning view.",
+      "imageUrl": "https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "luxury pool"
     },
     {
       "id": "gallery-1",
-      "description": "Guests enjoying breakfast by the pool.",
-      "imageUrl": "https://images.unsplash.com/photo-1676951593715-b1e225f747d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxicmVha2Zhc3QlMjBwb29sc2lkZXxlbnwwfHx8fDE3NjM2MzUzNTl8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "breakfast poolside"
+      "description": "A chic hotel lobby with modern furniture.",
+      "imageUrl": "https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "hotel lobby"
     },
     {
       "id": "gallery-2",
-      "description": "A scenic view of the beach near the hotel.",
-      "imageUrl": "https://images.unsplash.com/photo-1561571994-3c61c554181a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxiZWFjaCUyMHN1bnNldHxlbnwwfHx8fDE3NjM2MjQ2NTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "beach sunset"
+      "description": "A beautifully plated gourmet dish at the hotel restaurant.",
+      "imageUrl": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "gourmet dish"
     },
     {
       "id": "gallery-3",
-      "description": "A couple relaxing in a hotel hammock.",
-      "imageUrl": "https://images.unsplash.com/photo-1550031675-030918aff0e4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxjb3VwbGUlMjByZWxheGluZ3xlbnwwfHx8fDE3NjM2MzUzNjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "couple relaxing"
+      "description": "A relaxing spa setting with candles and massage oils.",
+      "imageUrl": "https://images.unsplash.com/photo-1544161515-b2c6882c8152?q=80&w=1974&auto=format&fit=crop",
+      "imageHint": "spa wellness"
     },
     {
       "id": "gallery-4",
-      "description": "A chef preparing a gourmet meal in the hotel kitchen.",
-      "imageUrl": "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxnb3VybWV0JTIwZm9vZHxlbnwwfHx8fDE3NjM2MTY3Njl8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "gourmet food"
+      "description": "Couple enjoying a drink at a rooftop bar overlooking a city.",
+      "imageUrl": "https://images.unsplash.com/photo-1596701062351-8c2c14d1fdd0?q=80&w=1974&auto=format&fit=crop",
+      "imageHint": "rooftop bar"
     },
     {
       "id": "guest-avatar-1",
       "description": "Avatar for a guest testimonial.",
-      "imageUrl": "https://images.unsplash.com/photo-1690444963408-9573a17a8058?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxwb3J0cmFpdCUyMHdvbWFufGVufDB8fHx8MTc2MzU3MjcxNnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1974&auto=format&fit=crop",
       "imageHint": "portrait woman"
     },
     {
       "id": "guest-avatar-2",
       "description": "Avatar for another guest testimonial.",
-      "imageUrl": "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxwb3J0cmFpdCUyMG1hbnxlbnwwfHx8fDE3NjM2MjE1MjV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1974&auto=format&fit=crop",
       "imageHint": "portrait man"
     },
     {
+      "id": "guest-avatar-3",
+      "description": "Avatar for another guest testimonial.",
+      "imageUrl": "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1961&auto=format&fit=crop",
+      "imageHint": "woman smiling"
+    },
+    {
+      "id": "guest-avatar-4",
+      "description": "Avatar for another guest testimonial.",
+      "imageUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop",
+      "imageHint": "man smiling"
+    },
+    {
       "id": "salle-1",
-      "description": "A large, modern hotel conference room.",
-      "imageUrl": "https://images.unsplash.com/photo-1526948531399-320e7e40f05d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb25mZXJlbmNlJTIwcm9vbXxlbnwwfHx8fDE3NjM2NTg0NTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A large, modern hotel conference room set up for a corporate event.",
+      "imageUrl": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop",
       "imageHint": "conference room"
     },
     {
       "id": "piscines-1",
-      "description": "An inviting hotel swimming pool at dusk.",
-      "imageUrl": "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxob3RlbCUyMHBvb2x8ZW58MHx8fHwxNzYzNTc1OTg0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "An inviting hotel swimming pool with lounge chairs at dusk.",
+      "imageUrl": "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?q=80&w=1949&auto=format&fit=crop",
       "imageHint": "hotel pool"
     },
     {
       "id": "restau-bar-1",
-      "description": "A chic and modern hotel restaurant bar.",
-      "imageUrl": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxyZXN0YXVyYW50fGVufDB8fHx8MTc2MzY1ODU0Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A chic and modern hotel restaurant bar with atmospheric lighting.",
+      "imageUrl": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop",
       "imageHint": "restaurant interior"
     }
   ]

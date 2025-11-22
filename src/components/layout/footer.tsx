@@ -20,11 +20,11 @@ export default function Footer() {
           <div>
             <h3 className="mb-4 font-headline text-lg font-semibold">Découvrir</h3>
             <ul className="space-y-2">
-              <li><Link href="/chambres" className="text-sm hover:text-primary">Chambres</Link></li>
-              <li><Link href="/salles" className="text-sm hover:text-primary">Salles</Link></li>
-              <li><Link href="/piscines" className="text-sm hover:text-primary">Piscines</Link></li>
-              <li><Link href="/restau-bar" className="text-sm hover:text-primary">Restau-bar</Link></li>
-              <li><Link href="/#galerie" className="text-sm hover:text-primary">Galerie</Link></li>
+              <li><Link href="/chambres" className="text-sm text-muted-foreground hover:text-primary">Chambres</Link></li>
+              <li><Link href="/salles" className="text-sm text-muted-foreground hover:text-primary">Salles</Link></li>
+              <li><Link href="/piscines" className="text-sm text-muted-foreground hover:text-primary">Piscines</Link></li>
+              <li><Link href="/restau-bar" className="text-sm text-muted-foreground hover:text-primary">Restau-bar</Link></li>
+              <li><Link href="/#galerie" className="text-sm text-muted-foreground hover:text-primary">Galerie</Link></li>
             </ul>
           </div>
           <div>
@@ -32,15 +32,15 @@ export default function Footer() {
             <ul className="space-y-2 text-sm">
               <li className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-primary" />
-                <span>123 Avenue du Paradis, Océanville</span>
+                <span className="text-muted-foreground">123 Avenue du Paradis, Océanville</span>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-primary" />
-                <a href="tel:+1234567890" className="hover:text-primary">+1 (23) 456-7890</a>
+                <a href="tel:+1234567890" className="text-muted-foreground hover:text-primary">+1 (23) 456-7890</a>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-primary" />
-                <a href="mailto:contact@karibuni.com" className="hover:text-primary">contact@karibuni.com</a>
+                <a href="mailto:contact@karibuni.com" className="text-muted-foreground hover:text-primary">contact@karibuni.com</a>
               </li>
             </ul>
           </div>
@@ -53,7 +53,7 @@ export default function Footer() {
             </div>
           </div>
         </div>
-        <div className="mt-8 border-t pt-8 text-center text-sm text-muted-foreground">
+        <div className="mt-8 border-t border-border pt-8 text-center text-sm text-muted-foreground">
           <p>&copy; {new Date().getFullYear()} Karibuni. Tous droits réservés.</p>
         </div>
       </div>

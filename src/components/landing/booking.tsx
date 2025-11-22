@@ -32,7 +32,7 @@ import {
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 
 const bookingFormSchema = z.object({
   dateRange: z.object(
@@ -64,13 +64,16 @@ export default function Booking() {
   }
 
   return (
-    <section id="reservation" className="bg-card py-16 md:py-24">
+    <section id="reservation" className="bg-background py-16 md:py-32">
       <div className="container mx-auto px-4 md:px-6">
-        <Card className="mx-auto max-w-4xl shadow-lg">
-          <CardHeader className="text-center">
-            <CardTitle className="font-headline text-4xl font-bold md:text-5xl">Planifiez Votre Escapade de Rêve</CardTitle>
+        <Card className="mx-auto max-w-4xl shadow-2xl shadow-primary/10 border-primary/20">
+          <CardHeader className="text-center p-8">
+            <CardTitle className="section-title">Planifiez Votre Escapade</CardTitle>
+            <CardDescription className="section-subtitle">
+              Vérifiez nos disponibilités et réservez votre séjour de rêve en quelques clics.
+            </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-8">
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 gap-6 md:grid-cols-3 md:items-end">
                 <FormField
@@ -85,7 +88,7 @@ export default function Booking() {
                             <Button
                               variant={'outline'}
                               className={cn(
-                                'w-full justify-start text-left font-normal',
+                                'w-full justify-start text-left font-normal h-12',
                                 !field.value && 'text-muted-foreground'
                               )}
                             >
@@ -131,7 +134,7 @@ export default function Booking() {
                       <FormLabel>Hôtes</FormLabel>
                       <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
-                          <SelectTrigger>
+                          <SelectTrigger className="h-12">
                             <Users className="mr-2 h-4 w-4" />
                             <SelectValue placeholder="Nombre d'hôtes" />
                           </SelectTrigger>
@@ -149,7 +152,7 @@ export default function Booking() {
                   )}
                 />
 
-                <Button type="submit" className="w-full h-10 md:h-auto">Vérifier la disponibilité</Button>
+                <Button type="submit" size="lg" className="w-full h-12">Vérifier</Button>
               </form>
             </Form>
           </CardContent>
