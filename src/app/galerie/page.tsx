@@ -7,7 +7,7 @@ import { getGalleryImages, GalleryImage } from '@/lib/static-data';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import { Card, CardContent } from '@/components/ui/card';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Dialog,
   DialogContent,
@@ -19,10 +19,15 @@ export default function GalleryPage() {
   const allImages = getGalleryImages();
   const categories = ['Tout', ...Array.from(new Set(allImages.map(img => img.category)))];
   const [selectedCategory, setSelectedCategory] = useState('Tout');
+  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
 
   const filteredImages = selectedCategory === 'Tout'
     ? allImages
     : allImages.filter(image => image.category === selectedCategory);
+
+  const handleImageClick = (image: GalleryImage) => {
+    setSelectedImage(image);
+  };
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -47,8 +52,8 @@ export default function GalleryPage() {
             
             <Dialog>
                 <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-                {filteredImages.map((image, index) => (
-                    <DialogTrigger asChild key={image.id}>
+                {filteredImages.map((image) => (
+                    <DialogTrigger asChild key={image.id} onClick={() => handleImageClick(image)}>
                         <Card className="group cursor-pointer overflow-hidden transition-shadow duration-300 hover:shadow-xl">
                             <CardContent className="relative aspect-square p-0">
                             <Image
@@ -64,15 +69,11 @@ export default function GalleryPage() {
                 ))}
                 </div>
                  <DialogContent className="max-w-4xl p-0 border-0">
-                    {/* This is a common pattern, but it's not ideal for this use case. 
-                        A more robust solution would involve managing the selected image state.
-                        However, for simplicity, clicking any image will show the first one.
-                    */}
-                    {filteredImages.length > 0 && (
+                    {selectedImage && (
                          <div className="relative aspect-video w-full">
                             <Image
-                                src={filteredImages[0].url}
-                                alt={filteredImages[0].alt}
+                                src={selectedImage.url}
+                                alt={selectedImage.alt}
                                 fill
                                 className="object-contain"
                             />
