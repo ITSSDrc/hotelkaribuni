@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback, KeyboardEvent } from 'react';
 import Image from 'next/image';
 import { getGalleryImages, GalleryImage } from '@/lib/static-data';
 import Header from '@/components/layout/header';
@@ -14,21 +14,61 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { Button } from '@/components/ui/button';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 
 export default function GalleryPage() {
   const allImages = getGalleryImages();
   const categories = ['Tout', ...Array.from(new Set(allImages.map(img => img.category)))];
   const [selectedCategory, setSelectedCategory] = useState('Tout');
-  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
   const filteredImages = selectedCategory === 'Tout'
     ? allImages
     : allImages.filter(image => image.category === selectedCategory);
 
-  const handleImageClick = (image: GalleryImage) => {
-    setSelectedImage(image);
+  const handleImageClick = (index: number) => {
+    setSelectedImageIndex(index);
   };
+  
+  const handleClose = () => setSelectedImageIndex(null);
+
+  const handleNext = useCallback((e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    if (selectedImageIndex !== null) {
+      setSelectedImageIndex((prevIndex) => (prevIndex! + 1) % filteredImages.length);
+    }
+  }, [selectedImageIndex, filteredImages.length]);
+
+  const handlePrevious = useCallback((e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    if (selectedImageIndex !== null) {
+      setSelectedImageIndex((prevIndex) => (prevIndex! - 1 + filteredImages.length) % filteredImages.length);
+    }
+  }, [selectedImageIndex, filteredImages.length]);
+
+  const handleKeyDown = useCallback((event: globalThis.KeyboardEvent) => {
+    if (selectedImageIndex !== null) {
+      if (event.key === 'ArrowRight') {
+        handleNext();
+      } else if (event.key === 'ArrowLeft') {
+        handlePrevious();
+      } else if (event.key === 'Escape') {
+        handleClose();
+      }
+    }
+  }, [selectedImageIndex, handleNext, handlePrevious]);
+
+  useState(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  });
+
+  const selectedImage = selectedImageIndex !== null ? filteredImages[selectedImageIndex] : null;
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -51,10 +91,10 @@ export default function GalleryPage() {
               </TabsList>
             </Tabs>
             
-            <Dialog>
+            <Dialog open={selectedImageIndex !== null} onOpenChange={(isOpen) => !isOpen && handleClose()}>
                 <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
-                {filteredImages.map((image) => (
-                    <DialogTrigger asChild key={image.id} onClick={() => handleImageClick(image)}>
+                {filteredImages.map((image, index) => (
+                    <DialogTrigger asChild key={image.id} onClick={() => handleImageClick(index)}>
                         <Card className="group cursor-pointer overflow-hidden transition-shadow duration-300 hover:shadow-xl">
                             <CardContent className="relative aspect-square p-0">
                             <Image
@@ -69,7 +109,7 @@ export default function GalleryPage() {
                     </DialogTrigger>
                 ))}
                 </div>
-                 <DialogContent className="max-w-4xl p-0 border-0">
+                 <DialogContent className="max-w-4xl w-full p-0 border-0 bg-transparent shadow-none" onKeyDown={handleKeyDown as any}>
                     {selectedImage && (
                         <>
                             <DialogTitle className="sr-only">{selectedImage.alt}</DialogTitle>
@@ -81,6 +121,27 @@ export default function GalleryPage() {
                                     className="object-contain"
                                 />
                             </div>
+
+                            {filteredImages.length > 1 && (
+                                <>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 h-12 w-12 rounded-full bg-background/50 hover:bg-background/80 text-foreground"
+                                        onClick={handlePrevious}
+                                    >
+                                        <ChevronLeft className="h-8 w-8" />
+                                    </Button>
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 h-12 w-12 rounded-full bg-background/50 hover:bg-background/80 text-foreground"
+                                        onClick={handleNext}
+                                    >
+                                        <ChevronRight className="h-8 w-8" />
+                                    </Button>
+                                </>
+                            )}
                         </>
                     )}
                 </DialogContent>
