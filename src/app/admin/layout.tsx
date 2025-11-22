@@ -149,7 +149,7 @@ export default function AdminLayout({
                                     </SidebarMenuItem>
                                     <SidebarMenuItem>
                                         <SidebarMenuButton asChild isActive={pathname === '/admin/restau-bar'} className="data-[active=false]:hover:bg-primary/5 data-[active=false]:hover:text-primary">
-                                            <Link href="/restau-bar">
+                                            <Link href="/admin/restau-bar">
                                             <UtensilsCrossed />
                                             <span>Restau-bar</span>
                                             </Link>
@@ -211,7 +211,7 @@ export default function AdminLayout({
             <div className="flex items-center gap-3">
                  <Link href="/admin/profile" className="group flex flex-1 items-center gap-3 overflow-hidden rounded-md p-1 transition-colors hover:bg-primary/5">
                     <Avatar className="h-9 w-9">
-                        <AvatarImage src={userProfile?.photoURL || ''} alt={userProfile?.displayName || ''} />
+                        <AvatarImage src={userProfile?.photoURL || undefined} alt={userProfile?.displayName || ''} />
                         <AvatarFallback>{userProfile?.displayName?.charAt(0) || 'A'}</AvatarFallback>
                     </Avatar>
                     <div className="flex-1 overflow-hidden">
