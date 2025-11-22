@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -76,11 +77,11 @@ export default function WhatsappButton() {
         </Tooltip>
       </TooltipProvider>
 
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-xs">
         <DialogHeader>
-          <DialogTitle>Chat on WhatsApp</DialogTitle>
+          <DialogTitle>Discuter sur WhatsApp</DialogTitle>
           <DialogDescription>
-            Scan this QR code with your phone to chat with a reservation agent on WhatsApp.
+            Scannez ce QR code avec votre téléphone pour discuter avec un agent de réservation.
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col items-center justify-center space-y-4">
@@ -97,7 +98,7 @@ export default function WhatsappButton() {
           )}
           <Button asChild variant="link">
             <Link href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-              Cliquez ici
+              ou cliquez ici pour continuer
             </Link>
           </Button>
         </div>
