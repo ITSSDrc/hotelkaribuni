@@ -36,8 +36,8 @@ const WhatsAppIcon = (props: React.SVGProps<SVGSVGElement>) => (
 );
 
 export default function WhatsappButton() {
-  const phoneNumber = '1234567890';
-  const message = "Bonjour, j'aimerais avoir plus d'informations sur l'hôtel Karibuni.";
+  const phoneNumber = '243000000000';
+  const message = "Bonjour, j'aimerais avoir plus d'informations sur l'hôtel Karibuni à Bunia.";
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
   
   const [qrCodeUrl, setQrCodeUrl] = useState('');

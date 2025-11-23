@@ -14,7 +14,7 @@ export default function Footer() {
               <span className="font-headline text-2xl font-bold">Karibuni</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              Votre havre de paix pour une escapade inoubliable.
+              Votre havre de paix pour une escapade inoubliable à Bunia.
             </p>
           </div>
           <div>
@@ -32,15 +32,15 @@ export default function Footer() {
             <ul className="space-y-2 text-sm">
               <li className="flex items-center gap-2">
                 <MapPin className="h-4 w-4 text-primary" />
-                <span className="text-muted-foreground">123 Avenue du Paradis, Océanville</span>
+                <span className="text-muted-foreground">123 Boulevard de l'Indépendance, Bunia, Ituri</span>
               </li>
               <li className="flex items-center gap-2">
                 <Phone className="h-4 w-4 text-primary" />
-                <a href="tel:+1234567890" className="text-muted-foreground hover:text-primary">+1 (23) 456-7890</a>
+                <a href="tel:+243000000000" className="text-muted-foreground hover:text-primary">+243 000 000 000</a>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-primary" />
-                <a href="mailto:contact@karibuni.com" className="text-muted-foreground hover:text-primary">contact@karibuni.com</a>
+                <a href="mailto:contact@karibuni-bunia.com" className="text-muted-foreground hover:text-primary">contact@karibuni-bunia.com</a>
               </li>
             </ul>
           </div>

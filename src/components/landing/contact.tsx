@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -48,7 +49,7 @@ export default function Contact() {
           <CardHeader className="text-center p-8">
             <CardTitle className="section-title">Contactez-nous</CardTitle>
             <CardDescription className="section-subtitle">
-              Une question ou une demande particulière ? Nous sommes à votre écoute.
+              Une question ou une demande particulière ? Notre équipe à Bunia est à votre écoute.
             </CardDescription>
           </CardHeader>
           <CardContent className="p-8">
