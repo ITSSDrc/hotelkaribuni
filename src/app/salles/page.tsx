@@ -42,7 +42,7 @@ export default function SallesPage() {
 
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
               {salles.map((salle: any) => (
-                <Card key={salle.id} className="flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-2xl">
+                <Card key={salle.id} className="flex flex-col overflow-hidden transition-shadow duration-300 shadow-lg hover:shadow-2xl hover:shadow-primary/10">
                   <div className="relative h-60 w-full">
                     <Image
                       src={(salle.imageUrls && salle.imageUrls[0]) || "https://placehold.co/400x300"}

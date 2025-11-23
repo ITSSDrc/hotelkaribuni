@@ -116,7 +116,7 @@ export default function ReservationPage() {
         <main className="flex-1">
             <section id="reservation" className="bg-background py-16 md:py-24">
             <div className="container mx-auto px-4 md:px-6">
-                <Card className="mx-auto max-w-4xl border-primary/20 shadow-2xl shadow-primary/40">
+                <Card className="mx-auto max-w-4xl border-primary/20 shadow-lg hover:shadow-2xl hover:shadow-primary/10">
                 <CardHeader className="text-center p-8">
                     <CardTitle className="section-title">Réservez Votre Séjour</CardTitle>
                     <CardDescription className="section-subtitle">

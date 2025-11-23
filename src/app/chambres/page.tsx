@@ -42,7 +42,7 @@ export default function ChambresPage() {
 
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
               {rooms.map((room: any) => (
-                <Card key={room.id} className="flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-2xl">
+                <Card key={room.id} className="flex flex-col overflow-hidden transition-shadow duration-300 shadow-lg hover:shadow-2xl hover:shadow-primary/10">
                   <div className="relative h-60 w-full">
                     <Image
                       src={(room.imageUrls && room.imageUrls[0]) || "https://placehold.co/400x300"}
