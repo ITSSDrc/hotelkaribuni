@@ -44,7 +44,7 @@ const bookingFormSchema = z.object({
     { required_error: 'Veuillez sélectionner une période.' }
   ),
   guests: z.string().min(1, "Veuillez sélectionner le nombre d'hôtes."),
-  phone: z.string().min(10, 'Veuillez entrer un numéro de téléphone valide.'),
+  phone: z.string().min(14, 'Veuillez entrer un numéro de téléphone valide, y compris le +243.'),
   email: z.string().email("Veuillez entrer une adresse e-mail valide.").optional().or(z.literal('')),
 });
 
@@ -56,7 +56,7 @@ export default function Booking() {
     resolver: zodResolver(bookingFormSchema),
     defaultValues: {
       guests: '1',
-      phone: '',
+      phone: '+243 ',
       email: '',
     },
   });
