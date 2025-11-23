@@ -54,7 +54,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 border-t border-border pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Karibuni. Tous droits réservés. • <Link href="/confidentialite" className="hover:text-primary hover:underline">Politique de confidentialité</Link></p>
+          <p>&copy; {new Date().getFullYear()} Karibuni. Tous droits réservés. • <Link href="/confidentialite" className="hover:text-primary hover:underline">Politique de confidentialité</Link> • <Link href="/disclaimer" className="hover:text-primary hover:underline">Avis de non-responsabilité</Link></p>
           <p className="mt-2">
             Designed by <a href="https://itssdrc.com" target="_blank" rel="noopener noreferrer" className="font-medium text-primary hover:underline">itssdrc.com</a>
           </p>
