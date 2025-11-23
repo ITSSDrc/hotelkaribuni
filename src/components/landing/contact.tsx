@@ -4,6 +4,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import React from 'react';
+import { Loader2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -29,17 +31,48 @@ type ContactFormValues = z.infer<typeof contactFormSchema>;
 
 export default function Contact() {
   const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      message: '',
+    }
   });
 
-  function onSubmit(data: ContactFormValues) {
-    console.log(data);
-    toast({
-      title: 'Message envoyé !',
-      description: 'Merci de nous avoir contactés. Nous vous répondrons dans les plus brefs délais.',
-    });
-    form.reset({ name: '', email: '', message: ''});
+  async function onSubmit(data: ContactFormValues) {
+    setIsSubmitting(true);
+    try {
+      const response = await fetch('/api/send-contact-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Une erreur s'est produite lors de l'envoi du message.");
+      }
+
+      toast({
+        title: 'Message envoyé !',
+        description: 'Merci de nous avoir contactés. Nous vous répondrons dans les plus brefs délais.',
+      });
+      form.reset();
+    } catch (error: any) {
+      console.error(error);
+      toast({
+        variant: 'destructive',
+        title: 'Erreur',
+        description: error.message || "Impossible d'envoyer le message. Veuillez réessayer plus tard.",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -94,7 +127,10 @@ export default function Contact() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" size="lg" className="w-full h-12">Envoyer le message</Button>
+                <Button type="submit" size="lg" className="w-full h-12" disabled={isSubmitting}>
+                  {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  Envoyer le message
+                </Button>
               </form>
             </Form>
           </CardContent>
