@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Utensils, GlassOfWine } from 'lucide-react';
+import { ArrowRight, Utensils, Martini } from 'lucide-react';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import { Badge } from '@/components/ui/badge';
@@ -62,7 +62,7 @@ export default function RestauBarPage() {
                             <CardTitle className="font-headline text-3xl">{item.name}</CardTitle>
                         </div>
                          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/10 flex-shrink-0">
-                           {item.type === 'Restaurant' ? <Utensils className="h-6 w-6 text-primary" /> : <GlassOfWine className="h-6 w-6 text-primary" />}
+                           {item.type === 'Restaurant' ? <Utensils className="h-6 w-6 text-primary" /> : <Martini className="h-6 w-6 text-primary" />}
                         </div>
                     </div>
                   </CardHeader>

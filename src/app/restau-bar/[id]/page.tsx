@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
-import { Info, Clock, Fish, Sun, Award, Grape, Martini, Sunrise, Music, Cookie, Menu, GlassOfWine } from 'lucide-react';
+import { Info, Clock, Fish, Sun, Award, Grape, Martini, Sunrise, Music, Cookie, Menu } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
@@ -22,7 +22,6 @@ const iconMap: { [key: string]: React.ElementType } = {
     Music,
     Cookie,
     Menu,
-    GlassOfWine
 };
 
 export default function RestauBarDetailPage() {
@@ -133,7 +132,7 @@ export default function RestauBarDetailPage() {
                         <h2 className="text-xl font-headline font-semibold mb-4">Exemples de notre carte</h2>
                         <div className="space-y-4">
                             {itemData.products.map((product: {name: string, description: string, icon: string}) => {
-                                const Icon = iconMap[product.icon] || (itemData.type === 'Restaurant' ? Menu : GlassOfWine);
+                                const Icon = iconMap[product.icon] || (itemData.type === 'Restaurant' ? Menu : Martini);
                                 return (
                                 <Card key={product.name} className="bg-muted/50 p-4">
                                   <CardContent className='p-0 flex items-start gap-4'>
