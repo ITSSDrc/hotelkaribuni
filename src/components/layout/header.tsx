@@ -28,9 +28,9 @@ const navLinks = [
       { href: '/piscines', label: 'Piscines' },
       { href: '/restau-bar', label: 'Restau-bar' },
       { href: '/galerie', label: 'Galerie' },
-      { href: '/a-propos', label: 'À Propos' },
     ],
   },
+  { href: '/a-propos', label: 'À Propos' },
   { href: '/#contact', label: 'Contact' },
 ];
 
