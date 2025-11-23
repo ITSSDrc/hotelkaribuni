@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { Calendar as CalendarIcon, Users } from 'lucide-react';
+import { Calendar as CalendarIcon, Users, Mail, Phone } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
@@ -33,6 +33,7 @@ import {
 } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
+import { Input } from '../ui/input';
 
 const bookingFormSchema = z.object({
   dateRange: z.object(
@@ -43,6 +44,8 @@ const bookingFormSchema = z.object({
     { required_error: 'Veuillez sélectionner une période.' }
   ),
   guests: z.string().min(1, "Veuillez sélectionner le nombre d'hôtes."),
+  phone: z.string().min(10, 'Veuillez entrer un numéro de téléphone valide.'),
+  email: z.string().email("Veuillez entrer une adresse e-mail valide.").optional().or(z.literal('')),
 });
 
 type BookingFormValues = z.infer<typeof bookingFormSchema>;
@@ -52,19 +55,25 @@ export default function Booking() {
   const form = useForm<BookingFormValues>({
     resolver: zodResolver(bookingFormSchema),
     defaultValues: {
-      guests: '2',
+      guests: '1',
+      phone: '',
+      email: '',
     },
   });
 
   function onSubmit(data: BookingFormValues) {
     const { from, to } = data.dateRange;
-    const guests = data.guests;
     
     const params = new URLSearchParams({
       from: from.toISOString(),
       to: to.toISOString(),
-      guests: guests,
+      guests: data.guests,
+      phone: data.phone,
     });
+
+    if (data.email) {
+      params.set('email', data.email);
+    }
 
     router.push(`/reservation/confirmation?${params.toString()}`);
   }
@@ -81,7 +90,7 @@ export default function Booking() {
           </CardHeader>
           <CardContent className="p-8">
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 gap-6 md:grid-cols-3 md:items-end">
+              <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <FormField
                   control={form.control}
                   name="dateRange"
@@ -158,7 +167,41 @@ export default function Booking() {
                   )}
                 />
 
-                <Button type="submit" size="lg" className="w-full h-12">Vérifier</Button>
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Téléphone</FormLabel>
+                      <FormControl>
+                        <div className="relative">
+                            <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                            <Input placeholder="Votre numéro de téléphone" {...field} className="h-12 pl-10" />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email (Facultatif)</FormLabel>
+                       <FormControl>
+                        <div className="relative">
+                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                            <Input placeholder="votre.email@example.com" {...field} className="h-12 pl-10" />
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <Button type="submit" size="lg" className="w-full h-12 md:col-span-2">Envoyer la demande</Button>
               </form>
             </Form>
           </CardContent>

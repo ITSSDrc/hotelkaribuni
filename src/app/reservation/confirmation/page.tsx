@@ -5,7 +5,7 @@ import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { CheckCircle, Calendar, Users, Home } from 'lucide-react';
+import { CheckCircle, Calendar, Users, Home, Phone, Mail } from 'lucide-react';
 import Link from 'next/link';
 
 import Header from '@/components/layout/header';
@@ -19,6 +19,8 @@ function ConfirmationContent() {
   const from = searchParams.get('from');
   const to = searchParams.get('to');
   const guests = searchParams.get('guests');
+  const phone = searchParams.get('phone');
+  const email = searchParams.get('email');
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return 'N/A';
@@ -51,6 +53,21 @@ function ConfirmationContent() {
                   Pour <strong className="text-foreground">{guests}</strong> personne(s)
                 </span>
               </div>
+              <Separator className="my-2" />
+               <div className="flex items-center">
+                <Phone className="mr-3 h-5 w-5 text-primary" />
+                <span>
+                  Téléphone : <strong className="text-foreground">{phone || 'Non fourni'}</strong>
+                </span>
+              </div>
+              {email && (
+                 <div className="flex items-center">
+                    <Mail className="mr-3 h-5 w-5 text-primary" />
+                    <span>
+                    Email : <strong className="text-foreground">{email}</strong>
+                    </span>
+                </div>
+              )}
             </div>
           </div>
           <Separator />
