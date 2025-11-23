@@ -154,7 +154,7 @@ export default function Header() {
                   </Button>
               </SheetHeader>
               <div className="flex h-full flex-col">
-                <nav className="flex flex-1 flex-col gap-2 p-4">
+                <nav className="flex-1 flex-col gap-2 p-4">
                   {renderNavLinks(true)}
                 </nav>
                  <div className="border-t border-border/50 p-4 flex flex-col gap-4">
