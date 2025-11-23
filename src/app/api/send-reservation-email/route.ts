@@ -6,7 +6,7 @@ import ReservationRequestEmail from '@/components/emails/reservation-request-ema
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const toEmail = process.env.RESERVATION_EMAIL_TO;
-const fromEmail = process.env.RESEND_FROM_EMAIL || 'Hôtel Karibuni <noreply@resend.dev>';
+const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
 
 
 const sendRequestSchema = z.object({
