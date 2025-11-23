@@ -21,7 +21,7 @@ export default function RestauBar() {
                 <p className="text-lg text-muted-foreground mb-8">
                 Notre restaurant-bar vous propose une expérience culinaire inoubliable. Dégustez des plats raffinés préparés avec des produits locaux frais, ou sirotez un cocktail signature dans une ambiance chic et décontractée.
                 </p>
-                <Button asChild size="lg" variant="outline">
+                <Button asChild size="lg">
                     <Link href="/restau-bar">
                         Découvrir nos espaces
                         <ArrowRight className="ml-2 h-5 w-5" />

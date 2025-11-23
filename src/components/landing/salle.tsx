@@ -21,8 +21,8 @@ export default function Salle() {
               Notre salle de conférence polyvalente est l'endroit idéal pour vos réunions d'affaires, séminaires ou événements privés. Entièrement équipée avec les dernières technologies, elle peut être configurée pour répondre à vos besoins spécifiques.
             </p>
             <Button asChild size="lg">
-              <Link href="#contact">
-                Demander un devis
+              <Link href="/salles">
+                Découvrir nos salles
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
