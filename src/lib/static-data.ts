@@ -124,6 +124,11 @@ export const StaticData = {
                 { "name": "Menu dégustation", "icon": "Award" },
                 { "name": "Cave à vin", "icon": "Grape" }
             ],
+            "products": [
+                { "name": "Filet de Capitaine à la Plancha", "description": "Servi avec sa purée de patates douces et une sauce aux agrumes.", "icon": "Fish" },
+                { "name": "Poulet Braisé façon Karibuni", "description": "Mariné aux épices locales, accompagné de bananes plantains frites.", "icon": "Award" },
+                { "name": "Salade Tropicale", "description": "Mélange de fruits exotiques, avocat, et crevettes fraîches.", "icon": "Sun" }
+            ],
             "status": "Ouvert"
         },
         {
@@ -139,6 +144,11 @@ export const StaticData = {
                 { "name": "Vue sur le coucher de soleil", "icon": "Sunrise" },
                 { "name": "Musique Live", "icon": "Music" },
                 { "name": "Tapas & Amuse-bouches", "icon": "Cookie" }
+            ],
+            "products": [
+                { "name": "Mojito 'Ituri'", "description": "Rhum local, menthe fraîche, et une touche de fruit de la passion.", "icon": "Martini" },
+                { "name": "Karibuni Spritz", "description": "Une version tropicale du classique italien avec des notes de mangue.", "icon": "Grape" },
+                { "name": "Jus de fruits frais pressés", "description": "Ananas, papaye, mangue, selon la saison.", "icon": "Sun" }
             ],
             "status": "Ouvert"
         }

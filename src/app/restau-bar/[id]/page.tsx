@@ -5,8 +5,8 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
-import { Info, Clock, Fish, Sun, Award, Grape, Martini, Sunrise, Music, Cookie } from 'lucide-react';
-import { Card } from '@/components/ui/card';
+import { Info, Clock, Fish, Sun, Award, Grape, Martini, Sunrise, Music, Cookie, Menu, GlassOfWine } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { StaticData } from '@/lib/static-data';
@@ -20,7 +20,9 @@ const iconMap: { [key: string]: React.ElementType } = {
     Martini,
     Sunrise,
     Music,
-    Cookie
+    Cookie,
+    Menu,
+    GlassOfWine
 };
 
 export default function RestauBarDetailPage() {
@@ -117,6 +119,33 @@ export default function RestauBarDetailPage() {
                                     {Icon && <Icon className="h-5 w-5 text-primary" />}
                                     <span>{amenity.name}</span>
                                 </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                  </>
+                )}
+
+                 {itemData.products && itemData.products.length > 0 && (
+                  <>
+                    <Separator className="my-6" />
+                    <div className="mb-6">
+                        <h2 className="text-xl font-headline font-semibold mb-4">Exemples de notre carte</h2>
+                        <div className="space-y-4">
+                            {itemData.products.map((product: {name: string, description: string, icon: string}) => {
+                                const Icon = iconMap[product.icon] || (itemData.type === 'Restaurant' ? Menu : GlassOfWine);
+                                return (
+                                <Card key={product.name} className="bg-muted/50 p-4">
+                                  <CardContent className='p-0 flex items-start gap-4'>
+                                      <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10 flex-shrink-0 mt-1">
+                                        <Icon className="h-5 w-5 text-primary" />
+                                      </div>
+                                      <div>
+                                        <p className="font-semibold text-foreground">{product.name}</p>
+                                        <p className="text-sm text-muted-foreground">{product.description}</p>
+                                      </div>
+                                  </CardContent>
+                                </Card>
                                 );
                             })}
                         </div>
