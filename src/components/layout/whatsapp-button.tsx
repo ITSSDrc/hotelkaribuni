@@ -5,20 +5,17 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogFooter,
-} from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
 import QRCode from 'qrcode';
 import Image from 'next/image';
 import { Phone } from 'lucide-react';
@@ -31,7 +28,7 @@ export default function WhatsappButton() {
   const [qrCodeUrl, setQrCodeUrl] = useState('');
 
   useEffect(() => {
-    QRCode.toDataURL(whatsappUrl, { width: 256, margin: 2 })
+    QRCode.toDataURL(whatsappUrl, { width: 256, margin: 1 })
       .then(url => {
         setQrCodeUrl(url);
       })
@@ -42,11 +39,11 @@ export default function WhatsappButton() {
 
 
   return (
-    <Dialog>
+    <Popover>
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <DialogTrigger asChild>
+            <PopoverTrigger asChild>
               <Button
                 size="icon"
                 className="fixed bottom-6 right-6 z-50 h-14 w-14 rounded-full bg-[#25D366] text-white shadow-lg transition-transform duration-300 hover:bg-[#1DA851] hover:scale-110"
@@ -54,7 +51,7 @@ export default function WhatsappButton() {
                 <Phone className="h-7 w-7" />
                 <span className="sr-only">Contactez-nous sur WhatsApp</span>
               </Button>
-            </DialogTrigger>
+            </PopoverTrigger>
           </TooltipTrigger>
           <TooltipContent side="left" className="bg-foreground text-background">
             <p>Information & Booking</p>
@@ -62,37 +59,33 @@ export default function WhatsappButton() {
         </Tooltip>
       </TooltipProvider>
 
-      <DialogContent className="sm:max-w-xs">
-        <DialogHeader>
-          <DialogTitle>Discuter sur WhatsApp</DialogTitle>
-          <DialogDescription>
-            Scannez ce QR code avec votre téléphone pour discuter avec un agent de réservation.
-          </DialogDescription>
-        </DialogHeader>
-        <div className="flex flex-col items-center justify-center space-y-4">
+      <PopoverContent side="top" align="end" className="w-auto p-4 rounded-lg shadow-2xl space-y-4">
+        <div className="text-center">
+            <Label className="text-base font-semibold">Discuter sur WhatsApp</Label>
+            <p className="text-sm text-muted-foreground mt-1">Scannez le code QR pour nous joindre.</p>
+        </div>
+        <div className="flex flex-col items-center justify-center space-y-2">
           {qrCodeUrl ? (
              <Image
                 src={qrCodeUrl}
                 alt="WhatsApp QR Code"
-                width={256}
-                height={256}
-                className="rounded-lg"
+                width={180}
+                height={180}
+                className="rounded-md border p-1"
               />
           ) : (
-            <div className="h-64 w-64 animate-pulse rounded-lg bg-muted"></div>
+            <div className="h-[180px] w-[180px] animate-pulse rounded-md bg-muted"></div>
           )}
-          <Button asChild variant="link">
+          <Button asChild variant="link" size="sm">
             <Link href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-              ou cliquez ici pour continuer
+              ou continuez sur le web
             </Link>
           </Button>
         </div>
-         <DialogFooter className="text-center text-xs text-muted-foreground pt-4">
-            <p>
-                Designed by <a href="https://itssdrc.com" target="_blank" rel="noopener noreferrer" className="font-medium text-primary hover:underline">itssdrc.com</a>
-            </p>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+        <p className="text-center text-xs text-muted-foreground/80 pt-2 border-t">
+            Powered by <a href="https://itssdrc.com" target="_blank" rel="noopener noreferrer" className="font-medium text-primary/80 hover:underline">itssdrc.com</a>
+        </p>
+      </PopoverContent>
+    </Popover>
   );
 }
