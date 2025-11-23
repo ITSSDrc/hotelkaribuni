@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Menu, X, ChevronDown } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import Logo from '../icons/logo';
 import { cn } from '@/lib/utils';
 import {
@@ -142,17 +142,18 @@ export default function Header() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[300px] bg-background p-0">
-              <div className="flex h-full flex-col">
-                <div className="flex items-center justify-between border-b border-white/10 p-4">
-                  <Link href="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
+              <SheetHeader className="flex flex-row items-center justify-between border-b p-4">
+                 <Link href="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
                     <Logo className="h-6 w-6 text-primary" />
                     <span className="font-headline text-xl font-bold">Karibuni</span>
                   </Link>
+                  <SheetTitle className="sr-only">Menu de navigation</SheetTitle>
                   <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
                     <X className="h-6 w-6" />
                     <span className="sr-only">Fermer le menu</span>
                   </Button>
-                </div>
+              </SheetHeader>
+              <div className="flex h-full flex-col">
                 <nav className="flex flex-1 flex-col gap-2 p-4">
                   {renderNavLinks(true)}
                 </nav>
