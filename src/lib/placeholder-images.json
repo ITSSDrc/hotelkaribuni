@@ -1,10 +1,22 @@
 {
   "placeholderImages": [
     {
-      "id": "hero-background",
+      "id": "hero-1",
       "description": "Luxurious hotel infinity pool at twilight with a stunning view.",
       "imageUrl": "https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=2070&auto=format&fit=crop",
       "imageHint": "luxury pool"
+    },
+    {
+      "id": "hero-2",
+      "description": "Elegant hotel room with a large bed and modern decor.",
+      "imageUrl": "https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "hotel room"
+    },
+    {
+      "id": "hero-3",
+      "description": "A grand hotel entrance with a beautifully lit exterior at night.",
+      "imageUrl": "https://images.unsplash.com/photo-1571896349842-33c89424de2d?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "hotel exterior"
     },
     {
       "id": "gallery-1",
