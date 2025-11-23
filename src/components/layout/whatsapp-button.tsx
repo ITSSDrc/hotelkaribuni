@@ -78,7 +78,7 @@ export default function WhatsappButton() {
           )}
           <Button asChild variant="link" size="sm">
             <Link href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-              ou continuez sur le web
+              Ouvrir la discussion
             </Link>
           </Button>
         </div>
