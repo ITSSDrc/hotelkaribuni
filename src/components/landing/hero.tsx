@@ -9,7 +9,6 @@ import Autoplay from 'embla-carousel-autoplay';
 import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel';
-import { Card, CardContent } from '../ui/card';
 
 export default function Hero() {
   const heroImages = PlaceHolderImages.filter(img => img.id.startsWith('hero-'));
@@ -55,7 +54,7 @@ export default function Hero() {
             Découvrez un sanctuaire de paix et de luxe où chaque séjour devient un souvenir précieux.
           </p>
           <Button size="lg" asChild>
-            <Link href="#reservation">Réservez Votre Escapade</Link>
+            <Link href="/reservation">Réservez Votre Escapade</Link>
           </Button>
         </div>
       </div>

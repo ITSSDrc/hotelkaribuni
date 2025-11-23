@@ -126,7 +126,7 @@ export default function RoomDetailPage() {
 
                 <div className="mt-auto">
                     <Button size="lg" className="w-full" asChild disabled={roomData.status !== 'Disponible'}>
-                        <Link href="/#reservation">
+                        <Link href="/reservation">
                             <CalendarCheck className='mr-2 h-5 w-5' />
                             Réserver maintenant
                         </Link>

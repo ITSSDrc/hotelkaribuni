@@ -129,7 +129,7 @@ export default function Header() {
         <div className="hidden items-center gap-2 md:flex">
             <ThemeToggle />
             <Button asChild>
-                <Link href="/#reservation">Réserver</Link>
+                <Link href="/reservation">Réserver</Link>
             </Button>
         </div>
 
@@ -160,7 +160,7 @@ export default function Header() {
                  <div className="border-t border-border/50 p-4 flex flex-col gap-4">
                     <ThemeToggle />
                     <Button asChild className="w-full">
-                        <Link href="/#reservation" onClick={() => setOpen(false)}>Réserver</Link>
+                        <Link href="/reservation" onClick={() => setOpen(false)}>Réserver</Link>
                     </Button>
                 </div>
               </div>
