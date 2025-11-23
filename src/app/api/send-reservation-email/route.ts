@@ -1,3 +1,4 @@
+
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { z } from 'zod';
@@ -5,6 +6,8 @@ import ReservationRequestEmail from '@/components/emails/reservation-request-ema
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const toEmail = process.env.RESERVATION_EMAIL_TO;
+const fromEmail = process.env.RESEND_FROM_EMAIL || 'Hôtel Karibuni <noreply@resend.dev>';
+
 
 const sendRequestSchema = z.object({
   dateRange: z.object({
@@ -17,9 +20,9 @@ const sendRequestSchema = z.object({
 });
 
 export async function POST(request: Request) {
-  if (!toEmail) {
-    console.error('RESERVATION_EMAIL_TO is not defined in environment variables.');
-    return NextResponse.json({ error: 'Configuration error on the server.' }, { status: 500 });
+  if (!toEmail || !process.env.RESEND_API_KEY) {
+    console.error('RESEND_API_KEY or RESERVATION_EMAIL_TO is not defined in environment variables.');
+    return NextResponse.json({ error: 'Erreur de configuration du serveur. Le service de messagerie n\'est pas correctement configuré.' }, { status: 500 });
   }
 
   const body = await request.json();
@@ -33,7 +36,7 @@ export async function POST(request: Request) {
 
   try {
     const { data, error } = await resend.emails.send({
-      from: 'Hôtel Karibuni <noreply@resend.dev>', // Note: Must be a domain verified with Resend
+      from: fromEmail,
       to: [toEmail],
       subject: `Nouvelle demande de réservation - ${new Date(dateRange.from).toLocaleDateString()}`,
       react: ReservationRequestEmail({
@@ -53,12 +56,12 @@ export async function POST(request: Request) {
 
     if (error) {
       console.error('Resend error:', error);
-      return NextResponse.json({ error: 'Failed to send email' }, { status: 500 });
+      return NextResponse.json({ error: 'Échec de l\'envoi de l\'e-mail via le fournisseur de services.' }, { status: 500 });
     }
 
     return NextResponse.json({ message: 'Email sent successfully', data });
   } catch (error) {
     console.error('Error sending email:', error);
-    return NextResponse.json({ error: 'An unexpected error occurred' }, { status: 500 });
+    return NextResponse.json({ error: 'Une erreur inattendue est survenue lors de l\'envoi de l\'e-mail.' }, { status: 500 });
   }
 }

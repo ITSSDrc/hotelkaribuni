@@ -78,7 +78,8 @@ export default function Booking() {
       });
 
       if (!response.ok) {
-        throw new Error("Une erreur s'est produite lors de l'envoi de la demande.");
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Une erreur s'est produite lors de l'envoi de la demande.");
       }
 
       const { from, to } = data.dateRange;
@@ -95,12 +96,12 @@ export default function Booking() {
 
       router.push(`/reservation/confirmation?${params.toString()}`);
 
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
       toast({
         variant: 'destructive',
         title: 'Erreur',
-        description: "Impossible d'envoyer la demande de réservation. Veuillez réessayer plus tard.",
+        description: error.message || "Impossible d'envoyer la demande. Veuillez réessayer plus tard.",
       });
     } finally {
       setIsSubmitting(false);
@@ -110,7 +111,7 @@ export default function Booking() {
   return (
     <section id="reservation" className="bg-background py-16 md:py-32">
       <div className="container mx-auto px-4 md:px-6">
-        <Card className="mx-auto max-w-4xl shadow-2xl shadow-primary/40 border-primary/20">
+        <Card className="mx-auto max-w-4xl border-primary/20 shadow-2xl shadow-primary/40">
           <CardHeader className="text-center p-8">
             <CardTitle className="section-title">Planifiez Votre Escapade</CardTitle>
             <CardDescription className="section-subtitle">
