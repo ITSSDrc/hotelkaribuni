@@ -1,12 +1,10 @@
 
 import type { Metadata } from 'next';
 import './globals.css';
-import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/lib/utils';
-import { Analytics } from '@vercel/analytics/react';
 import { Inter } from 'next/font/google';
-import { ThemeProvider } from '@/components/layout/theme-provider';
-import WhatsappButton from '@/components/layout/whatsapp-button';
+import { Providers } from '@/components/layout/providers';
+
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
@@ -33,17 +31,9 @@ export default function RootLayout({
         />
       </head>
       <body className={cn('min-h-screen bg-background font-body antialiased', inter.variable)}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <Providers>
           {children}
-          <WhatsappButton />
-          <Toaster />
-          <Analytics />
-        </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );
