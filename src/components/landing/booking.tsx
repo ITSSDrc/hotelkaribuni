@@ -1,12 +1,13 @@
+
 'use client';
 
-import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import { Calendar as CalendarIcon, Users } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -30,7 +31,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 
@@ -48,7 +48,7 @@ const bookingFormSchema = z.object({
 type BookingFormValues = z.infer<typeof bookingFormSchema>;
 
 export default function Booking() {
-  const { toast } = useToast();
+  const router = useRouter();
   const form = useForm<BookingFormValues>({
     resolver: zodResolver(bookingFormSchema),
     defaultValues: {
@@ -57,10 +57,16 @@ export default function Booking() {
   });
 
   function onSubmit(data: BookingFormValues) {
-    toast({
-      title: 'Vérification de la disponibilité...',
-      description: `Recherche de chambres du ${format(data.dateRange.from, 'dd LLL y', { locale: fr })} au ${format(data.dateRange.to, 'dd LLL y', { locale: fr })} for ${data.guests} hôte(s).`,
+    const { from, to } = data.dateRange;
+    const guests = data.guests;
+    
+    const params = new URLSearchParams({
+      from: from.toISOString(),
+      to: to.toISOString(),
+      guests: guests,
     });
+
+    router.push(`/reservation/confirmation?${params.toString()}`);
   }
 
   return (

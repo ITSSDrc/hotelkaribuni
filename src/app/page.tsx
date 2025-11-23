@@ -15,11 +15,11 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         <Hero />
+        <Booking />
         <RoomShowcase />
         <Salle />
         <Piscines />
         <RestauBar />
-        <Booking />
         <Gallery />
         <Contact />
       </main>
