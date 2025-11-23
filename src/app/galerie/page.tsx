@@ -113,6 +113,9 @@ export default function GalleryPage() {
                  <DialogContent className="max-w-4xl w-full p-0 border-0 bg-transparent shadow-none" onKeyDown={handleKeyDown as any}>
                     {selectedImage && (
                         <>
+                            <DialogTitle className="absolute -left-full">
+                              {selectedImage.alt}
+                            </DialogTitle>
                             <div className="relative aspect-video w-full">
                                 <Image
                                     src={selectedImage.url}
@@ -121,7 +124,7 @@ export default function GalleryPage() {
                                     className="object-contain"
                                 />
                             </div>
-                            <DialogTitle className="absolute bottom-4 left-1/2 -translate-x-1/2 w-auto whitespace-nowrap rounded-md bg-black/50 px-4 py-2 text-base text-white flex items-center gap-2">
+                            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-auto whitespace-nowrap rounded-md bg-black/50 px-4 py-2 text-base text-white flex items-center gap-2">
                                 <span>{selectedImage.alt}</span>
                                 {filteredImages.length > 1 && (
                                   <>
@@ -129,7 +132,7 @@ export default function GalleryPage() {
                                   <span className="text-sm text-white/70">{selectedImageIndex! + 1} / {filteredImages.length}</span>
                                   </>
                                 )}
-                            </DialogTitle>
+                            </div>
 
                             {filteredImages.length > 1 && (
                                 <>
