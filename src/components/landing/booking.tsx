@@ -6,8 +6,9 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { Calendar as CalendarIcon, Users, Mail, Phone } from 'lucide-react';
+import { Calendar as CalendarIcon, Users, Mail, Phone, Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import React from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
@@ -34,6 +35,7 @@ import {
 import { cn } from '@/lib/utils';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../ui/card';
 import { Input } from '../ui/input';
+import { useToast } from '@/hooks/use-toast';
 
 const bookingFormSchema = z.object({
   dateRange: z.object(
@@ -44,7 +46,7 @@ const bookingFormSchema = z.object({
     { required_error: 'Veuillez sélectionner une période.' }
   ),
   guests: z.string().min(1, "Veuillez sélectionner le nombre d'hôtes."),
-  phone: z.string().min(14, 'Veuillez entrer un numéro de téléphone valide, y compris le +243.'),
+  phone: z.string().min(10, 'Veuillez entrer un numéro de téléphone valide.'),
   email: z.string().email("Veuillez entrer une adresse e-mail valide.").optional().or(z.literal('')),
 });
 
@@ -52,6 +54,9 @@ type BookingFormValues = z.infer<typeof bookingFormSchema>;
 
 export default function Booking() {
   const router = useRouter();
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  
   const form = useForm<BookingFormValues>({
     resolver: zodResolver(bookingFormSchema),
     defaultValues: {
@@ -61,21 +66,45 @@ export default function Booking() {
     },
   });
 
-  function onSubmit(data: BookingFormValues) {
-    const { from, to } = data.dateRange;
-    
-    const params = new URLSearchParams({
-      from: from.toISOString(),
-      to: to.toISOString(),
-      guests: data.guests,
-      phone: data.phone,
-    });
+  async function onSubmit(data: BookingFormValues) {
+    setIsSubmitting(true);
+    try {
+      const response = await fetch('/api/send-reservation-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
 
-    if (data.email) {
-      params.set('email', data.email);
+      if (!response.ok) {
+        throw new Error("Une erreur s'est produite lors de l'envoi de la demande.");
+      }
+
+      const { from, to } = data.dateRange;
+      const params = new URLSearchParams({
+        from: from.toISOString(),
+        to: to.toISOString(),
+        guests: data.guests,
+        phone: data.phone,
+      });
+
+      if (data.email) {
+        params.set('email', data.email);
+      }
+
+      router.push(`/reservation/confirmation?${params.toString()}`);
+
+    } catch (error) {
+      console.error(error);
+      toast({
+        variant: 'destructive',
+        title: 'Erreur',
+        description: "Impossible d'envoyer la demande de réservation. Veuillez réessayer plus tard.",
+      });
+    } finally {
+      setIsSubmitting(false);
     }
-
-    router.push(`/reservation/confirmation?${params.toString()}`);
   }
 
   return (
@@ -201,7 +230,10 @@ export default function Booking() {
                   )}
                 />
 
-                <Button type="submit" size="lg" className="w-full h-12 md:col-span-2">Envoyer la demande</Button>
+                <Button type="submit" size="lg" className="w-full h-12 md:col-span-2" disabled={isSubmitting}>
+                  {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  Envoyer la demande
+                </Button>
               </form>
             </Form>
           </CardContent>
