@@ -4,6 +4,8 @@ import { Resend } from 'resend';
 import { z } from 'zod';
 import ReservationRequestEmail from '@/components/emails/reservation-request-email';
 
+export const runtime = 'nodejs';
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 const toEmail = process.env.RESERVATION_EMAIL_TO;
 const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';

@@ -4,6 +4,8 @@ import { Resend } from 'resend';
 import { z } from 'zod';
 import ContactFormEmail from '@/components/emails/contact-form-email';
 
+export const runtime = 'nodejs';
+
 const resend = new Resend(process.env.RESEND_API_KEY);
 const toEmail = process.env.CONTACT_EMAIL_TO;
 const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev';
