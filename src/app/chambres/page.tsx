@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, BedDouble } from 'lucide-react';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import { Badge } from '@/components/ui/badge';
@@ -57,14 +57,21 @@ export default function ChambresPage() {
                   </div>
                   <CardHeader>
                     <CardTitle className="font-headline text-2xl">{room.name}</CardTitle>
-                    <CardDescription>{room.description}</CardDescription>
+                    <CardDescription>{room.type}</CardDescription>
                   </CardHeader>
                   <CardContent className="flex-grow">
-                      <div className='flex justify-end items-center'>
-                          <Badge variant="outline">{room.type}</Badge>
-                      </div>
+                      <p className="text-muted-foreground line-clamp-3">{room.description}</p>
                   </CardContent>
-                  <CardFooter>
+                  <CardFooter className="flex-col items-start gap-4">
+                     <div className='flex justify-between items-center w-full'>
+                           <p className="text-xl font-semibold text-primary">
+                              ${room.price} <span className="text-sm font-normal text-muted-foreground">/ nuit</span>
+                          </p>
+                           <div className="flex items-center gap-2 text-muted-foreground">
+                              <BedDouble className="h-5 w-5" />
+                              <span className='font-medium'>{room.type}</span>
+                          </div>
+                      </div>
                     <Button asChild className="w-full">
                       <Link href={`/chambres/${room.id}`}>
                         Voir les détails
@@ -82,3 +89,5 @@ export default function ChambresPage() {
     </div>
   );
 }
+
+    

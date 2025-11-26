@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
-import { Info, CalendarCheck, Wifi, AirVent, Tv, ConciergeBell, Waves, GalleryVerticalEnd, GlassWater, Sofa, Sun, Bath, Star } from 'lucide-react';
+import { Info, CalendarCheck, Wifi, AirVent, Tv, ConciergeBell, Waves, GalleryVerticalEnd, GlassWater, Sofa, Sun, Bath, Star, Wind } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -25,7 +25,8 @@ const iconMap: { [key: string]: React.ElementType } = {
   Sofa,
   Sun,
   Bath,
-  Star
+  Star,
+  Wind
 };
 
 export default function RoomDetailPage() {
@@ -95,6 +96,14 @@ export default function RoomDetailPage() {
                 </p>
 
                 <div className="space-y-4 mb-6">
+                    <div className="flex items-center gap-3">
+                         <span className="text-3xl font-bold text-primary">
+                            ${roomData.price}
+                          </span>
+                          <span className="text-lg text-muted-foreground">
+                            / nuit
+                          </span>
+                    </div>
                   <div className="flex items-center gap-3">
                     <Info className="h-6 w-6 text-primary" />
                      <Badge variant={roomData.status === 'Disponible' ? 'default' : 'destructive'} className="text-base">
@@ -141,3 +150,5 @@ export default function RoomDetailPage() {
     </div>
   );
 }
+
+    

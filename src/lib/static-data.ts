@@ -2,16 +2,35 @@
 export const StaticData = {
     rooms: [
         {
-            "id": "1",
-            "name": "Chambre Standard",
+            "id": "ch-eco",
+            "name": "Chambre Standard Ventilée",
             "type": "Standard",
-            "description": "Une chambre confortable et élégante, parfaite pour les voyageurs seuls ou en couple, avec toutes les commodités modernes.",
+            "description": "Une chambre simple et confortable équipée d'un ventilateur. L'accès à internet est disponible gratuitement dans nos espaces communs comme le restaurant.",
+            "price": 30,
+            "imageUrls": [
+                "https://images.unsplash.com/photo-1598605272254-16f0c0ecdfa5?q=80&w=1974&auto=format&fit=crop",
+                "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=2070&auto=format&fit=crop"
+            ],
+            "amenities": [
+                { "name": "Ventilateur", "icon": "Wind" },
+                { "name": "Télévision", "icon": "Tv" },
+                { "name": "Douche privée", "icon": "Bath" },
+                { "name": "Wi-Fi (Restaurant)", "icon": "Wifi" }
+            ],
+            "status": "Disponible"
+        },
+        {
+            "id": "ch-standard",
+            "name": "Chambre Standard Climatisée",
+            "type": "Standard",
+            "description": "Profitez du confort de la climatisation dans cette chambre élégante, idéale pour un séjour agréable. Wi-Fi inclus.",
+            "price": 45,
             "imageUrls": [
                 "https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=2070&auto=format&fit=crop",
                 "https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=2070&auto=format&fit=crop"
             ],
             "amenities": [
-                { "name": "Wi-Fi Gratuit", "icon": "Wifi" },
+                { "name": "Wi-Fi en chambre", "icon": "Wifi" },
                 { "name": "Climatisation", "icon": "AirVent" },
                 { "name": "TV Écran Plat", "icon": "Tv" },
                 { "name": "Service en chambre", "icon": "ConciergeBell" }
@@ -19,40 +38,61 @@ export const StaticData = {
             "status": "Disponible"
         },
         {
-            "id": "2",
-            "name": "Chambre Deluxe Vue Mer",
+            "id": "ch-deluxe",
+            "name": "Chambre Deluxe",
             "type": "Deluxe",
-            "description": "Profitez d'un espace généreux et d'une vue imprenable sur l'océan depuis votre balcon privé. Le luxe et le confort à leur apogée.",
+            "description": "Un espace généreux avec un coin salon, un balcon privé et une vue agréable. Le luxe et le confort à leur apogée.",
+            "price": 60,
             "imageUrls": [
                 "https://images.unsplash.com/photo-1590490359854-dfba5968267c?q=80&w=1974&auto=format&fit=crop",
                 "https://images.unsplash.com/photo-1560185893-a55de8537e2b?q=80&w=1974&auto=format&fit=crop"
             ],
             "amenities": [
-                { "name": "Vue sur mer", "icon": "Waves" },
                 { "name": "Balcon privé", "icon": "GalleryVerticalEnd" },
-                { "name": "Wi-Fi Gratuit", "icon": "Wifi" },
+                { "name": "Wi-Fi en chambre", "icon": "Wifi" },
                 { "name": "Climatisation", "icon": "AirVent" },
-                { "name": "Mini-bar", "icon": "GlassWater" }
+                { "name": "Mini-bar", "icon": "GlassWater" },
+                { "name": "Coin salon", "icon": "Sofa" }
             ],
             "status": "Disponible"
         },
         {
-            "id": "3",
-            "name": "Suite Royale",
+            "id": "semi-apt",
+            "name": "Semi-Appartement",
             "type": "Suite",
-            "description": "L'expérience ultime du luxe. Notre suite Royale dispose d'un salon séparé, d'une grande terrasse et de services exclusifs.",
+            "description": "Plus d'espace et d'autonomie. Notre semi-appartement inclut une kitchenette pour plus de flexibilité durant votre séjour.",
+            "price": 80,
+            "imageUrls": [
+                "https://images.unsplash.com/photo-1629079448222-0331613589b9?q=80&w=1974&auto=format&fit=crop",
+                "https://images.unsplash.com/photo-1605346484971-d82c6b38b695?q=80&w=2070&auto=format&fit=crop"
+            ],
+             "amenities": [
+                { "name": "Kitchenette", "icon": "Sofa" },
+                { "name": "Grande terrasse", "icon": "Sun" },
+                { "name": "Wi-Fi Haut Débit", "icon": "Wifi" },
+                { "name": "Climatisation", "icon": "AirVent" },
+                { "name": "Services Exclusifs", "icon": "Star" }
+            ],
+            "status": "Occupée"
+        },
+        {
+            "id": "apt",
+            "name": "Appartement Complet",
+            "type": "Suite",
+            "description": "L'expérience ultime pour les longs séjours. Un appartement complet avec salon séparé, cuisine équipée et services hôteliers.",
+            "price": 120,
             "imageUrls": [
                 "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=2070&auto=format&fit=crop",
                 "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?q=80&w=2070&auto=format&fit=crop"
             ],
              "amenities": [
                 { "name": "Salon séparé", "icon": "Sofa" },
-                { "name": "Grande terrasse", "icon": "Sun" },
-                { "name": "Baignoire Jacuzzi", "icon": "Bath" },
+                { "name": "Cuisine équipée", "icon": "Sun" },
+                { "name": "Baignoire", "icon": "Bath" },
                 { "name": "Services Exclusifs", "icon": "Star" },
                 { "name": "Wi-Fi Haut Débit", "icon": "Wifi" }
             ],
-            "status": "Occupée"
+            "status": "Disponible"
         }
     ],
     salles: [
@@ -245,3 +285,5 @@ export const getGalleryImages = (): GalleryImage[] => {
 
   return allImages;
 };
+
+    
