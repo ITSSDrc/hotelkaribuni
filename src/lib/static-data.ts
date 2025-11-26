@@ -78,14 +78,14 @@ export const StaticData = {
             "id": "semi-apt",
             "name": "Semi-Appartement",
             "type": "Suite",
-            "description": "Plus d'espace et d'autonomie. Notre semi-appartement inclut une kitchenette pour plus de flexibilité durant votre séjour.",
+            "description": "Un espace généreux avec un coin salon pour plus d'autonomie et de flexibilité durant votre séjour.",
             "price": 80,
             "imageUrls": [
                 "https://images.unsplash.com/photo-1629079448222-0331613589b9?q=80&w=1974&auto=format&fit=crop",
                 "https://images.unsplash.com/photo-1605346484971-d82c6b38b695?q=80&w=2070&auto=format&fit=crop"
             ],
              "amenities": [
-                { "name": "Kitchenette", "icon": "Sofa" },
+                { "name": "Coin Salon", "icon": "Sofa" },
                 { "name": "Grande terrasse", "icon": "Sun" },
                 { "name": "Wi-Fi Haut Débit", "icon": "Wifi" },
                 { "name": "Climatisation", "icon": "AirVent" },
