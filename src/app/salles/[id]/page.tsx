@@ -7,7 +7,7 @@ import Image from 'next/image';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { Loader2, Users, Info, CalendarCheck, MonitorPlay, Presentation, Wifi, Volume2, AirVent, Wind, Martini, Music } from 'lucide-react';
+import { Loader2, Users, Info, CalendarCheck, MonitorPlay, Presentation, Wifi, Volume2, AirVent, Wind, Martini, Music, AlertTriangle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 import Header from '@/components/layout/header';
@@ -22,6 +22,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const iconMap: { [key: string]: React.ElementType } = {
     MonitorPlay,
@@ -45,7 +46,7 @@ type QuoteFormValues = z.infer<typeof quoteFormSchema>;
 
 function QuoteForm({ roomName }: { roomName: string }) {
   const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const isSubmitting = false; // Temporarily disabled
   const [isOpen, setIsOpen] = React.useState(false);
 
   const form = useForm<QuoteFormValues>({
@@ -54,37 +55,12 @@ function QuoteForm({ roomName }: { roomName: string }) {
   });
 
   async function onSubmit(data: QuoteFormValues) {
-    setIsSubmitting(true);
-    try {
-      const response = await fetch('/api/send-contact-email', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...data,
-          subject: `Demande de devis pour : ${roomName}`
-        }),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error?.message || "Une erreur s'est produite.");
-      }
-
-      toast({
-        title: 'Demande envoyée !',
-        description: 'Merci, nous avons bien reçu votre demande de devis et vous répondrons bientôt.',
-      });
-      form.reset();
-      setIsOpen(false);
-    } catch (error: any) {
-      toast({
+     // Temporarily disabled
+    toast({
         variant: 'destructive',
-        title: 'Erreur',
-        description: error.message,
+        title: 'Fonctionnalité en maintenance',
+        description: 'Le formulaire de demande de devis est temporairement désactivé.',
       });
-    } finally {
-      setIsSubmitting(false);
-    }
   }
 
   return (
@@ -102,42 +78,50 @@ function QuoteForm({ roomName }: { roomName: string }) {
             Remplissez ce formulaire et notre équipe vous contactera rapidement avec une proposition.
           </DialogDescription>
         </DialogHeader>
+        <Alert variant="destructive" className="my-4">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertDescription>
+                Cette fonctionnalité est en cours de maintenance. Merci de nous contacter directement par téléphone.
+            </AlertDescription>
+        </Alert>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nom</FormLabel>
-                  <FormControl><Input placeholder="Votre nom" {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-             <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Email</FormLabel>
-                  <FormControl><Input placeholder="votre.email@example.com" {...field} /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="message"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Votre message</FormLabel>
-                  <FormControl><Textarea placeholder="Précisez vos besoins (dates, nombre de personnes, etc.)" {...field} className="min-h-[100px]" /></FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit" disabled={isSubmitting} className="w-full">
+             <fieldset disabled>
+                <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Nom</FormLabel>
+                    <FormControl><Input placeholder="Votre nom" {...field} /></FormControl>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+                <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl><Input placeholder="votre.email@example.com" {...field} /></FormControl>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+                <FormField
+                control={form.control}
+                name="message"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Votre message</FormLabel>
+                    <FormControl><Textarea placeholder="Précisez vos besoins (dates, nombre de personnes, etc.)" {...field} className="min-h-[100px]" /></FormControl>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+            </fieldset>
+            <Button type="submit" disabled className="w-full">
               {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Envoyer la demande
             </Button>

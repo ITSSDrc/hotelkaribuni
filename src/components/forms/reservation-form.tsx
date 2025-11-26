@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { Calendar as CalendarIcon, Users, Mail, Phone, Loader2 } from 'lucide-react';
+import { Calendar as CalendarIcon, Users, Mail, Phone, Loader2, AlertTriangle } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React from 'react';
 
@@ -35,6 +35,8 @@ import {
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
+import { Alert, AlertDescription } from '../ui/alert';
+
 
 const bookingFormSchema = z.object({
   dateRange: z.object(
@@ -56,7 +58,7 @@ export default function ReservationForm({ roomId }: { roomId?: string }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const isSubmitting = false; // Temporarily disabled
 
   const fromDate = searchParams.get('from');
   const toDate = searchParams.get('to');
@@ -76,50 +78,25 @@ export default function ReservationForm({ roomId }: { roomId?: string }) {
   });
 
   async function onSubmit(data: BookingFormValues) {
-    setIsSubmitting(true);
-    try {
-      const response = await fetch('/api/send-reservation-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Une erreur s'est produite lors de l'envoi de la demande.");
-      }
-
-      const { from, to } = data.dateRange;
-      const params = new URLSearchParams({
-        from: from.toISOString(),
-        to: to.toISOString(),
-        guests: data.guests,
-        phone: data.phone,
-      });
-
-      if (data.email) {
-        params.set('email', data.email);
-      }
-
-      router.push(`/reservation/confirmation?${params.toString()}`);
-
-    } catch (error: any) {
-      console.error(error);
-      toast({
+    // Temporarily disabled
+     toast({
         variant: 'destructive',
-        title: 'Erreur',
-        description: error.message || "Impossible d'envoyer la demande. Veuillez réessayer plus tard.",
+        title: 'Fonctionnalité en maintenance',
+        description: 'Le formulaire de réservation est temporairement désactivé. Veuillez nous contacter par téléphone.',
       });
-    } finally {
-      setIsSubmitting(false);
-    }
   }
 
   return (
+    <>
+    <Alert variant="destructive" className="mb-6">
+        <AlertTriangle className="h-4 w-4" />
+        <AlertDescription>
+        Le formulaire de réservation est en cours de maintenance. Veuillez nous contacter directement par téléphone pour réserver.
+        </AlertDescription>
+    </Alert>
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <fieldset disabled className="grid grid-cols-1 md:grid-cols-2 gap-6 contents">
         <FormField
           control={form.control}
           name="dateRange"
@@ -229,12 +206,14 @@ export default function ReservationForm({ roomId }: { roomId?: string }) {
             </FormItem>
           )}
         />
+        </fieldset>
 
-        <Button type="submit" size="lg" className="w-full h-12 md:col-span-2" disabled={isSubmitting}>
+        <Button type="submit" size="lg" className="w-full h-12 md:col-span-2" disabled>
           {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Envoyer la demande
         </Button>
       </form>
     </Form>
+    </>
   );
 }

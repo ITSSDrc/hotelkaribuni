@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import React from 'react';
-import { Loader2 } from 'lucide-react';
+import { Loader2, AlertTriangle } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -20,6 +20,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { Alert, AlertDescription } from '../ui/alert';
 
 const contactFormSchema = z.object({
   name: z.string().min(2, 'Le nom doit contenir au moins 2 caractères.'),
@@ -31,7 +32,7 @@ type ContactFormValues = z.infer<typeof contactFormSchema>;
 
 export default function Contact() {
   const { toast } = useToast();
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const isSubmitting = false; // Temporarily disabled
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
@@ -43,36 +44,12 @@ export default function Contact() {
   });
 
   async function onSubmit(data: ContactFormValues) {
-    setIsSubmitting(true);
-    try {
-      const response = await fetch('/api/send-contact-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Une erreur s'est produite lors de l'envoi du message.");
-      }
-
-      toast({
-        title: 'Message envoyé !',
-        description: 'Merci de nous avoir contactés. Nous vous répondrons dans les plus brefs délais.',
-      });
-      form.reset();
-    } catch (error: any) {
-      console.error(error);
-      toast({
+    // Temporarily disabled
+    toast({
         variant: 'destructive',
-        title: 'Erreur',
-        description: error.message || "Impossible d'envoyer le message. Veuillez réessayer plus tard.",
+        title: 'Fonctionnalité en maintenance',
+        description: 'Le formulaire de contact est temporairement désactivé.',
       });
-    } finally {
-      setIsSubmitting(false);
-    }
   }
 
   return (
@@ -86,48 +63,56 @@ export default function Contact() {
             </CardDescription>
           </CardHeader>
           <CardContent className="p-8">
+            <Alert variant="destructive" className="mb-6">
+              <AlertTriangle className="h-4 w-4" />
+              <AlertDescription>
+                Le formulaire de contact est en cours de maintenance. Veuillez nous contacter directement par téléphone.
+              </AlertDescription>
+            </Alert>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Nom</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Votre nom complet" {...field} className="h-12" />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email</FormLabel>
-                      <FormControl>
-                        <Input placeholder="votre.email@example.com" {...field} className="h-12"/>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="message"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Message</FormLabel>
-                      <FormControl>
-                        <Textarea placeholder="Écrivez votre message ici..." className="min-h-[150px]" {...field} />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit" size="lg" className="w-full h-12" disabled={isSubmitting}>
+                <fieldset disabled>
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Nom</FormLabel>
+                        <FormControl>
+                          <Input placeholder="Votre nom complet" {...field} className="h-12" />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email</FormLabel>
+                        <FormControl>
+                          <Input placeholder="votre.email@example.com" {...field} className="h-12"/>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="message"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Message</FormLabel>
+                        <FormControl>
+                          <Textarea placeholder="Écrivez votre message ici..." className="min-h-[150px]" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </fieldset>
+                <Button type="submit" size="lg" className="w-full h-12" disabled>
                   {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Envoyer le message
                 </Button>
