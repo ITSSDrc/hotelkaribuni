@@ -20,20 +20,20 @@ export const StaticData = {
             "status": "Disponible"
         },
         {
-            "id": "ch-standard",
-            "name": "Chambre Standard Climatisée",
+            "id": "ch-standard-ventile",
+            "name": "Chambre Standard",
             "type": "Standard",
-            "description": "Profitez du confort de la climatisation dans cette chambre élégante, idéale pour un séjour agréable. Wi-Fi inclus.",
-            "price": 45,
+            "description": "Profitez du confort dans cette chambre élégante équipée d'un ventilateur, idéale pour un séjour agréable. Internet est disponible au restaurant.",
+            "price": 40,
             "imageUrls": [
                 "https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=2070&auto=format&fit=crop",
                 "https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=2070&auto=format&fit=crop"
             ],
             "amenities": [
-                { "name": "Wi-Fi en chambre", "icon": "Wifi" },
-                { "name": "Climatisation", "icon": "AirVent" },
+                { "name": "Ventilateur", "icon": "Wind" },
                 { "name": "TV Écran Plat", "icon": "Tv" },
-                { "name": "Service en chambre", "icon": "ConciergeBell" }
+                { "name": "Service en chambre", "icon": "ConciergeBell" },
+                { "name": "Wi-Fi (Restaurant)", "icon": "Wifi" }
             ],
             "status": "Disponible"
         },
@@ -98,7 +98,7 @@ export const StaticData = {
     salles: [
         {
             "id": "salle-grande-polyvalente",
-            "name": "Grande Salle Polyvalente",
+            "name": "Grande salle polyvalente",
             "capacity": 300,
             "price": 300,
             "description": "Notre plus grand espace, parfait pour les conférences, mariages ou grands événements. Modulable pour s'adapter à vos besoins.",
@@ -136,15 +136,15 @@ export const StaticData = {
             "name": "Salle de Réunion",
             "capacity": 30,
             "price": 100,
-            "description": "Un cadre discret et professionnel pour vos réunions d'affaires, entretiens ou petites sessions de travail, dans une ambiance feutrée.",
+            "description": "Un cadre discret et professionnel pour vos réunions d'affaires, entretiens ou petites sessions de travail.",
             "imageUrls": [
                 "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop"
             ],
              "amenities": [
-                { "name": "Ambiance feutrée", "icon": "Wind" },
                 { "name": "Climatisation", "icon": "AirVent" },
                 { "name": "Rétroprojecteur", "icon": "MonitorPlay" },
-                { "name": "Wi-Fi", "icon": "Wifi" }
+                { "name": "Wi-Fi", "icon": "Wifi" },
+                { "name": "Ambiance feutrée", "icon": "Wind" }
             ],
             "status": "Disponible"
         }
