@@ -75,19 +75,19 @@ export const StaticData = {
             "status": "Disponible"
         },
         {
-            "id": "salle-reunion-vip",
-            "name": "Salle de Réunion VIP",
-            "capacity": 20,
+            "id": "salle-moyenne",
+            "name": "Salle Moyenne",
+            "capacity": 150,
             "price": 150,
-            "description": "Un cadre élégant et discret pour vos réunions d'affaires importantes. Service de café et équipement de visioconférence sur demande.",
+            "description": "Une salle de taille intermédiaire, idéale pour les séminaires, formations ou réceptions de taille moyenne. Entièrement équipée pour garantir le succès de votre événement.",
             "imageUrls": [
                 "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2232&auto=format&fit=crop"
             ],
              "amenities": [
                 { "name": "Climatisation", "icon": "AirVent" },
-                { "name": "Tableau blanc interactif", "icon": "Presentation" },
-                { "name": "Visioconférence", "icon": "MonitorPlay" },
-                { "name": "Wi-Fi Haut Débit", "icon": "Wifi" }
+                { "name": "Sonorisation", "icon": "Volume2" },
+                { "name": "Rétroprojecteur", "icon": "MonitorPlay" },
+                { "name": "Wi-Fi", "icon": "Wifi" }
             ],
             "status": "Disponible"
         },
