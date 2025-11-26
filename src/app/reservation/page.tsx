@@ -6,6 +6,8 @@ import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import ReservationForm from '@/components/forms/reservation-form';
 
+export const dynamic = 'force-dynamic';
+
 export default function ReservationPage() {
   return (
     <div className="flex min-h-screen flex-col">
