@@ -92,18 +92,18 @@ export const StaticData = {
             "status": "Disponible"
         },
         {
-            "id": "espace-cocktail",
-            "name": "Espace Cocktail 'Le Patio'",
-            "capacity": 80,
-            "price": 200,
-            "description": "Un espace extérieur couvert et élégant, idéal pour les cocktails, lancements de produits ou événements sociaux en plein air.",
+            "id": "salle-reunion",
+            "name": "Salle de Réunion",
+            "capacity": 30,
+            "price": 100,
+            "description": "Un cadre discret et professionnel pour vos réunions d'affaires, entretiens ou petites sessions de travail, dans une ambiance feutrée.",
             "imageUrls": [
-                "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=2070&auto=format&fit=crop"
+                "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop"
             ],
              "amenities": [
-                { "name": "Ambiance musicale", "icon": "Music" },
-                { "name": "Bar dédié", "icon": "Martini" },
-                { "name": "Mobilier lounge", "icon": "Sofa" },
+                { "name": "Ambiance feutrée", "icon": "Wind" },
+                { "name": "Climatisation", "icon": "AirVent" },
+                { "name": "Rétroprojecteur", "icon": "MonitorPlay" },
                 { "name": "Wi-Fi", "icon": "Wifi" }
             ],
             "status": "Disponible"

@@ -62,7 +62,7 @@ export default function SallesPage() {
                   <CardContent className="flex-grow">
                       <div className='flex justify-between items-center'>
                            <p className="text-xl font-semibold text-primary">
-                              ${salle.price.toFixed(2)} <span className="text-sm font-normal text-muted-foreground">/ jour</span>
+                              ${salle.price} <span className="text-sm font-normal text-muted-foreground">/ jour</span>
                           </p>
                            <div className="flex items-center gap-2 text-muted-foreground">
                               <Users className="h-5 w-5" />

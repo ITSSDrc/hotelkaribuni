@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
-import { Users, Info, CalendarCheck, MonitorPlay, Presentation, Wifi, Volume2, AirVent, Sofa, Martini, Music } from 'lucide-react';
+import { Users, Info, CalendarCheck, MonitorPlay, Presentation, Wifi, Volume2, AirVent, Wind, Martini, Music } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -20,7 +20,7 @@ const iconMap: { [key: string]: React.ElementType } = {
     Wifi,
     Volume2,
     AirVent,
-    Sofa,
+    Wind,
     Martini,
     Music,
 };
