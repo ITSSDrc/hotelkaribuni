@@ -38,6 +38,24 @@ export const StaticData = {
             "status": "Disponible"
         },
         {
+            "id": "ch-confort-ac",
+            "name": "Chambre Confort Climatisée",
+            "type": "Confort",
+            "description": "Le confort de la climatisation et une connexion internet en chambre. Un choix idéal pour les voyageurs d'affaires ou de loisirs.",
+            "price": 50,
+            "imageUrls": [
+                "https://images.unsplash.com/photo-1590490359854-dfba5968267c?q=80&w=1974&auto=format&fit=crop",
+                "https://images.unsplash.com/photo-1560185893-a55de8537e2b?q=80&w=1974&auto=format&fit=crop"
+            ],
+            "amenities": [
+                { "name": "Climatisation", "icon": "AirVent" },
+                { "name": "Wi-Fi en chambre", "icon": "Wifi" },
+                { "name": "Télévision", "icon": "Tv" },
+                { "name": "Service en chambre", "icon": "ConciergeBell" }
+            ],
+            "status": "Disponible"
+        },
+        {
             "id": "ch-deluxe",
             "name": "Chambre Deluxe",
             "type": "Deluxe",
