@@ -26,20 +26,34 @@ const getStatusVariant = (status: string) => {
 
 export default function SallesPage() {
   const salles = StaticData.salles;
+  const headerImage = salles[0]?.imageUrls[0] || 'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=2012&auto=format&fit=crop';
+
 
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
       <main className="flex-1 bg-background">
+        <section className="relative h-[40vh] min-h-[300px] w-full flex items-center justify-center">
+            <div className="absolute inset-0">
+                <Image
+                    src={headerImage}
+                    alt="Salle de conférence moderne"
+                    fill
+                    className="object-cover"
+                    priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-black/20" />
+            </div>
+            <div className="relative z-10 text-center text-white px-4">
+                 <h1 className="font-headline text-4xl font-bold md:text-6xl text-shadow">Nos Salles d'Événements</h1>
+                  <p className="mx-auto mt-4 max-w-2xl text-lg text-white/90">
+                    Découvrez nos espaces modulables et équipés pour tous vos événements professionnels ou privés.
+                  </p>
+            </div>
+        </section>
+
         <section id="salles" className="py-16 md:py-24">
           <div className="container mx-auto px-4 md:px-6">
-            <div className="mb-12 text-center">
-              <h1 className="font-headline text-4xl font-bold md:text-5xl">Nos Salles d'Événements</h1>
-              <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-                Découvrez nos espaces modulables et équipés pour tous vos événements professionnels ou privés.
-              </p>
-            </div>
-
             <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
               {salles.map((salle: any) => (
                 <Card key={salle.id} className="flex flex-col overflow-hidden transition-all duration-300 shadow-lg shadow-primary/10 hover:shadow-xl hover:shadow-primary/20 dark:shadow-2xl dark:shadow-primary/25 dark:hover:shadow-primary/40">
