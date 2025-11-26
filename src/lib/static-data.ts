@@ -111,6 +111,25 @@ export const StaticData = {
                 { "name": "Wi-Fi Haut Débit", "icon": "Wifi" }
             ],
             "status": "Disponible"
+        },
+        {
+            "id": "suite-prez",
+            "name": "Suite Présidentielle",
+            "type": "Suite",
+            "description": "Le summum du luxe. Une suite opulente avec un salon spacieux, une cuisine entièrement équipée, et des services personnalisés pour un séjour inoubliable.",
+            "price": 120,
+            "imageUrls": [
+                "https://images.unsplash.com/photo-1600121848594-d8644e57abab?q=80&w=2070&auto=format&fit=crop",
+                "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=2070&auto=format&fit=crop"
+            ],
+             "amenities": [
+                { "name": "Salon spacieux", "icon": "Sofa" },
+                { "name": "Baignoire Jacuzzi", "icon": "Bath" },
+                { "name": "Climatisation centrale", "icon": "AirVent" },
+                { "name": "Services VIP", "icon": "Star" },
+                { "name": "Wi-Fi Premium", "icon": "Wifi" }
+            ],
+            "status": "Disponible"
         }
     ],
     salles: [
@@ -304,4 +323,5 @@ export const getGalleryImages = (): GalleryImage[] => {
   return allImages;
 };
 
+    
     
