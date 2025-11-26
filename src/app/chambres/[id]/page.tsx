@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
-import { Info, CalendarCheck, Wifi, AirVent, Tv, ConciergeBell, Waves, GalleryVerticalEnd, GlassWater, Sofa, Sun, Bath, Star, Wind } from 'lucide-react';
+import { Info, CalendarCheck, Wifi, AirVent, Tv, ConciergeBell, Waves, GalleryVerticalEnd, GlassWater, Sofa, Sun, Bath, Star, Wind, ChevronLeft, ChevronRight } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -14,6 +14,7 @@ import { StaticData } from '@/lib/static-data';
 import { Separator } from '@/components/ui/separator';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog';
 import ReservationForm from '@/components/forms/reservation-form';
+import { useState, useCallback, useEffect } from 'react';
 
 const iconMap: { [key: string]: React.ElementType } = {
   Wifi,
@@ -35,6 +36,7 @@ export default function RoomDetailPage() {
   const { id } = params;
 
   const room = StaticData.rooms.find(r => r.id === id);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
 
   if (!room) {
     return (
@@ -49,6 +51,47 @@ export default function RoomDetailPage() {
     ? roomData.imageUrls
     : [];
 
+  const handleImageClick = (index: number) => {
+    setSelectedImageIndex(index);
+  };
+  
+  const handleClose = () => setSelectedImageIndex(null);
+
+  const handleNext = useCallback((e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    if (selectedImageIndex !== null) {
+      setSelectedImageIndex((prevIndex) => (prevIndex! + 1) % galleryImages.length);
+    }
+  }, [selectedImageIndex, galleryImages.length]);
+
+  const handlePrevious = useCallback((e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    if (selectedImageIndex !== null) {
+      setSelectedImageIndex((prevIndex) => (prevIndex! - 1 + galleryImages.length) % galleryImages.length);
+    }
+  }, [selectedImageIndex, galleryImages.length]);
+
+  const handleKeyDown = useCallback((event: globalThis.KeyboardEvent) => {
+    if (selectedImageIndex !== null) {
+      if (event.key === 'ArrowRight') {
+        handleNext();
+      } else if (event.key === 'ArrowLeft') {
+        handlePrevious();
+      } else if (event.key === 'Escape') {
+        handleClose();
+      }
+    }
+  }, [selectedImageIndex, handleNext, handlePrevious]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleKeyDown]);
+  
+  const selectedImage = selectedImageIndex !== null ? galleryImages[selectedImageIndex] : null;
+
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
@@ -57,32 +100,83 @@ export default function RoomDetailPage() {
           <Card className="overflow-hidden shadow-lg">
             <div className="grid grid-cols-1 lg:grid-cols-5">
               <div className="lg:col-span-3 p-4">
-                {galleryImages.length > 0 ? (
-                  <Carousel className="w-full">
-                    <CarouselContent>
-                      {galleryImages.map((url: string, index: number) => (
-                        <CarouselItem key={index}>
-                          <div className="relative aspect-video w-full overflow-hidden rounded-lg">
-                            <Image
-                              src={url}
-                              alt={`${roomData.name} - image ${index + 1}`}
-                              fill
-                              priority={index === 0}
-                              className="object-cover"
-                              sizes="(max-width: 1024px) 100vw, 60vw"
-                            />
-                          </div>
-                        </CarouselItem>
-                      ))}
-                    </CarouselContent>
-                    <CarouselPrevious className="left-2" />
-                    <CarouselNext className="right-2" />
-                  </Carousel>
-                ) : (
-                   <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-muted flex items-center justify-center">
-                       <p className='text-muted-foreground'>Pas d'image</p>
-                   </div>
-                )}
+                 <Dialog open={selectedImageIndex !== null} onOpenChange={(isOpen) => !isOpen && handleClose()}>
+                    {galleryImages.length > 0 ? (
+                    <Carousel className="w-full">
+                        <CarouselContent>
+                        {galleryImages.map((url: string, index: number) => (
+                            <CarouselItem key={index}>
+                                <DialogTrigger asChild onClick={() => handleImageClick(index)} className="cursor-zoom-in">
+                                    <div className="relative aspect-video w-full overflow-hidden rounded-lg">
+                                        <Image
+                                        src={url}
+                                        alt={`${roomData.name} - image ${index + 1}`}
+                                        fill
+                                        priority={index === 0}
+                                        className="object-cover"
+                                        sizes="(max-width: 1024px) 100vw, 60vw"
+                                        />
+                                    </div>
+                                </DialogTrigger>
+                            </CarouselItem>
+                        ))}
+                        </CarouselContent>
+                        <CarouselPrevious className="left-2" />
+                        <CarouselNext className="right-2" />
+                    </Carousel>
+                    ) : (
+                    <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-muted flex items-center justify-center">
+                        <p className='text-muted-foreground'>Pas d'image</p>
+                    </div>
+                    )}
+                    <DialogContent className="max-w-4xl w-full p-0 border-0 bg-transparent shadow-none" onKeyDown={handleKeyDown as any}>
+                        {selectedImage && (
+                            <>
+                                <DialogTitle className="absolute -left-full">
+                                {roomData.name}
+                                </DialogTitle>
+                                <div className="relative aspect-video w-full">
+                                    <Image
+                                        src={selectedImage}
+                                        alt={roomData.name}
+                                        fill
+                                        className="object-contain"
+                                    />
+                                </div>
+                                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 w-auto whitespace-nowrap rounded-md bg-black/50 px-4 py-2 text-base text-white flex items-center gap-2">
+                                    <span>{roomData.name}</span>
+                                    {galleryImages.length > 1 && (
+                                    <>
+                                    <span className='text-white/70'>•</span>
+                                    <span className="text-sm text-white/70">{selectedImageIndex! + 1} / {galleryImages.length}</span>
+                                    </>
+                                    )}
+                                </div>
+
+                                {galleryImages.length > 1 && (
+                                    <>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 h-12 w-12 rounded-full bg-background/50 hover:bg-background/80 text-foreground"
+                                            onClick={handlePrevious}
+                                        >
+                                            <ChevronLeft className="h-8 w-8" />
+                                        </Button>
+                                        <Button
+                                            variant="ghost"
+                                            size="icon"
+                                            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 h-12 w-12 rounded-full bg-background/50 hover:bg-background/80 text-foreground"
+                                            onClick={handleNext}
+                                        >
+                                            <ChevronRight className="h-8 w-8" />
+                                        </Button>
+                                    </>
+                                )}
+                            </>
+                        )}
+                    </DialogContent>
+                 </Dialog>
               </div>
               <div className="flex flex-col p-8 lg:col-span-2">
                 <h1 className="font-headline text-4xl font-bold md:text-5xl mb-2">
