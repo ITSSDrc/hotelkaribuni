@@ -57,20 +57,54 @@ export const StaticData = {
     ],
     salles: [
         {
-            "id": "salle-1",
-            "name": "Salle de Conférence 'Horizon'",
-            "capacity": 50,
-            "price": 500,
-            "description": "Un espace modulable et entièrement équipé pour vos séminaires, réunions et événements professionnels. Lumière naturelle et technologie de pointe.",
+            "id": "salle-grande-polyvalente",
+            "name": "Grande Salle Polyvalente",
+            "capacity": 300,
+            "price": 300,
+            "description": "Notre plus grand espace, parfait pour les conférences, mariages ou grands événements. Modulable pour s'adapter à vos besoins.",
             "imageUrls": [
                 "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=2012&auto=format&fit=crop"
             ],
              "amenities": [
-                { "name": "Vidéo-projecteur", "icon": "MonitorPlay" },
-                { "name": "Tableau blanc", "icon": "Presentation" },
-                { "name": "Wi-Fi Haut Débit", "icon": "Wifi" },
-                { "name": "Sonorisation", "icon": "Volume2" },
-                { "name": "Climatisation", "icon": "AirVent" }
+                { "name": "Climatisation", "icon": "AirVent" },
+                { "name": "Sonorisation complète", "icon": "Volume2" },
+                { "name": "Rétroprojecteur", "icon": "MonitorPlay" },
+                { "name": "Scène modulable", "icon": "Presentation" },
+                { "name": "Wi-Fi Haut Débit", "icon": "Wifi" }
+            ],
+            "status": "Disponible"
+        },
+        {
+            "id": "salle-reunion-vip",
+            "name": "Salle de Réunion VIP",
+            "capacity": 20,
+            "price": 150,
+            "description": "Un cadre élégant et discret pour vos réunions d'affaires importantes. Service de café et équipement de visioconférence sur demande.",
+            "imageUrls": [
+                "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2232&auto=format&fit=crop"
+            ],
+             "amenities": [
+                { "name": "Climatisation", "icon": "AirVent" },
+                { "name": "Tableau blanc interactif", "icon": "Presentation" },
+                { "name": "Visioconférence", "icon": "MonitorPlay" },
+                { "name": "Wi-Fi Haut Débit", "icon": "Wifi" }
+            ],
+            "status": "Disponible"
+        },
+        {
+            "id": "espace-cocktail",
+            "name": "Espace Cocktail 'Le Patio'",
+            "capacity": 80,
+            "price": 200,
+            "description": "Un espace extérieur couvert et élégant, idéal pour les cocktails, lancements de produits ou événements sociaux en plein air.",
+            "imageUrls": [
+                "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?q=80&w=2070&auto=format&fit=crop"
+            ],
+             "amenities": [
+                { "name": "Ambiance musicale", "icon": "Music" },
+                { "name": "Bar dédié", "icon": "Martini" },
+                { "name": "Mobilier lounge", "icon": "Sofa" },
+                { "name": "Wi-Fi", "icon": "Wifi" }
             ],
             "status": "Disponible"
         }

@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
-import { Users, Info, CalendarCheck, MonitorPlay, Presentation, Wifi, Volume2, AirVent } from 'lucide-react';
+import { Users, Info, CalendarCheck, MonitorPlay, Presentation, Wifi, Volume2, AirVent, Sofa, Martini, Music } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -20,6 +20,9 @@ const iconMap: { [key: string]: React.ElementType } = {
     Wifi,
     Volume2,
     AirVent,
+    Sofa,
+    Martini,
+    Music,
 };
 
 
@@ -90,7 +93,7 @@ export default function SalleDetailPage() {
                     <div className="flex items-center gap-3">
                         <Users className="h-6 w-6 text-primary" />
                         <span className="text-xl font-semibold">
-                        Capacité : {salleData.capacity} personnes
+                        Capacité : jusqu'à {salleData.capacity} personnes
                         </span>
                     </div>
                   <div className="flex items-center gap-3">
