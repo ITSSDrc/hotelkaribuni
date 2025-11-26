@@ -33,13 +33,13 @@ export default function SallesPage() {
     <div className="flex min-h-screen flex-col">
       <Header />
       <main className="flex-1 bg-background">
-        <section className="relative h-[40vh] min-h-[300px] w-full flex items-center justify-center">
+        <section className="relative h-[40vh] min-h-[300px] w-full flex items-center justify-center overflow-hidden">
             <div className="absolute inset-0">
                 <Image
                     src={headerImage}
                     alt="Salle de conférence moderne"
                     fill
-                    className="object-cover"
+                    className="object-cover transition-transform duration-500 ease-in-out"
                     priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-black/20" />
