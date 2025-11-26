@@ -11,6 +11,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/piscines',
     '/restau-bar',
     '/galerie',
+    '/services',
     '/a-propos',
     '/reservation',
     '/confidentialite',

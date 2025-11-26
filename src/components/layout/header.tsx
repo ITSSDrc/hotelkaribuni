@@ -30,6 +30,7 @@ const navLinks = [
       { href: '/galerie', label: 'Galerie' },
     ],
   },
+  { href: '/services', label: 'Services' },
   { href: '/a-propos', label: 'À Propos' },
   { href: '/#contact', label: 'Contact' },
 ];

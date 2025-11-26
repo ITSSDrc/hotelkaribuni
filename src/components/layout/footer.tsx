@@ -25,6 +25,7 @@ export default function Footer() {
               <li><Link href="/piscines" className="text-sm text-muted-foreground hover:text-primary">Piscines</Link></li>
               <li><Link href="/restau-bar" className="text-sm text-muted-foreground hover:text-primary">Restau-bar</Link></li>
               <li><Link href="/galerie" className="text-sm text-muted-foreground hover:text-primary">Galerie</Link></li>
+              <li><Link href="/services" className="text-sm text-muted-foreground hover:text-primary">Services</Link></li>
             </ul>
           </div>
           <div>
