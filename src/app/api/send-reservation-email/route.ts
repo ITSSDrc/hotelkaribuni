@@ -17,6 +17,7 @@ const sendRequestSchema = z.object({
   guests: z.string(),
   phone: z.string(),
   email: z.string().optional(),
+  roomId: z.string().optional(),
 });
 
 export async function POST(request: Request) {
@@ -32,7 +33,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: parsed.error.format() }, { status: 400 });
   }
 
-  const { dateRange, guests, phone, email } = parsed.data;
+  const { dateRange, guests, phone, email, roomId } = parsed.data;
 
   try {
     const { data, error } = await resend.emails.send({
@@ -45,13 +46,15 @@ export async function POST(request: Request) {
         guests,
         phone,
         email,
+        roomId,
       }),
       text: `Nouvelle demande de réservation reçue.
       Arrivée: ${new Date(dateRange.from).toLocaleDateString()}
       Départ: ${new Date(dateRange.to).toLocaleDateString()}
       Hôtes: ${guests}
       Téléphone: ${phone}
-      Email: ${email || 'Non fourni'}`,
+      Email: ${email || 'Non fourni'}
+      Chambre demandée: ${roomId || 'Non spécifiée'}`,
     });
 
     if (error) {

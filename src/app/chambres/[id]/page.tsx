@@ -9,10 +9,11 @@ import { Info, CalendarCheck, Wifi, AirVent, Tv, ConciergeBell, Waves, GalleryVe
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 import { StaticData } from '@/lib/static-data';
 import { Separator } from '@/components/ui/separator';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog';
+import ReservationForm from '@/components/forms/reservation-form';
 
 const iconMap: { [key: string]: React.ElementType } = {
   Wifi,
@@ -134,12 +135,23 @@ export default function RoomDetailPage() {
 
 
                 <div className="mt-auto">
-                    <Button size="lg" className="w-full" asChild disabled={roomData.status !== 'Disponible'}>
-                        <Link href="/reservation">
-                            <CalendarCheck className='mr-2 h-5 w-5' />
-                            Réserver maintenant
-                        </Link>
-                    </Button>
+                    <Dialog>
+                      <DialogTrigger asChild>
+                        <Button size="lg" className="w-full" disabled={roomData.status !== 'Disponible'}>
+                           <CalendarCheck className='mr-2 h-5 w-5' />
+                           Vérifier la disponibilité
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-md">
+                        <DialogHeader>
+                          <DialogTitle>Réserver: {roomData.name}</DialogTitle>
+                          <DialogDescription>
+                            Veuillez remplir le formulaire ci-dessous pour nous envoyer votre demande de réservation.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <ReservationForm roomId={roomData.id} />
+                      </DialogContent>
+                    </Dialog>
                 </div>
               </div>
             </div>
@@ -150,5 +162,3 @@ export default function RoomDetailPage() {
     </div>
   );
 }
-
-    

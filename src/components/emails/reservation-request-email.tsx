@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import {
   Body,
@@ -19,6 +20,7 @@ interface ReservationRequestEmailProps {
   guests: string;
   phone: string;
   email?: string;
+  roomId?: string;
 }
 
 const ReservationRequestEmail: React.FC<ReservationRequestEmailProps> = ({
@@ -27,6 +29,7 @@ const ReservationRequestEmail: React.FC<ReservationRequestEmailProps> = ({
   guests,
   phone,
   email,
+  roomId,
 }) => (
   <Html>
     <Head />
@@ -43,6 +46,12 @@ const ReservationRequestEmail: React.FC<ReservationRequestEmailProps> = ({
             <strong>{format(dateFrom, 'eeee dd MMMM yyyy', { locale: fr })}</strong>
             {' '}au{' '}
             <strong>{format(dateTo, 'eeee dd MMMM yyyy', { locale: fr })}</strong>
+          </Text>
+        </Section>
+        <Section style={section}>
+          <Text style={label}>Chambre demandée :</Text>
+          <Text style={value}>
+            <strong>{roomId || 'Non spécifiée'}</strong>
           </Text>
         </Section>
         <Section style={section}>
