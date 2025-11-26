@@ -16,20 +16,22 @@ interface ContactFormEmailProps {
   name: string;
   email: string;
   message: string;
+  subject?: string;
 }
 
 const ContactFormEmail: React.FC<ContactFormEmailProps> = ({
   name,
   email,
   message,
+  subject,
 }) => (
   <Html>
     <Head />
-    <Preview>Nouveau message de {name} via le site Karibuni</Preview>
+    <Preview>{subject || `Nouveau message de ${name} via le site Karibuni`}</Preview>
     <Body style={main}>
       <Container style={container}>
-        <Heading style={heading}>Nouveau Message de Contact</Heading>
-        <Text style={paragraph}>Vous avez reçu un nouveau message depuis le formulaire de contact du site de l'Hôtel Karibuni.</Text>
+        <Heading style={heading}>{subject || 'Nouveau Message de Contact'}</Heading>
+        <Text style={paragraph}>Vous avez reçu un nouveau message depuis le site de l'Hôtel Karibuni.</Text>
         <Hr style={hr} />
         <Section style={section}>
           <Text style={label}>De :</Text>

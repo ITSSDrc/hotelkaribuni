@@ -13,6 +13,7 @@ const sendRequestSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
   message: z.string().min(10),
+  subject: z.string().optional(),
 });
 
 export async function POST(request: Request) {
@@ -28,30 +29,32 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: parsed.error.format() }, { status: 400 });
   }
 
-  const { name, email, message } = parsed.data;
+  const { name, email, message, subject } = parsed.data;
+  const emailSubject = subject || `Nouveau message de contact de ${name}`;
 
   try {
     const { data, error } = await resend.emails.send({
       from: fromEmail,
       to: [toEmail],
       reply_to: email,
-      subject: `Nouveau message de contact de ${name}`,
+      subject: emailSubject,
       react: ContactFormEmail({
         name,
         email,
         message,
+        subject: emailSubject,
       }),
-      text: `Nouveau message de ${name} (${email}):\n\n${message}`,
+      text: `${emailSubject}\n\nNouveau message de ${name} (${email}):\n\n${message}`,
     });
 
     if (error) {
       console.error('Resend error:', error);
-      return NextResponse.json({ error: 'Échec de l\'envoi de l\'e-mail via le fournisseur de services.' }, { status: 500 });
+      return NextResponse.json({ error: { message: 'Échec de l\'envoi de l\'e-mail via le fournisseur de services.' } }, { status: 500 });
     }
 
     return NextResponse.json({ message: 'Email sent successfully', data });
   } catch (error) {
     console.error('Error sending email:', error);
-    return NextResponse.json({ error: 'Une erreur inattendue est survenue lors de l\'envoi de l\'e-mail.' }, { status: 500 });
+    return NextResponse.json({ error: { message: 'Une erreur inattendue est survenue lors de l\'envoi de l\'e-mail.' } }, { status: 500 });
   }
 }
