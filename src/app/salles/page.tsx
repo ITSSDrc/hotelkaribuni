@@ -57,10 +57,12 @@ export default function SallesPage() {
                   </div>
                   <CardHeader>
                     <CardTitle className="font-headline text-2xl">{salle.name}</CardTitle>
-                    <CardDescription>{salle.description}</CardDescription>
                   </CardHeader>
                   <CardContent className="flex-grow">
-                      <div className='flex justify-between items-center'>
+                    <CardDescription>{salle.description}</CardDescription>
+                  </CardContent>
+                  <CardFooter className="flex-col items-start gap-4">
+                      <div className='flex justify-between items-center w-full'>
                            <p className="text-xl font-semibold text-primary">
                               ${salle.price} <span className="text-sm font-normal text-muted-foreground">/ jour</span>
                           </p>
@@ -69,8 +71,6 @@ export default function SallesPage() {
                               <span className='font-medium'>jusqu'à {salle.capacity}</span>
                           </div>
                       </div>
-                  </CardContent>
-                  <CardFooter>
                     <Button asChild className="w-full">
                       <Link href={`/salles/${salle.id}`}>
                         Voir les détails
