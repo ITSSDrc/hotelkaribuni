@@ -98,7 +98,7 @@ export const StaticData = {
             "name": "Appartement Complet",
             "type": "Suite",
             "description": "L'expérience ultime pour les longs séjours. Un appartement complet avec salon séparé, cuisine équipée et services hôteliers.",
-            "price": 120,
+            "price": 100,
             "imageUrls": [
                 "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?q=80&w=2070&auto=format&fit=crop",
                 "https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?q=80&w=2070&auto=format&fit=crop"
