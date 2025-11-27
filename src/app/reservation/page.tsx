@@ -5,8 +5,35 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
 import ReservationForm from '@/components/forms/reservation-form';
+import { Suspense } from 'react';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export const dynamic = 'force-dynamic';
+
+
+function ReservationFormSkeleton() {
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="md:col-span-2 space-y-2">
+                <Skeleton className="h-4 w-1/4" />
+                <Skeleton className="h-12 w-full" />
+            </div>
+            <div className="md:col-span-2 space-y-2">
+                <Skeleton className="h-4 w-1/4" />
+                <Skeleton className="h-12 w-full" />
+            </div>
+            <div className="space-y-2">
+                <Skeleton className="h-4 w-1/4" />
+                <Skeleton className="h-12 w-full" />
+            </div>
+            <div className="space-y-2">
+                <Skeleton className="h-4 w-1/4" />
+                <Skeleton className="h-12 w-full" />
+            </div>
+            <Skeleton className="h-12 w-full md:col-span-2" />
+        </div>
+    );
+}
 
 export default function ReservationPage() {
   return (
@@ -23,7 +50,9 @@ export default function ReservationPage() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="p-8">
-                    <ReservationForm />
+                    <Suspense fallback={<ReservationFormSkeleton />}>
+                        <ReservationForm />
+                    </Suspense>
                 </CardContent>
                 </Card>
             </div>
