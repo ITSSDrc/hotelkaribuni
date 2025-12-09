@@ -89,7 +89,9 @@ export const StaticData = {
             "imageUrls": [
                 "/images/cat-5.jpg",
                 "/images/cat-51.jpg",
-                "/images/cat-52.jpg"
+                "/images/cat-52.jpg",
+                "/images/cat-53.jpg",
+                "/images/cat-54.jpg"
             ],
              "amenities": [
                 { "name": "Coin Salon", "icon": "Sofa" },
