@@ -47,8 +47,9 @@ export const StaticData = {
             "description": "Le confort de la climatisation et une connexion internet en chambre. Un choix idéal pour les voyageurs d'affaires ou de loisirs.",
             "price": 50,
             "imageUrls": [
-                "https://images.unsplash.com/photo-1590490359854-dfba5968267c?q=80&w=1974&auto=format&fit=crop",
-                "https://images.unsplash.com/photo-1560185893-a55de8537e2b?q=80&w=1974&auto=format&fit=crop"
+                "/images/cat-3.jpg",
+                "/images/cat-31.jpg",
+                "/images/cat-32.jpg"
             ],
             "amenities": [
                 { "name": "Climatisation", "icon": "AirVent" },
