@@ -1,13 +1,13 @@
 
 'use client';
 
-import React from 'react';
+import React, { useTransition } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { Loader2, Users, Info, CalendarCheck, MonitorPlay, Presentation, Wifi, Volume2, AirVent, Wind, Martini, Music, AlertTriangle } from 'lucide-react';
+import { Loader2, Users, Info, CalendarCheck, MonitorPlay, Presentation, Wifi, Volume2, AirVent, Wind, Martini, Music } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 import Header from '@/components/layout/header';
@@ -22,7 +22,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { sendEmailAction } from '@/app/actions';
 
 const iconMap: { [key: string]: React.ElementType } = {
     MonitorPlay,
@@ -46,7 +46,7 @@ type QuoteFormValues = z.infer<typeof quoteFormSchema>;
 
 function QuoteForm({ roomName }: { roomName: string }) {
   const { toast } = useToast();
-  const isSubmitting = false; // Temporarily disabled
+  const [isPending, startTransition] = useTransition();
   const [isOpen, setIsOpen] = React.useState(false);
 
   const form = useForm<QuoteFormValues>({
@@ -54,13 +54,24 @@ function QuoteForm({ roomName }: { roomName: string }) {
     defaultValues: { name: '', email: '', message: `Bonjour, j'aimerais recevoir un devis pour la location de la salle "${roomName}". Merci.` },
   });
 
-  async function onSubmit(data: QuoteFormValues) {
-     // Temporarily disabled
-    toast({
-        variant: 'destructive',
-        title: 'Fonctionnalité en maintenance',
-        description: 'Le formulaire de demande de devis est temporairement désactivé.',
-      });
+  function onSubmit(data: QuoteFormValues) {
+     startTransition(async () => {
+      const result = await sendEmailAction('Quote', data);
+      if (result.success) {
+        toast({
+          title: 'Demande envoyée !',
+          description: "Nous vous contacterons rapidement avec un devis.",
+        });
+        setIsOpen(false);
+        form.reset({ name: '', email: '', message: `Bonjour, j'aimerais recevoir un devis pour la location de la salle "${roomName}". Merci.` });
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Erreur',
+          description: result.message,
+        });
+      }
+    });
   }
 
   return (
@@ -78,15 +89,9 @@ function QuoteForm({ roomName }: { roomName: string }) {
             Remplissez ce formulaire et notre équipe vous contactera rapidement avec une proposition.
           </DialogDescription>
         </DialogHeader>
-        <Alert variant="destructive" className="my-4">
-            <AlertTriangle className="h-4 w-4" />
-            <AlertDescription>
-                Cette fonctionnalité est en cours de maintenance. Merci de nous contacter directement par téléphone.
-            </AlertDescription>
-        </Alert>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-             <fieldset disabled>
+             <fieldset disabled={isPending}>
                 <FormField
                 control={form.control}
                 name="name"
@@ -121,8 +126,8 @@ function QuoteForm({ roomName }: { roomName: string }) {
                 )}
                 />
             </fieldset>
-            <Button type="submit" disabled className="w-full">
-              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            <Button type="submit" disabled={isPending} className="w-full">
+              {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Envoyer la demande
             </Button>
           </form>

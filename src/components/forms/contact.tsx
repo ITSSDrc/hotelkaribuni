@@ -4,8 +4,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import React from 'react';
-import { Loader2, AlertTriangle } from 'lucide-react';
+import React, { useTransition } from 'react';
+import { Loader2 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
 import {
@@ -20,7 +20,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
-import { Alert, AlertDescription } from '../ui/alert';
+import { sendEmailAction } from '@/app/actions';
 
 const contactFormSchema = z.object({
   name: z.string().min(2, 'Le nom doit contenir au moins 2 caractères.'),
@@ -32,7 +32,7 @@ type ContactFormValues = z.infer<typeof contactFormSchema>;
 
 export default function Contact() {
   const { toast } = useToast();
-  const isSubmitting = false; // Temporarily disabled
+  const [isPending, startTransition] = useTransition();
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
@@ -43,13 +43,23 @@ export default function Contact() {
     }
   });
 
-  async function onSubmit(data: ContactFormValues) {
-    // Temporarily disabled
-    toast({
-        variant: 'destructive',
-        title: 'Fonctionnalité en maintenance',
-        description: 'Le formulaire de contact est temporairement désactivé.',
-      });
+  function onSubmit(data: ContactFormValues) {
+    startTransition(async () => {
+      const result = await sendEmailAction('Contact', data);
+      if (result.success) {
+        toast({
+          title: 'Message envoyé !',
+          description: "Nous avons bien reçu votre message et vous répondrons bientôt.",
+        });
+        form.reset();
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Erreur',
+          description: result.message,
+        });
+      }
+    });
   }
 
   return (
@@ -63,15 +73,9 @@ export default function Contact() {
             </CardDescription>
           </CardHeader>
           <CardContent className="p-8">
-            <Alert variant="destructive" className="mb-6">
-              <AlertTriangle className="h-4 w-4" />
-              <AlertDescription>
-                Le formulaire de contact est en cours de maintenance. Veuillez nous contacter directement par téléphone.
-              </AlertDescription>
-            </Alert>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-                <fieldset disabled>
+                <fieldset disabled={isPending}>
                   <FormField
                     control={form.control}
                     name="name"
@@ -112,8 +116,8 @@ export default function Contact() {
                     )}
                   />
                 </fieldset>
-                <Button type="submit" size="lg" className="w-full h-12" disabled>
-                  {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                <Button type="submit" size="lg" className="w-full h-12" disabled={isPending}>
+                  {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Envoyer le message
                 </Button>
               </form>
