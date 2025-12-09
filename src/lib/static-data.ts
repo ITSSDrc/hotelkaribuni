@@ -240,7 +240,9 @@ export const StaticData = {
             "type": "Restaurant",
             "description": "Une cuisine gastronomique qui célèbre les produits de la mer et les saveurs locales dans un cadre élégant et raffiné.",
             "imageUrls": [
-                "/images/restau-1.jpg"
+                "/images/restau-1.jpg",
+                "/images/resto-1.jpg",
+                "/images/resto-2.jpg"
             ],
             "amenities": [
                 { "name": "Produits frais et locaux", "icon": "Fish" },
@@ -260,7 +262,7 @@ export const StaticData = {
             "type": "Bar",
             "description": "Le lieu idéal pour admirer le coucher de soleil en sirotant un cocktail signature. Musique live certains soirs.",
             "imageUrls": [
-                "https://images.unsplash.com/photo-1596701062351-8c2c14d1fdd0?q=80&w=1974&auto=format&fit=crop"
+                "/images/biere.jpg"
             ],
             "amenities": [
                 { "name": "Cocktails Signature", "icon": "Martini" },
