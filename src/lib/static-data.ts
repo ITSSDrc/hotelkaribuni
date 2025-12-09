@@ -66,8 +66,10 @@ export const StaticData = {
             "description": "Un espace généreux avec un coin salon, un balcon privé et une vue agréable. Le luxe et le confort à leur apogée.",
             "price": 60,
             "imageUrls": [
-                "https://images.unsplash.com/photo-1590490359854-dfba5968267c?q=80&w=1974&auto=format&fit=crop",
-                "https://images.unsplash.com/photo-1560185893-a55de8537e2b?q=80&w=1974&auto=format&fit=crop"
+                "/images/cat-4.jpg",
+                "/images/cat-41.jpg",
+                "/images/cat-42.jpg",
+                "/images/cat-43.jpg"
             ],
             "amenities": [
                 { "name": "Balcon privé", "icon": "GalleryVerticalEnd" },
