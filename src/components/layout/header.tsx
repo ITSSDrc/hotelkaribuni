@@ -53,27 +53,29 @@ export default function Header() {
       if (link.subLinks) {
         if (isMobile) {
           return (
-            <Collapsible key={index} className="w-full">
-              <CollapsibleTrigger className="flex w-full items-center justify-between rounded-md px-4 py-3 text-base font-medium transition-colors hover:bg-accent/10 [&[data-state=open]>svg]:rotate-180">
-                {link.label}
-                <ChevronDown className="h-5 w-5 transition-transform" />
-              </CollapsibleTrigger>
-              <CollapsibleContent>
-                <div className="flex flex-col gap-2 py-2 pl-10">
-                  {link.subLinks.map((subLink, subIndex) => (
-                    <Link
-                      key={subIndex}
-                      href={subLink.href}
-                      className="rounded-md px-4 py-2 text-base font-medium text-muted-foreground transition-colors hover:bg-accent/10 hover:text-foreground"
-                      onClick={() => setOpen(false)}
-                    >
-                      {subLink.label}
-                    </Link>
-                  ))}
-                </div>
-              </CollapsibleContent>
+            <React.Fragment key={index}>
+              <Collapsible className="w-full">
+                <CollapsibleTrigger className="flex w-full items-center justify-between rounded-md px-4 py-3 text-base font-medium transition-colors hover:bg-accent/10 [&[data-state=open]>svg]:rotate-180">
+                  {link.label}
+                  <ChevronDown className="h-5 w-5 transition-transform" />
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <div className="flex flex-col gap-2 py-2 pl-10">
+                    {link.subLinks.map((subLink, subIndex) => (
+                      <Link
+                        key={subIndex}
+                        href={subLink.href}
+                        className="rounded-md px-4 py-2 text-base font-medium text-muted-foreground transition-colors hover:bg-accent/10 hover:text-foreground"
+                        onClick={() => setOpen(false)}
+                      >
+                        {subLink.label}
+                      </Link>
+                    ))}
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
               <Separator className="bg-border/50" />
-            </Collapsible>
+            </React.Fragment>
           );
         }
         return (
