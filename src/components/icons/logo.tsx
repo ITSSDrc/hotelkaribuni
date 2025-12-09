@@ -12,7 +12,7 @@ export default function Logo(props: SVGProps<SVGSVGElement>) {
     >
       <g fontFamily="Playfair Display" fontSize="100" fontWeight="bold">
         <text x="-5" y="85">
-          K
+          H
         </text>
       </g>
     </svg>

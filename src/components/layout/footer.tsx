@@ -11,7 +11,7 @@ export default function Footer() {
           <div className="flex flex-col gap-4">
             <Link href="/" className="flex items-center gap-2">
               <Logo className="h-8 w-8 text-primary" />
-              <span className="font-headline text-2xl font-bold">Karibuni</span>
+              <span className="font-headline text-2xl font-bold">Karibuni Bunia</span>
             </Link>
             <p className="text-sm text-muted-foreground">
               Votre havre de paix pour une escapade inoubliable à Bunia.
@@ -55,7 +55,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 border-t border-border pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} Karibuni. Tous droits réservés. • <Link href="/confidentialite" className="hover:text-primary hover:underline">Politique de confidentialité</Link> • <Link href="/disclaimer" className="hover:text-primary hover:underline">Avis de non-responsabilité</Link></p>
+          <p>&copy; {new Date().getFullYear()} Karibuni Bunia. Tous droits réservés. • <Link href="/confidentialite" className="hover:text-primary hover:underline">Politique de confidentialité</Link> • <Link href="/disclaimer" className="hover:text-primary hover:underline">Avis de non-responsabilité</Link></p>
           <p className="mt-2">
             Designed by <a href="https://itssdrc.com" target="_blank" rel="noopener noreferrer" className="font-medium text-primary hover:underline">itssdrc.com</a>
           </p>

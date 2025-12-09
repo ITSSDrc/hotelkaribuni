@@ -111,7 +111,7 @@ export default function Header() {
           >
             {link.label}
           </Link>
-          {isMobile && <Separator className="bg-border/50" />}
+          {isMobile && link.href !== '/#contact' && <Separator className="bg-border/50" />}
         </React.Fragment>
       );
     });
@@ -127,7 +127,7 @@ export default function Header() {
       <div className="container mx-auto flex h-20 items-center justify-between px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2">
           <Logo className="h-8 w-8 text-primary" />
-          <span className="font-headline text-2xl font-bold text-foreground">Karibuni</span>
+          <span className="font-headline text-2xl font-bold text-foreground">Karibuni Bunia</span>
         </Link>
 
         <nav className="hidden items-center gap-2 md:flex">
@@ -153,7 +153,7 @@ export default function Header() {
               <SheetHeader className="flex flex-row items-center justify-between border-b p-4">
                  <Link href="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
                     <Logo className="h-6 w-6 text-primary" />
-                    <span className="font-headline text-xl font-bold">Karibuni</span>
+                    <span className="font-headline text-xl font-bold">Karibuni Bunia</span>
                   </Link>
                   <SheetTitle className="sr-only">Menu de navigation</SheetTitle>
                   <Button variant="ghost" size="icon" onClick={() => setOpen(false)}>
