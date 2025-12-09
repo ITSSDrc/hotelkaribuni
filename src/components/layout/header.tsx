@@ -105,7 +105,7 @@ export default function Header() {
             href={link.href}
             className={cn(
               'text-sm font-medium text-foreground/80 transition-colors hover:text-primary',
-              isMobile && 'rounded-md px-4 py-3 text-base'
+              isMobile && 'block rounded-md px-4 py-3 text-base hover:bg-accent/10'
             )}
             onClick={() => isMobile && setOpen(false)}
           >
@@ -162,7 +162,7 @@ export default function Header() {
                   </Button>
               </SheetHeader>
               <div className="flex h-full flex-col">
-                <nav className="flex-1 space-y-1 p-4">
+                <nav className="flex-1 space-y-0 p-4">
                   {renderNavLinks(true)}
                 </nav>
                  <div className="border-t border-border/50 p-4 flex flex-col gap-4">
