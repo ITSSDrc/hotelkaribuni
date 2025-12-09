@@ -50,8 +50,8 @@
     },
     {
       "id": "piscines-1",
-      "description": "An inviting hotel swimming pool with lounge chairs at dusk.",
-      "imageUrl": "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?q=80&w=1949&auto=format&fit=crop",
+      "description": "Vue sur l'une des piscines de l'Hôtel Karibuni",
+      "imageUrl": "/images/principal-1.jpg",
       "imageHint": "hotel pool"
     },
     {
