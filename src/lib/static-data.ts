@@ -100,7 +100,7 @@ export const StaticData = {
                 { "name": "Climatisation", "icon": "AirVent" },
                 { "name": "Services Exclusifs", "icon": "Star" }
             ],
-            "status": "Occupée"
+            "status": "Disponible"
         },
         {
             "id": "apt",
