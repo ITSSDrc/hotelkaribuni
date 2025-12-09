@@ -153,7 +153,7 @@ export const StaticData = {
             "price": 300,
             "description": "Notre plus grand espace, parfait pour les conférences, mariages ou grands événements. Modulable pour s'adapter à vos besoins.",
             "imageUrls": [
-                "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?q=80&w=2012&auto=format&fit=crop"
+                "/images/salle-grande.jpg"
             ],
              "amenities": [
                 { "name": "Climatisation", "icon": "AirVent" },
@@ -171,7 +171,7 @@ export const StaticData = {
             "price": 150,
             "description": "Une salle de taille intermédiaire, idéale pour les séminaires, formations ou réceptions de taille moyenne. Entièrement équipée pour garantir le succès de votre événement.",
             "imageUrls": [
-                "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2232&auto=format&fit=crop"
+                "/images/salle-1.jpg"
             ],
              "amenities": [
                 { "name": "Climatisation", "icon": "AirVent" },
@@ -188,7 +188,7 @@ export const StaticData = {
             "price": 100,
             "description": "Un cadre discret et professionnel pour vos réunions d'affaires, entretiens ou petites sessions de travail.",
             "imageUrls": [
-                "https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop"
+                "/images/salle-reunion.jpg"
             ],
              "amenities": [
                 { "name": "Climatisation", "icon": "AirVent" },
@@ -344,3 +344,4 @@ export const getGalleryImages = (): GalleryImage[] => {
     
 
     
+
