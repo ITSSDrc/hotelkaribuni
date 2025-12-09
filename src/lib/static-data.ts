@@ -250,8 +250,7 @@ export const StaticData = {
             ],
             "products": [
                 { "name": "Filet de Capitaine à la Plancha", "description": "Servi avec sa purée de patates douces et une sauce aux agrumes.", "icon": "Fish" },
-                { "name": "Poulet Braisé façon Karibuni", "description": "Mariné aux épices locales, accompagné de bananes plantains frites.", "icon": "Award" },
-                { "name": "Salade Tropicale", "description": "Mélange de fruits exotiques, avocat, et crevettes fraîches.", "icon": "Sun" }
+                { "name": "Poulet Braisé façon Karibuni", "description": "Mariné aux épices locales, accompagné de bananes plantains frites.", "icon": "Award" }
             ],
             "status": "Ouvert"
         },
@@ -261,7 +260,7 @@ export const StaticData = {
             "type": "Bar",
             "description": "Le lieu idéal pour admirer le coucher de soleil en sirotant un cocktail signature. Musique live certains soirs.",
             "imageUrls": [
-                "https://images.unsplash.com/photo-1608270586620-248524c67de9?q=80&w=1974&auto=format&fit=crop"
+                "https://images.unsplash.com/photo-1596701062351-8c2c14d1fdd0?q=80&w=1974&auto=format&fit=crop"
             ],
             "amenities": [
                 { "name": "Cocktails Signature", "icon": "Martini" },
