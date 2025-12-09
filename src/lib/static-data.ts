@@ -28,8 +28,9 @@ export const StaticData = {
             "description": "Profitez du confort dans cette chambre élégante équipée d'un ventilateur, idéale pour un séjour agréable. Internet est disponible au restaurant.",
             "price": 40,
             "imageUrls": [
-                "https://images.unsplash.com/photo-1611892440504-42a792e24d32?q=80&w=2070&auto=format&fit=crop",
-                "https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=2070&auto=format&fit=crop"
+                "/images/cat-2.jpg",
+                "/images/cat-21.jpg",
+                "/images/cat-22.jpg"
             ],
             "amenities": [
                 { "name": "Ventilateur", "icon": "Wind" },
