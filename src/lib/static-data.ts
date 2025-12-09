@@ -11,8 +11,7 @@ export const StaticData = {
                 "/images/cat-1.jpg",
                 "/images/cat-11.jpg",
                 "/images/cat-12.jpg",
-                "/images/cat-13.jpg",
-                "/images/cat-14.jpg"
+                "/images/cat-13.jpg"
             ],
             "amenities": [
                 { "name": "Ventilateur", "icon": "Wind" },
