@@ -261,7 +261,7 @@ export const StaticData = {
             "type": "Bar",
             "description": "Le lieu idéal pour admirer le coucher de soleil en sirotant un cocktail signature. Musique live certains soirs.",
             "imageUrls": [
-                "https://images.unsplash.com/photo-1543007168-5fa9b3c5951d?q=80&w=1974&auto=format&fit=crop"
+                "https://images.unsplash.com/photo-1608270586620-248524c67de9?q=80&w=1974&auto=format&fit=crop"
             ],
             "amenities": [
                 { "name": "Cocktails Signature", "icon": "Martini" },
