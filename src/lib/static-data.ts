@@ -262,7 +262,7 @@ export const StaticData = {
             "type": "Bar",
             "description": "Le lieu idéal pour admirer le coucher de soleil en sirotant un cocktail signature. Musique live certains soirs.",
             "imageUrls": [
-                "/images/biere.jpg"
+                "/images/bar-1.jpg"
             ],
             "amenities": [
                 { "name": "Cocktails Signature", "icon": "Martini" },
