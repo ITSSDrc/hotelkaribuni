@@ -21,7 +21,7 @@ import Image from 'next/image';
 import { Phone } from 'lucide-react';
 
 export default function WhatsappButton() {
-  const phoneNumber = '243000000000';
+  const phoneNumber = '243822805628';
   const message = "Bonjour, j'aimerais avoir plus d'informations sur l'hôtel Karibuni à Bunia.";
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
   
