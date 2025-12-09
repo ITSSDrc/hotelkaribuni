@@ -215,22 +215,6 @@ export const StaticData = {
                 { "name": "Espace enfants", "icon": "ToyBrick" }
             ],
             "status": "Ouverte"
-        },
-        {
-            "id": "piscine-2",
-            "name": "Bassin de Relaxation",
-            "type": "Intérieure",
-            "description": "Un espace intime et calme, avec une eau chauffée et des jets de massage. Parfait pour se détendre après une longue journée.",
-            "imageUrls": [
-                "https://images.unsplash.com/photo-1582573739920-c2a7153a8a3a?q=80&w=1964&auto=format&fit=crop"
-            ],
-             "amenities": [
-                { "name": "Eau chauffée", "icon": "Thermometer" },
-                { "name": "Jets de massage", "icon": "Waves" },
-                { "name": "Ambiance calme", "icon": "Wind" },
-                { "name": "Accès au spa", "icon": "Sparkles" }
-            ],
-            "status": "Ouverte"
         }
     ],
     restauBar: [
@@ -344,4 +328,5 @@ export const getGalleryImages = (): GalleryImage[] => {
     
 
     
+
 
