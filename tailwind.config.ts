@@ -20,8 +20,8 @@ const config: Config = {
     extend: {
       fontFamily: {
         sans: ['var(--font-sans)', ...fontFamily.sans],
-        body: ['var(--font-inter)', 'sans-serif'],
-        headline: ['Playfair Display', 'serif'],
+        body: ['var(--font-body)', 'sans-serif'],
+        headline: ['Cormorant Garamond', 'serif'],
         code: ['monospace'],
       },
       colors: {
@@ -100,6 +100,9 @@ const config: Config = {
         'accordion-up': 'accordion-up 0.2s ease-out',
         'fade-in': 'fade-in 0.5s ease-out forwards',
       },
+      boxShadow: {
+        '2xl': '0 25px 50px -12px rgb(0 0 0 / 0.15)',
+      }
     },
   },
   plugins: [require('tailwindcss-animate')],

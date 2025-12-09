@@ -2,11 +2,11 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { cn } from '@/lib/utils';
-import { Inter } from 'next/font/google';
+import { DM_Sans } from 'next/font/google';
 import { Providers } from '@/components/layout/providers';
 
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
+const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-body' });
 
 
 export const metadata: Metadata = {
@@ -25,12 +25,9 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
-          rel="stylesheet"
-        />
+        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&display=swap" rel="stylesheet" />
       </head>
-      <body className={cn('min-h-screen bg-background font-body antialiased', inter.variable)}>
+      <body className={cn('min-h-screen bg-background font-body antialiased', dmSans.variable)}>
         <Providers>
           {children}
         </Providers>

@@ -25,7 +25,7 @@ export default function RoomShowcase() {
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {rooms.map((room, index) => (
             <div key={room.id} className="animate-fade-in" style={{ animationDelay: `${index * 0.2 + 0.4}s`, animationFillMode: 'both' }}>
-              <Card className="group overflow-hidden border-0 shadow-lg transition-shadow duration-300 hover:shadow-2xl hover:shadow-primary/10">
+              <Card className="group overflow-hidden border-0 shadow-lg transition-all duration-300 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-2">
                 <div className="relative h-80 w-full overflow-hidden">
                   <Image
                     src={(room.imageUrls && room.imageUrls[0]) || "https://placehold.co/400x300"}
