@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { ThemeToggle } from './theme-toggle';
+import { Separator } from '../ui/separator';
 
 const navLinks = [
   { href: '/', label: 'Accueil' },
@@ -52,18 +53,18 @@ export default function Header() {
       if (link.subLinks) {
         if (isMobile) {
           return (
-            <Collapsible key={index}>
-              <CollapsibleTrigger className="flex w-full items-center justify-between rounded-md px-3 py-2 text-lg font-medium transition-colors hover:bg-accent/10 [&[data-state=open]>svg]:rotate-180">
+            <Collapsible key={index} className="w-full">
+              <CollapsibleTrigger className="flex w-full items-center justify-between rounded-md px-4 py-3 text-base font-medium transition-colors hover:bg-accent/10 [&[data-state=open]>svg]:rotate-180">
                 {link.label}
                 <ChevronDown className="h-5 w-5 transition-transform" />
               </CollapsibleTrigger>
               <CollapsibleContent>
-                <div className="flex flex-col gap-2 pl-6 pt-2 pb-2">
+                <div className="flex flex-col gap-2 py-2 pl-10">
                   {link.subLinks.map((subLink, subIndex) => (
                     <Link
                       key={subIndex}
                       href={subLink.href}
-                      className="rounded-md px-3 py-2 text-base font-medium transition-colors hover:bg-accent/10"
+                      className="rounded-md px-4 py-2 text-base font-medium text-muted-foreground transition-colors hover:bg-accent/10 hover:text-foreground"
                       onClick={() => setOpen(false)}
                     >
                       {subLink.label}
@@ -71,6 +72,7 @@ export default function Header() {
                   ))}
                 </div>
               </CollapsibleContent>
+              <Separator className="bg-border/50" />
             </Collapsible>
           );
         }
@@ -96,17 +98,19 @@ export default function Header() {
         );
       }
       return (
-        <Link
-          key={index}
-          href={link.href}
-          className={cn(
-            'text-sm font-medium text-foreground/80 transition-colors hover:text-primary',
-            isMobile && 'rounded-md px-3 py-2 text-lg'
-          )}
-          onClick={() => isMobile && setOpen(false)}
-        >
-          {link.label}
-        </Link>
+        <React.Fragment key={index}>
+          <Link
+            href={link.href}
+            className={cn(
+              'text-sm font-medium text-foreground/80 transition-colors hover:text-primary',
+              isMobile && 'rounded-md px-4 py-3 text-base'
+            )}
+            onClick={() => isMobile && setOpen(false)}
+          >
+            {link.label}
+          </Link>
+          {isMobile && <Separator className="bg-border/50" />}
+        </React.Fragment>
       );
     });
   };
@@ -143,7 +147,7 @@ export default function Header() {
                 <span className="sr-only">Ouvrir le menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] bg-background p-0">
+            <SheetContent side="right" className="flex w-full max-w-sm flex-col bg-background p-0">
               <SheetHeader className="flex flex-row items-center justify-between border-b p-4">
                  <Link href="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
                     <Logo className="h-6 w-6 text-primary" />
@@ -156,7 +160,7 @@ export default function Header() {
                   </Button>
               </SheetHeader>
               <div className="flex h-full flex-col">
-                <nav className="flex-1 flex-col gap-2 p-4">
+                <nav className="flex-1 space-y-1 p-4">
                   {renderNavLinks(true)}
                 </nav>
                  <div className="border-t border-border/50 p-4 flex flex-col gap-4">
