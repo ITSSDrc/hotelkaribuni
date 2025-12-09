@@ -22,7 +22,7 @@ import { Phone } from 'lucide-react';
 
 export default function WhatsappButton() {
   const phoneNumber = '243822805628';
-  const message = "Bonjour, j'aimerais avoir plus d'informations sur l'hôtel Karibuni à Bunia.";
+  const message = "Bonjour, je vous contacte depuis votre site web. J'aimerais avoir plus d'informations sur l'hôtel Karibuni à Bunia.";
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
   
   const [qrCodeUrl, setQrCodeUrl] = useState('');
