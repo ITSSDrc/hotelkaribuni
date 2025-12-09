@@ -87,8 +87,9 @@ export const StaticData = {
             "description": "Un espace généreux avec un coin salon pour plus d'autonomie et de flexibilité durant votre séjour.",
             "price": 80,
             "imageUrls": [
-                "https://images.unsplash.com/photo-1629079448222-0331613589b9?q=80&w=1974&auto=format&fit=crop",
-                "https://images.unsplash.com/photo-1605346484971-d82c6b38b695?q=80&w=2070&auto=format&fit=crop"
+                "/images/cat-5.jpg",
+                "/images/cat-51.jpg",
+                "/images/cat-52.jpg"
             ],
              "amenities": [
                 { "name": "Coin Salon", "icon": "Sofa" },
