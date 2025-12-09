@@ -5,7 +5,7 @@ import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Header from '@/components/layout/header';
 import Footer from '@/components/layout/footer';
-import { Info, Clock, Fish, Sun, Award, Grape, Martini, Sunrise, Music, Cookie, Menu } from 'lucide-react';
+import { Info, Clock, Fish, Sun, Award, Grape, Martini, Sunrise, Music, Cookie, Menu, GlassWater } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
@@ -22,6 +22,7 @@ const iconMap: { [key: string]: React.ElementType } = {
     Music,
     Cookie,
     Menu,
+    GlassWater,
 };
 
 export default function RestauBarDetailPage() {

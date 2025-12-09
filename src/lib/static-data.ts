@@ -271,6 +271,9 @@ export const StaticData = {
                 { "name": "Tapas & Amuse-bouches", "icon": "Cookie" }
             ],
             "products": [
+                { "name": "Bières locales", "description": "Une sélection des meilleures bières de la région.", "icon": "Award" },
+                { "name": "Vins", "description": "Notre sélection de vins rouges, blancs et rosés.", "icon": "Grape" },
+                { "name": "Sucres", "description": "Sodas, jus et autres boissons non-alcoolisées.", "icon": "GlassWater" },
                 { "name": "Mojito 'Ituri'", "description": "Rhum local, menthe fraîche, et une touche de fruit de la passion.", "icon": "Martini" },
                 { "name": "Karibuni Spritz", "description": "Une version tropicale du classique italien avec des notes de mangue.", "icon": "Grape" },
                 { "name": "Jus de fruits frais pressés", "description": "Ananas, papaye, mangue, selon la saison.", "icon": "Sun" }
