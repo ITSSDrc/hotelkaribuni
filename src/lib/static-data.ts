@@ -8,8 +8,11 @@ export const StaticData = {
             "description": "Une chambre simple et confortable équipée d'un ventilateur. L'accès à internet est disponible gratuitement dans nos espaces communs comme le restaurant.",
             "price": 30,
             "imageUrls": [
-                "https://images.unsplash.com/photo-1598605272254-16f0c0ecdfa5?q=80&w=1974&auto=format&fit=crop",
-                "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=2070&auto=format&fit=crop"
+                "/images/cat-1.jpg",
+                "/images/cat-11.jpg",
+                "/images/cat-12.jpg",
+                "/images/cat-13.jpg",
+                "/images/cat-14.jpg"
             ],
             "amenities": [
                 { "name": "Ventilateur", "icon": "Wind" },
@@ -227,7 +230,7 @@ export const StaticData = {
             "type": "Restaurant",
             "description": "Une cuisine gastronomique qui célèbre les produits de la mer et les saveurs locales dans un cadre élégant et raffiné.",
             "imageUrls": [
-                "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?q=80&w=1974&auto=format&fit=crop"
+                "/images/restau-1.jpg"
             ],
             "amenities": [
                 { "name": "Produits frais et locaux", "icon": "Fish" },
